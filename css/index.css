@@ -13,15 +13,19 @@
     justify-content: center;
     align-items: center;
 }
-
+.wallet{
+    width: 180px;
+    height: 156px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -128px;
+    margin-left: -90px;
+}
 .unlock-wallet {
     width: 180px;
     height: 56px;
     position: absolute;
-    top: 50%;
-    left: 50%;
-    margin-top: -28px;
-    margin-left: -90px;
     -webkit-box-align: center;
     align-items: center;
     border: 0px;
@@ -35,7 +39,12 @@
     justify-content: center;
     outline: none;
 }
-
+.img-wallet{
+    display: inline-block;
+    width: 120px;
+    height: 120px;
+   margin-bottom: 30px;
+}
 .maskP {
     display: none;
     display: flex;
@@ -83,7 +92,7 @@
 
 .bWOwlY {
     width: 80% !important;
-    margin: 10px auto 0;
+    margin: 50px auto 0;
     -webkit-box-align: center;
     align-items: center;
     background-color: rgb(240, 233, 231);
@@ -103,7 +112,9 @@
     padding-right: 24px; */
     width: 100%;
 }
-
+.home-btn{
+    min-width: 115px!important;
+}
 .cancle {
     width: 100% !important;
 }
@@ -121,11 +132,10 @@
 
 
 .title {
-    font-size: 120px;
     height: 120px;
     line-height: 120px;
-    text-align: center;
     width: 120px;
+    margin-bottom: 20px;
 }
 
 .currency {
@@ -278,4 +288,35 @@ ul li{
     color: #ffffff;
     text-align: center;
 
+}
+.min-add{
+    display: inline-block;
+    width: 22px;
+    height: 22px;
+    line-height: 19px;
+    background:rgb(209, 108, 0);
+    border-radius: 10%;
+    cursor: pointer;
+}
+.periods-value{
+    width: 100px;
+    text-align: center;
+}
+.loading-box{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    position: fixed;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+    background-color: rgba(163, 136, 120, 0.667);
+}
+.loading{
+    display: block;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
 }

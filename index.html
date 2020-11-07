@@ -12,8 +12,12 @@
 <body>
     <div class="box">
         <!-- 判断metamask状态 -->
-        <div class="unlock-wallet" id="unlockWallet">🔓 Unlock Wallet</div>
+        <div class="wallet"  id="unlockWallet">
+            <img class="img-wallet" src="/img/game-nine.png" alt="" />
+             <div class="unlock-wallet">🔓 Unlock Wallet</div>
         <!-- 遮罩层的盒子 -->
+        </div>
+        
         <div class="maskP" id="maskP">
             <div class="swpb">
                 <div class="drBCHb">
@@ -21,29 +25,30 @@
                         <img src="/img/metamask.svg" style="height: 32px;"/>
                     </div>
                     <p>Metamask</p >
-                    <button color="#d16c00" font-size="16" size="56" class="bWOwlY" id="connectCD">Connect</button>
+                    <div color="#d16c00" font-size="16" size="56" class="bWOwlY" id="connectCD" οnclick="connFN()" >Connect</div>
                 </div>
                 <button color="#d16c00" font-size="16" size="56" class="bWOwlY cancle" id="cancle">Cancle</button>
             </div>
         </div>
         <!-- 选择币种 -->
         <div class="select-currency" id="selectCurrency">
-            <div class="title">🍣</div>
+            <!-- <div>🍣</div> -->
+            <img class="title" src="/img/game-nine.png" alt="">
             <div class="currency">
                 <div class="one">
                     <p>Your BLP Banlance</p >
-                    <p class="caVnyU">109.99</p >
-                    <p class="bWOwlY js-bWOwlY-Details">Details</p >
+                    <p class="caVnyU js-value1">--</p >
+                    <button class="bWOwlY home-btn js-bWOwlY-Details">Details</button >
                 </div>
                 <div class="one">
-                    <p>Your BLP Banlance</p >
-                    <p class="caVnyU">109.99</p >
-                    <p class="bWOwlY js-bWOwlY-Details">Details</p >
+                    <p>6/49 Award</p >
+                    <p class="caVnyU js-value2">--</p >
+                    <button class="bWOwlY home-btn js-bWOwlY-Details">Withdraw</button >
                 </div>
                 <div class="one">
-                    <p>Your BLP Banlance</p >
-                    <p class="caVnyU">109.99</p >
-                    <p class="bWOwlY js-bWOwlY-Details">Details</p >
+                    <p>Tatal Bookie Supply</p >
+                    <p class="caVnyU js-value3">--</p >
+                    <button class="bWOwlY home-btn js-bWOwlY-Details">Bookie</button >
                 </div>
             </div>
         </div>
@@ -51,35 +56,35 @@
         <div class="game-data" id="gameData">
             <div class="taNNC one">
                 <p>Total award</p >
-                <p class="caVnyU">987.98</p >
+                <p class="caVnyU js-game-value1">--</p >
             </div>
             <div class="taNNC1">
                 <div class="one HUGIJKL">
-                    <p>Total award</p >
-                    <p class="caVnyU">987.98</p >
+                    <p>Invite award</p >
+                    <p class="caVnyU js-game-value2">--</p >
                 </div>
                 <div class="one HUGIJKL">
-                    <p>Total award</p >
-                    <p class="caVnyU">987.98</p >
+                    <p>Bookie award</p >
+                    <p class="caVnyU js-game-value3">--</p >
                 </div>
             </div>
             <!-- 进入游戏 -->
-            <div class="hgfvbnj" id="gameDFE">进入游戏</div>
+            <button class="bWOwlY" id="gameDFE">Game</button>
         </div>
         <!-- 游戏 -->
         <div class="game-bookie" id="jsGameBookie">
             <div class="bookie-one qw">
                 <div class="one asde">
                     <p>Pool</p >
-                    <p class="caVnyU">87,678.99</p >
+                    <p class="caVnyU js-bookie-value1">--</p >
                 </div>
                 <div class="one asde">
-                    <p>Pool</p >
-                    <p class="caVnyU">87,678.99</p >
+                    <p>Bet Counts</p >
+                    <p class="caVnyU js-bookie-value2">--</p >
                 </div>
                 <div class="one asde">
-                    <p>Pool</p >
-                    <p class="caVnyU">87,678.99</p >
+                    <p>Jackpot</p >
+                    <p class="caVnyU js-bookie-value3">--</p >
                 </div>
             </div>
             <div class="bookie-one">
@@ -156,24 +161,37 @@
                     </ul>
                     <ul class="active-red-box text-l js-active-red-box"></ul>
                 </div>
+                <!-- periods -->
+                <div>
+                    <p>Beting periods</p>
+                    <span class="min-add js-min" οnclick="min()">-</span>
+                    <input type="text" value="1" class="periods-value js-periods-value" readonly="readonly">
+                    <span class="min-add js-add" οnclick="add()">+</span>
+                </div>
                 <!-- bet value -->
-                <p>Bet value</p>
-                <div class="">1.00</div>
-                <div class="bWOwlY">BET</div>
+                <p style="margin-top: 10px;">Bet value</p>
+                <div class="js-betValue" style="color: rgb(209, 108, 0);">--</div>
+                <div class="bWOwlY js-betFN" οnclick="betFN()">BET</div>
             </div>
             <div class="bookie-one" style="width: 230px;">
                 <p>My bet</p >
             </div>
         </div>
+        <!-- 等待数据返回 -->
+        <div class="loading-box js-loading-box">
+            <img class="loading" src="/img/loading.jpg" alt="">
+            <p style="color: #ffffff;">提交中...</p>
+        </div>
     </div>
 
 
 </body>
+<script src="/js/bookieABI.js"></script>
 <script src="/js/jquery-2.1.4.min.js"></script>
 <script src="js/web3.js"></script>
+
 <script src="js/index.js"></script>
-
-
-
-
+<script>
+    
+</script>
 </html>
