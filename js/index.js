@@ -1,10 +1,11 @@
 
     var _abi = BASEABI.abi
+    var _USDTABI = USDTABI.abi
     var contractAddress = BASEABI.contract
-    var _Bookie,_account
+    var contractAddressUSDT = USDTABI.contract
+    var _Bookie,_account,_USDT,_USDTACCOUNT
     var $jsLoadingBox = $('.js-loading-box')
     $('#maskP').hide()
-    // $('#unlockWallet').hide()
     $jsLoadingBox.hide()
     $("#selectCurrency").hide()
     $('#gameData').hide()
@@ -15,15 +16,34 @@
     $('#cancle').click(function () {
         $('#maskP').hide()
     })
-    $(".js-bWOwlY-Details").click(function(){
-        $("#selectCurrency").hide()
-        $('#gameData').show()
-    })
     $('#gameDFE').click(function(){
         $('#gameData').hide()
         $('#jsGameBookie').show()
     })
-    // 判断web3
+    // head top
+    $('.js-Home').click(function(){
+        $("#selectCurrency").show()
+        $('#unlockWallet').hide();
+        $('#maskP').hide()
+        $('#gameData').hide()
+        $('#jsGameBookie').hide()
+    })
+    $('.js-Bookie').click(function(){
+        $('#gameData').show()
+        $("#selectCurrency").hide()
+        $('#unlockWallet').hide();
+        $('#maskP').hide()
+        $('#jsGameBookie').hide()
+    })
+    $('.js-Game').click(function(){
+        $('#jsGameBookie').show()
+        $('#gameData').hide()
+        $("#selectCurrency").hide()
+        $('#unlockWallet').hide();
+        $('#maskP').hide()
+        
+    })
+    // judge web3
     InitPage()
     async function initWeb3() {
         if (window.ethereum) {
@@ -37,44 +57,57 @@
         }else if (window.web3) {
             window.web3 = new Web3(web3.currentProvider);
             return true
+        }else if(window.web3.eth.coinbase){
+            await ethereum.enable();
         }
     }
-   $('#connectCD').click(async function(){
-    await InitPage()
-   })
     async function InitPage() {
         isweb3 = await initWeb3();
+        
         if(!isweb3){
-            alert("本网站需要安装 Metamask 插件，点击确定进入Metamask网站")
+            alert("This website needs to install metamask plug-in. Click OK to enter metamask website")
             document.location = "https://metamask.io/"
         }else{
             $('#unlockWallet').hide()
             $("#selectCurrency").show()
             _Bookie = web3.eth.contract(_abi).at(contractAddress)
             _account = web3.eth.coinbase;
+
+            _USDT = web3.eth.contract(_USDTABI).at(contractAddressUSDT)
+            _USDTACCOUNT = web3.eth.coinbase;
             
-            // home数据
+            // home data
             _Bookie.GetBookieInfo.call(function (error, result) {
-                $(".js-value1").html(result.valueOf()[0].c[0].toFixed(2))
                 $(".js-value2").html(result.valueOf()[1].c[0].toFixed(2))
                 $(".js-value3").html(result.valueOf()[2].c[0].toFixed(2))
             });
             //award
             _Bookie.GetAwardInfo.call(function (error, result) {
                 $(".js-game-value1").html(result.valueOf()[0].c[0].toFixed(2))
-                $(".js-game-value2").html(result.valueOf()[1].c[0].toFixed(2))
-                $(".js-game-value3").html(result.valueOf()[2].c[0].toFixed(2))
+                $(".js-game-value2").html((result.valueOf()[1].c[0]/Math.pow(10, 6)).toFixed(2))
+                $(".js-game-value3").html((result.valueOf()[2].c[0]/Math.pow(10, 18)).toFixed(2))
             });
+            
             // Ball49
             _Bookie.GetBall49Info.call(function (error, result) {
-                $(".js-bookie-value1").html(result.valueOf()[0].c[0].toFixed(2))
+                $(".js-bookie-value1").html((result.valueOf()[0].c[0]/Math.pow(10, 6)).toFixed(2))
                 $(".js-bookie-value2").html(result.valueOf()[1].c[0])
-                $(".js-bookie-value3").html(result.valueOf()[2].c[0].toFixed(2))
+                $(".js-bookie-value3").html((result.valueOf()[2].c[0]/Math.pow(10, 6)).toFixed(2))
             });
+            
+            // USDT Banlance
+            _USDT.balanceOf.call(_USDTACCOUNT,async function(error, result){
+                $(".js-value1").html((result.c[0]/Math.pow(10, 6)).toFixed(2))
+            })
+
+            //_USDT.allowance
+            _USDT.allowance.call(_USDTACCOUNT,contractAddress,async function(error,result){
+                $('.js-value-usdt').html((result.c[0]/Math.pow(10, 6)).toFixed(2))
+            })
         }
     }
 
-    // 先定义要操作的数据对象
+    // Define the data object to operate on first
     var BLUELIST = []
     var REDLIST = []
     var ACTBLUELIST = []
@@ -91,18 +124,24 @@
         REDLIST.push(i < 10 ? '0'+i : i.toString())
         _REQREDLIST.push('0')
     }
-    // 点击蓝色球
+    // Click on the blue ball
     var $blueQ = $('.js-bookie-list li')    // 蓝色球集合
     var $redQ = $('.js-bookie-red li')    // 红色球集合
     var $actList = $('.js-active-list')    // 存放选中球的盒子
     $blueQ.on('click', function() {
         var cIndex = $(this).index()
         var curNum = BLUELIST[cIndex]
-
-        // 判断是否已经存在
-        if(ACTBLUELIST.indexOf(curNum) < 0) {
+        this.style.background="white";
+        this.style.color="blue";
+        
+        if(ACTBLUELIST.indexOf(curNum) > -1) {
+            ACTBLUELIST.splice(ACTBLUELIST.indexOf(curNum), 1)
+            this.style.background="rgb(72, 79, 177)";
+            this.style.color="white";
+        } else {
             ACTBLUELIST.push(curNum)
-        } 
+        }
+        
         creEle('blue')
         setValue('blue')
         submitFN()
@@ -111,34 +150,22 @@
     $redQ.on('click', function() {
         var cIndex = $(this).index()
         var curNum = REDLIST[cIndex]
-
-        // 判断是否已经存在
-        if(ACTREDLIST.indexOf(curNum) < 0) {
+        this.style.background="white";
+        this.style.color="red";
+        
+        if(ACTREDLIST.indexOf(curNum) > -1) {
+            ACTREDLIST.splice(ACTREDLIST.indexOf(curNum), 1)
+            this.style.background = 'red';
+            this.style.color = "white";
+        } else {
             ACTREDLIST.push(curNum)
-        } 
+        }
         creEle('red')
         setValue('red')
         submitFN()
     })
-
-    // 取消选中蓝色球
-    $actList.on('click','.js-active-blue-box li',function(){
-        var curIndex = $(this).index()
-        ACTBLUELIST.splice(curIndex ,1)
-        creEle('blue')
-        setValue('blue')
-        submitFN()
-    })
-
-    // 取消选中红色球
-    $actList.on('click','.js-active-red-box li',function(){
-        var curIndex = $(this).index()
-        ACTREDLIST.splice(curIndex ,1)
-        creEle('red')
-        setValue('red')
-        submitFN()
-    })
-    // 遍历当前选中的球
+    
+    // Traverses the currently selected ball
     function creEle(type) {
         let curList = []
         if(type === 'blue') {
@@ -169,10 +196,9 @@
             })
         }
     }
-    // 请求value的条件s
+    // Conditions for requesting value
     function submitFN(){
         if(ACTBLUELIST.length > 5 && ACTREDLIST.length > 0){
-            // console.log('请求')
             _Bookie.GetBetValue(REQBLUELIST,REQREDLIST,1,async function (error, result) {
                 console.log('result',result.valueOf());
                 $('.js-betValue').html(result.valueOf())
@@ -181,31 +207,31 @@
             $('.js-betValue').html('--')
         }
     }
-    // 数量的加减
-      var $periods = $('.js-periods-value')
-      var $periods = $('.js-periods-value')
-        $('.js-min').click(function(){
+    // Addition and subtraction of quantity
+    var $periods = $('.js-periods-value')
+    var $periods = $('.js-periods-value')
+    $('.js-min').click(function(){
             $periods.val(parseInt( $periods.val())-1)
             if($periods.val() <= 1){
                 $periods.val(1)
             }
         })
-        $('.js-add').click(function(){
+    $('.js-add').click(function(){
             $periods.val(parseInt( $periods.val())+1)
         })
         
-        // 查看状态
-        async function getReceipt(data) {
-            return new Promise(function (resolve, reject) {
-                web3.eth.getTransactionReceipt(data, function (err, result) {
-                    if (err) {
-                        reject(err);
-                    } else {
-                        resolve(result);
-                    }
-                })
+    // View status
+    async function getReceipt(data) {
+        return new Promise(function (resolve, reject) {
+            web3.eth.getTransactionReceipt(data, function (err, result) {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(result);
+                }
             })
-        }
+        })
+    }
         var $betFN = $('.js-betFN')
         $betFN.click(function(){
             $jsLoadingBox.show()
@@ -249,12 +275,100 @@
             alert('请投注')
         }
     })
-    // 监听
+    // listen
     ethereum.on('networkChanged', function (networkIDstring) {
         if (window.ethereum.networkVersion != 3) {
-            alert("请链接Ropsten测试网络");
+            alert("Please link to ropsten test network");
         }
     })
+    ethereum.on('accountsChanged', function (networkIDstring) {
+        if(web3.eth.coinbase == null){
+            $('#unlockWallet').show()
+            $("#selectCurrency").hide()
+            $('#maskP').hide()
+            $('#gameData').hide()
+            $('#jsGameBookie').hide()
+        }
+    })
+    
+
+    // pop
+    var popType =''
+    $subPop =$('.js-submit-pop')
+    console.log('$subPop',$subPop);
+    
+
+    $subPop.on('click', function() {
+        $subPop.hide()
+    })
+
+
+    $subPop.on('click','.con', function(e) {
+        e.stopPropagation()
+    })
+
+    $subPop.on('click','.js-submit-btn', function(e) {
+        var val = $subPop.find('.js-inp').val()
+        console.log('val',val);
+        if(popType === 'USDT') {
+            data = _USDT.approve.getData(contractAddress, val*1000000);
+            tx = {
+                to: contractAddressUSDT,
+                data: data,
+            }
+            web3.eth.sendTransaction(tx,async function (err, result) {
+                if (err) {
+                    alert("failed: " + err.message)
+                } else {
+                    alert("successed: " + result)
+                    
+                }
+            })
+            // $("#selectCurrency").hide()
+            // $('#gameData').show()
+            $subPop.hide()
+        } 
+    })
+    $('.js-bWOwlY-Bookie').click(function(){
+        $('#gameData').show()
+        $("#selectCurrency").hide()
+    })
+    $(".js-bWOwlY-Details").click(function(){
+        popType = 'USDT'
+        $subPop.find('.js-inp').val('')
+        $subPop.show()
+    })
+
+    $('.js-widhdraw-uw').click(function(){
+            data = _Bookie.WithdrawUsdt.getData();
+            tx = {
+                to: contractAddress,
+                data: data,
+            }
+            web3.eth.sendTransaction(tx,async function (err, result) {
+                if (err) {
+                    alert("failed: " + err.message)
+                } else {
+                    alert("successed: " + result)
+                }
+            })
+    })
+
+    $('.js-widhdraw-bw').click(function(){
+        data = _Bookie.WithdrawBlp.getData();
+            tx = {
+                to: contractAddress,
+                data: data,
+            }
+            web3.eth.sendTransaction(tx,async function (err, result) {
+                if (err) {
+                    alert("failed: " + err.message)
+                } else {
+                    alert("successed: " + result)
+                }
+            })
+    })
+    
     
 
         
