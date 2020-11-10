@@ -234,18 +234,16 @@
     }
         var $betFN = $('.js-betFN')
         $betFN.click(function(){
-            $jsLoadingBox.show()
-            var $periodsValue = $('.js-periods-value').val()
-            var $betHTML = $('.js-betValue').html()
-            if($betHTML != '--'){
-            _Bookie.Bet(REQBLUELIST,REQREDLIST,$periodsValue,$betHTML,async function (error, result) {
-                if(result){
-                    data = _Bookie.Bet.getData(REQBLUELIST.map(Number),REQREDLIST.map(Number),Number($periodsValue),Number($betHTML) );
-                    tx = {
-                        to: contractAddress,
-                        data: data,
-                    }
-                    web3.eth.sendTransaction(tx,async function (err, result) {
+        $jsLoadingBox.show()
+        var $periodsValue = $('.js-periods-value').val()
+        var $betHTML = $('.js-betValue').html()
+        if($betHTML != '--'){
+            data = _Bookie.Bet.getData(REQBLUELIST.map(Number),REQREDLIST.map(Number),Number($periodsValue),Number($betHTML) );
+            tx = {
+                to: contractAddress,
+                data: data,
+            }
+            web3.eth.sendTransaction(tx,async function (err, result) {
                         if (err) {
                             alert("提交交易失败，错误：" + err.message)
                             $jsLoadingBox.hide()
@@ -266,13 +264,10 @@
                             }, 3000)
                         }
                     })
-                } else {
-                    $jsLoadingBox.hide()
-                }
-            } )
+                
         }else{
             $jsLoadingBox.hide()
-            alert('请投注')
+            alert('Please bet')
         }
     })
     // listen
