@@ -1,6 +1,44 @@
 var BASEABI = {
-	"contract":"0x2D30E7660c76845D1aaa5BdaD07baC41508F71B4",
+	"contract":"0xf2fB06a17D06a804A4a7e61Ef616823b823e9970",
 	"abi": [
+		{
+			"anonymous": false,
+			"inputs": [
+				{
+					"indexed": false,
+					"internalType": "address",
+					"name": "",
+					"type": "address"
+				},
+				{
+					"indexed": false,
+					"internalType": "uint256",
+					"name": "",
+					"type": "uint256"
+				}
+			],
+			"name": "_mintBlp",
+			"type": "event"
+		},
+		{
+			"anonymous": false,
+			"inputs": [
+				{
+					"indexed": false,
+					"internalType": "address",
+					"name": "",
+					"type": "address"
+				},
+				{
+					"indexed": false,
+					"internalType": "uint256",
+					"name": "",
+					"type": "uint256"
+				}
+			],
+			"name": "_mintUsdt",
+			"type": "event"
+		},
 		{
 			"anonymous": false,
 			"inputs": [
@@ -80,6 +118,30 @@ var BASEABI = {
 			"type": "function"
 		},
 		{
+			"inputs": [
+				{
+					"internalType": "uint256",
+					"name": "btcBlock",
+					"type": "uint256"
+				},
+				{
+					"internalType": "string",
+					"name": "btcHash",
+					"type": "string"
+				}
+			],
+			"name": "DrawBalls",
+			"outputs": [
+				{
+					"internalType": "bool",
+					"name": "",
+					"type": "bool"
+				}
+			],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
 			"inputs": [],
 			"name": "GetAwardInfo",
 			"outputs": [
@@ -96,6 +158,19 @@ var BASEABI = {
 				{
 					"internalType": "uint256",
 					"name": "bookieAward",
+					"type": "uint256"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [],
+			"name": "GetBLPSupply",
+			"outputs": [
+				{
+					"internalType": "uint256",
+					"name": "totalSupply",
 					"type": "uint256"
 				}
 			],
@@ -175,6 +250,59 @@ var BASEABI = {
 				}
 			],
 			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "uint256",
+					"name": "lotteryID",
+					"type": "uint256"
+				}
+			],
+			"name": "GetDrawResult",
+			"outputs": [
+				{
+					"internalType": "uint8[6]",
+					"name": "blue_balls",
+					"type": "uint8[6]"
+				},
+				{
+					"internalType": "uint8",
+					"name": "red_ball",
+					"type": "uint8"
+				},
+				{
+					"internalType": "uint8[6]",
+					"name": "level_counts",
+					"type": "uint8[6]"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "uint256",
+					"name": "lotteryID",
+					"type": "uint256"
+				},
+				{
+					"internalType": "uint8[6]",
+					"name": "level_counts",
+					"type": "uint8[6]"
+				}
+			],
+			"name": "SetDrawLevel",
+			"outputs": [
+				{
+					"internalType": "bool",
+					"name": "",
+					"type": "bool"
+				}
+			],
+			"stateMutability": "nonpayable",
 			"type": "function"
 		},
 		{

@@ -4,6 +4,7 @@
     var contractAddress = BASEABI.contract
     var contractAddressUSDT = USDTABI.contract
     var _Bookie,_account,_USDT,_USDTACCOUNT
+    var web3
     var $jsLoadingBox = $('.js-loading-box')
     $('#maskP').hide()
     $jsLoadingBox.hide()
@@ -56,6 +57,7 @@
             }
         }else if (window.web3) {
             window.web3 = new Web3(web3.currentProvider);
+            web3 = window.web3;
             return true
         }else if(window.web3.eth.coinbase){
             await ethereum.enable();
@@ -72,18 +74,13 @@
             $("#selectCurrency").show()
             _Bookie = web3.eth.contract(_abi).at(contractAddress)
             _account = web3.eth.coinbase;
-
+            
             _USDT = web3.eth.contract(_USDTABI).at(contractAddressUSDT)
             _USDTACCOUNT = web3.eth.coinbase;
+            console.log(_USDTACCOUNT);
             
-            // home data
-            _Bookie.GetBookieInfo.call(function (error, result) {
-                $(".js-value2").html(result.valueOf()[1].c[0].toFixed(2))
-                $(".js-value3").html(result.valueOf()[2].c[0].toFixed(2))
-            });
             //award
             _Bookie.GetAwardInfo.call(function (error, result) {
-                $(".js-game-value1").html(result.valueOf()[0].c[0].toFixed(2))
                 $(".js-game-value2").html((result.valueOf()[1].c[0]/Math.pow(10, 6)).toFixed(2))
                 $(".js-game-value3").html((result.valueOf()[2].c[0]/Math.pow(10, 18)).toFixed(2))
             });
@@ -99,7 +96,15 @@
             _USDT.balanceOf.call(_USDTACCOUNT,async function(error, result){
                 $(".js-value1").html((result.c[0]/Math.pow(10, 6)).toFixed(2))
             })
-
+            //Bookie Supply
+            _Bookie.GetBLPSupply.call(function (error, result) {
+                if (error) {
+                    alert(error);
+                }
+                var supply = web3.fromWei(result, "ether");
+                $('.js-value3').html(supply.toFixed(2))
+                //$('.js-value3').html(json)
+            });
             //_USDT.allowance
             _USDT.allowance.call(_USDTACCOUNT,contractAddress,async function(error,result){
                 $('.js-value-usdt').html((result.c[0]/Math.pow(10, 6)).toFixed(2))
@@ -290,21 +295,15 @@
     // pop
     var popType =''
     $subPop =$('.js-submit-pop')
-    console.log('$subPop',$subPop);
-    
-
     $subPop.on('click', function() {
         $subPop.hide()
     })
-
-
     $subPop.on('click','.con', function(e) {
         e.stopPropagation()
     })
 
     $subPop.on('click','.js-submit-btn', function(e) {
         var val = $subPop.find('.js-inp').val()
-        console.log('val',val);
         if(popType === 'USDT') {
             data = _USDT.approve.getData(contractAddress, val*1000000);
             tx = {
@@ -319,8 +318,6 @@
                     
                 }
             })
-            // $("#selectCurrency").hide()
-            // $('#gameData').show()
             $subPop.hide()
         } 
     })
