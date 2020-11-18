@@ -33,13 +33,13 @@
     height: 40px;
 }
 .head-top-list{
-    width: 300px;
+    /* width: 300px; */
     height: 40px;
     line-height: 40px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-left: 100px;
+    margin-left: 50px;
     
 }
 .head-top-list li{
@@ -47,12 +47,25 @@
     background-color: rgb(240, 233, 231);
     border: 0px;
     border-radius: 12px;
-    box-shadow: rgb(226, 214, 207) 6px 6px 12px, rgb(247, 244, 242) -12px -12px 24px -2px;
     color: rgb(209, 108, 0);
     cursor: pointer !important;
     display: flex;
     font-size: 16px;
     font-weight: 700;
+    margin: 0 15px;
+}
+.random-ul li{
+    display: inline-block;
+    width: 35px;
+    height: 35px;
+    line-height: 35px;
+    background: rgb(72, 79, 177);
+    border-radius: 50%;
+    font-size: 19px;
+    color: #ffffff;
+}
+.random-ul li:last-child{
+    background: #e30c07;
 }
 .wallet{
     width: 180px;
@@ -161,28 +174,6 @@
     background-color: rgb(247, 244, 242);
 }
 
-.select-currency {
-    -webkit-box-align: center;
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-}
-
-
-.title {
-    height: 120px;
-    line-height: 120px;
-    width: 120px;
-    margin-bottom: 20px;
-}
-
-.currency {
-    width: 900px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
 .mpsktop {
     background-color: rgb(240, 233, 231);
     font-size: 36px;
@@ -197,12 +188,6 @@
     box-shadow: rgb(226, 214, 207) 4px 4px 8px inset, rgb(247, 244, 242) -6px -6px 12px inset;
     margin: 0px auto 16px;
 }
-.currency{
-    /* width: 600px; */
-     align-items: center;
-    display: flex;
-    justify-content: space-around;
-}
 @media (max-width: 768px){
     .one {
         width: 80%;
@@ -210,7 +195,7 @@
 }
 
 .one{
-    padding: 50px;
+    padding: 20px 30px;
     background: rgb(240, 233, 231);
     border: 1px solid rgb(226, 214, 207);
     border-radius: 12px;
@@ -218,7 +203,6 @@
 }
 
 .caVnyU {
-    font-family: "Roboto Mono", monospace;
     color: rgb(91, 57, 38);
     font-size: 36px;
     font-weight: 700;
@@ -253,45 +237,52 @@
     cursor: pointer;
 }
 .game-bookie{
-    width: 1000px;
-    padding: 20px;
+    width: 1100px;
+    padding: 10px 20px;
     background:rgb(240, 233, 231);
     display: flex;
     justify-content: space-around;
 }
-.asde{
-    padding: 20px !important;
-    background: cornsilk;
-}
+
 .bookie-list{
-    width: 270px;
+    width: 435px;
     list-style-type:none;
 }
 
 .bookie-list li{
     display: inline-block;
-    width: 22px;
-    height: 22px;
-    line-height: 22px;
+    width: 35px;
+    height: 35px;
+    line-height: 35px;
     background:rgb(72, 79, 177);
     border-radius: 50%;
-    font-size: 12px;
+    font-size: 19px;
     color: #ffffff;
 }
 .bookie-red{
-    width: 270px;
+    width: 435px;
     list-style-type:none;
     margin-top: 20px;
 }
 .bookie-red li{
     display: inline-block;
-    width: 22px;
-    height: 22px;
-    line-height: 22px;
+    width: 35px;
+    height: 35px;
+    line-height: 35px;
     background:red;
     border-radius: 50%;
-    font-size: 12px;
+    font-size: 19px;
     color: #ffffff;
+}
+.home-bookie-list li:last-child{
+    background: #e30c07;
+}
+.home-btn{
+    display: flex;
+    justify-content: space-around;
+}
+.home-btn button{
+    width: 180px;
 }
 /* 接手 */
 ul li{
@@ -303,31 +294,31 @@ ul li{
     text-align: left;
 }
 .active-list .active-blue-box{
-    width: 270px;
-    max-height: 160px;
+    width: 435px;
+    max-height: 175px;
 }
 .active-list .active-blue-box li{
     display: inline-block;
-    width: 22px;
-    height: 22px;
-    line-height: 22px;
-    margin-right: 4px;
+    width: 35px;
+    height: 35px;
+    line-height: 35px;
+    margin-right: 5px;
     background:rgb(72, 79, 177);
     border-radius: 50%;
-    font-size: 12px;
+    font-size: 19px;
     color: #ffffff;
     text-align: center;
 
 }
 .active-list .active-red-box li{
     display: inline-block;
-    width: 22px;
-    height: 22px;
-    line-height: 22px;
-    margin-right: 4px;
+    width: 35px;
+    height: 35px;
+    line-height: 35px;
     background:red;
+    margin-right: 5px;
     border-radius: 50%;
-    font-size: 12px;
+    font-size: 19px;
     color: #ffffff;
     text-align: center;
 
@@ -398,4 +389,106 @@ ul li{
     margin: 20 auto;
     border-radius: 10px;
     padding: 0 4px;
+}
+.invited-title{
+    display: inline-block;
+    font-size: 30px;
+}
+.invited-address{
+    font-size: 14px;
+    margin: 10px 0;
+}
+.bookie-balance-title{
+    display: inline-block;
+    margin: 10px 0;
+}
+.bookie-periods-value{
+    width: 180px;
+    height: 40px;
+    text-align: center;
+}
+.bookie-max{
+    display: inline-block;
+    width: 100px;
+    height: 44px;
+    line-height: 44px;
+    text-align: center;
+    background: rgb(209, 108, 0);
+    color: #fff;
+    margin-left: -6px;
+    cursor: pointer !important;
+    vertical-align: bottom;
+}
+.bookie-money{
+    font-size: 28px;
+    margin: 20px 0;
+    color: rgb(209, 108, 0);
+}
+.shortcut-box{
+    width: 1200px;
+    padding: 10px 20px;
+    background:rgb(240, 233, 231);
+    display: flex;
+    justify-content: space-around;
+}
+.short-left{
+    color: rgb(91, 57, 38);
+    font-size: 24px;
+    font-weight: 700;
+    margin: 30px 0;
+}
+.scroll-num{
+    width: 330px;
+    display: flex;
+    justify-content: space-around;
+}
+.home-box{
+    /* width: 1000px;
+    padding: 20px;
+    background:rgb(240, 233, 231);
+    display: flex;
+    justify-content: space-around; */
+}
+.next-drawing{
+    font-family: 'ProximaNova-Bold';
+    font-size: 19px;
+    position: relative;
+    padding: 0 0 10px;
+}
+.estimated-jackpot{
+    padding: 5px 0;
+}
+.estimated-jackpot .estimated{
+    font-family: 'ProximaNova-Regular';
+    font-size: 15px;
+    padding-top: 5px;
+}
+.estimated-jackpot .number{
+    font-family: 'ProximaNova-Bold';
+    font-size: 36px;
+    color: #fc0;
+    padding: 5px;
+}
+.countdown{
+    padding: 10px 0 15px;
+    font-size: 16px;
+    font-family: 'ProximaNova-Regular';
+}
+.countdown time{
+    font-family: 'ProximaNova-Bold';
+    font-size: 38px;
+    color: #fc0;
+    padding: 5px;
+    display: block;
+    white-space: nowrap;
+}
+.countdown .time-content{
+    display: flex;
+    justify-content: space-between;
+    width: 166px;
+    margin: 0 auto;
+    font-size: 12px;
+}
+.countdown .time-content span{
+    padding: 0 19px;
 }

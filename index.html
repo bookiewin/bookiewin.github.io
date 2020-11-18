@@ -3,10 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Bookie</title>
     <link rel="stylesheet" href="/css/index.css">
-    <link rel="stylesheet" href="css/basic.css">
+    <style>
+        *{
+          margin: 0;
+          padding: 0;
+        }
+        .scroll{
+          margin:40px auto 0;
+          width: 300px;
+          height: 5px;
+          background: #ccc;
+          position: relative;
+        }
+        .bar{
+          width: 10px;
+          height: 20px;
+          background: rgb(209, 108, 0);
+          position: absolute;
+          top: -7px;
+          left: 0;
+          cursor: pointer;
+        }
+        .mask{
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 0;
+          height: 10px;
+        }
+    </style>
 </head>
+
 <body>
     <div class="box js-box">
         <!-- top -->
@@ -14,9 +43,10 @@
             <img src="/img/game-nine.png" class="head-top-img" alt="">
             <ul class="head-top-list">
                 <li class="js-Home">Home</li>
-                <li class="js-Bookie">Bookie</li>
+                <li class="js-Bookie js-home-bookie">Bookie</li>
                 <li class="js-Game">Game</li>
-
+                <li class="js-Shortcut">Shortcut</li>
+                <li class="js-Dashboard">Dashboard</li>
             </ul>
         </div>
         <!-- metamask status -->
@@ -24,7 +54,7 @@
             <img class="img-wallet" src="/img/game-nine.png" alt="" />
              <div class="unlock-wallet">🔓 Unlock Wallet</div>
         </div>
-        
+        <!-- Connect -->
         <div class="maskP" id="maskP">
             <div class="swpb">
                 <div class="drBCHb">
@@ -37,59 +67,102 @@
                 <button color="#d16c00" font-size="16" size="56" class="bWOwlY cancle" id="cancle">Cancle</button>
             </div>
         </div>
-        <!-- Select coin -->
-        <div class="select-currency" id="selectCurrency">
-            <!-- <div>🍣</div> -->
-            <img class="title" src="/img/game-nine.png" alt="">
-            <div class="currency">
-                <div class="one">
-                    <p>Your USDT Banlance</p >
-                    <p class="caVnyU js-value1">--</p >
-                    <p>Approved amount</p >
-                    <p class="caVnyU js-value-usdt">--</p >
-                    <button class="bWOwlY home-btn js-bWOwlY-Details">Approve</button >
+        <!--Home Select -->
+        <div class="home-box" id="selectCurrency">
+            <div class="next-drawing">
+                Next Drawing – <span>Thu, Nov 19</span>
+            </div>
+            <div class="estimated-jackpot">
+                <p class="estimated">Estimated Jackpot</p>
+                <div>
+                    <span class="number">$ </span>
+                    <span class="number js-estimated">--</span>
+                    <span class="number"> Million</span>
                 </div>
-                <div class="one">
-                    <p>Total Bookie Supply</p >
-                    <p class="caVnyU js-value3">--</p >
-                    <button class="bWOwlY home-btn js-bWOwlY-Bookie">Bookie</button >
-                </div>
+                
+            </div>
+            <div class="countdown">
+                Countdown to Drawing
+                <time class="js-times">-- : -- : --</time>
+                <div class="time-content"><span>Hr</span><span>Min</span><span>Sec</span></div>
+            </div>
+            <ul class="bookie-list home-bookie-list">
+                <li>07</li>
+                <li>14</li>
+                <li>34</li>
+                <li>23</li>
+                <li>15</li>
+                <li>09</li>
+                <li>03</li>
+            </ul>
+            <div class="home-btn">
+                <button class="bWOwlY js-home-bookie">Bookie</button>
+                <button class="bWOwlY js-jion-game">Jion Game</button>
             </div>
         </div>
-        <!-- game data -->
-        <div class="game-data" id="gameData">
-            <div class="taNNC1">
-                <div class="one HUGIJKL">
-                    <p>USDT Award</p >
-                    <p class="caVnyU js-game-value2">--</p >
-                    <button class="bWOwlY js-widhdraw js-widhdraw-uw">Widhdraw</button>
-                </div>
-                <div class="one HUGIJKL">
-                    <p>Bookie Award(BLP)</p >
-                    <p class="caVnyU js-game-value3">--</p >
-                    <button class="bWOwlY js-widhdraw js-widhdraw-bw">Widhdraw</button>
-                </div>
+        <!-- bookie -->
+        <div class="bookie-box js-bookie-box">
+            <div class="invited js-invited">
+                <span class="invited-title">Invited by</span>
+                <p class="invited-address js-invited-by">-</p>
+                <button class="bWOwlY js-register">Register</button >
             </div>
-            <!-- join game -->
-            <button class="bWOwlY" id="gameDFE">Game</button>
+            <div class="bookie-btn js-bookie-btn">
+                <div >My USDT Balance</div>
+                <div class="bookie-money ">
+                    <span>$ </span><span class="js-shortcut-balance"></span>
+                </div>
+                <span class="bookie-balance-title">Bookie Value</span>
+                <div>
+                    <input class="bookie-periods-value js-bookie-input" type="text" value="0"  placeholder="Please enter">
+                    <span class="bookie-max js-bookie-max">MAX</span>
+                </div>
+                <div style="margin: 10px 0;">
+                    <span>APY</span>
+                    <span class="js-APY-num" style="color: rgb(209, 108, 0);" >--</span>
+                </div>
+                <button class="bWOwlY js-my-bookie-value">Bookie</button >
+            </div>
+        </div>
+        <!-- Dashboard -->
+        <div class="game-data" id="dashboard">
+            <div class="js-dashboard-box">
+                <div class="taNNC1">
+                    <div class="one HUGIJKL">
+                        <p>USDT award</p >
+                        <p class="caVnyU js-game-value2">--</p >
+                        <button class="bWOwlY js-widhdraw js-widhdraw-uw">Claim</button>
+                    </div>
+                    <div class="one HUGIJKL">
+                        <p>Bookie award(BLP)</p >
+                        <p class="caVnyU js-game-value3">--</p >
+                        <button class="bWOwlY js-widhdraw js-widhdraw-bw">Claim</button>
+                    </div>
+                </div>
+                <!-- Invite my friends btn -->
+                <button class="bWOwlY js-invite-friends">Invite friends</button>
+            </div>
+            <!-- Invite my friends box -->
+            <div class="invited js-inviteUrl">
+                <span class="invited-title">Invite url</span>
+                <p class="invited-address js-invite-address"> -- </p>
+                <textarea style="opacity: 0;" class="invited-address js-invite-address-hide" id='js-invite-address-hide'> -- </textarea>
+                <button class="bWOwlY js-Clipboard">Copy to Clipboard</button >
+            </div>
         </div>
         <!-- game -->
         <div class="game-bookie" id="jsGameBookie">
-            <div class="bookie-one qw">
+            <div>
                 <div class="one asde">
                     <p>Pool</p >
                     <p class="caVnyU js-bookie-value1">--</p >
-                </div>
-                <div class="one asde">
-                    <p>Bet Counts</p >
-                    <p class="caVnyU js-bookie-value2">--</p >
                 </div>
                 <div class="one asde">
                     <p>Jackpot</p >
                     <p class="caVnyU js-bookie-value3">--</p >
                 </div>
             </div>
-            <div class="bookie-one">
+            <div>
                 <h1>6/49</h1>
                 <ul class="bookie-list text-l js-bookie-list">
                     <li>01</li>
@@ -175,9 +248,88 @@
                 <div class="js-betValue" style="color: rgb(209, 108, 0);">--</div>
                 <div class="bWOwlY js-betFN" οnclick="betFN()">BET</div>
             </div>
-            <div class="bookie-one" style="width: 230px;">
+            <div style="width: 230px;">
                 <p>My bet</p >
             </div>
+        </div>
+        <!-- Shortcut -->
+        <div class="shortcut-box js-shortcut-box">
+            <div>
+                <div class="one">
+                    <p>BIP APY</p>
+                    <div class="short-left ">
+                        <span class="js-bip-apy">--</span>
+                        <span>%</span>
+                    </div>
+                </div>
+                <div class="one">
+                    <p>Estimate harvest</p>
+                    <div class="short-left " >
+                        <span class="js-harvest">0</span>
+                        <span>BIP</span>
+                    </div>
+                </div>
+                <div class="one">
+                    <p>Estimate annual income</p>
+                    <p class="short-left ">
+                        <span class="js-annual-income">0</span>
+                        <span>USDT</span>
+                    </p>
+                </div>
+            </div>
+            <div>
+                <div style="font-size: 20px;margin: 20px;">My USDT Balance</div>
+                <div class="bookie-money "><span>$ </span><span class="js-shortcut-USDT"></span></div>
+                <div>
+                    <input class="bookie-periods-value js-shortcut-value" type="text" value="0" placeholder="Please enter">
+                    <span class="bookie-max js-ShortcutVal-max">MAX</span>
+                </div>
+                <div class="scroll" id="scroll">
+                    <div class="bar" id="bar">
+                    </div>
+                    <div class="mask" id="mask">
+                    </div>
+                </div>
+                <!-- <input type="button" name="test" onclick="changePercent(50)" value="跳转到20%"></input> -->
+                <p class="scroll-p" id="scrollP" style="margin-top: 10px;"></p>
+                <div class="scroll-num">
+                    <div>
+                        <p>Bookie</p>
+                        <div>
+                            <span class="js-bookie-left"> 0 </span>
+                            <span>USDT</span>
+                        </div>
+                    </div>
+                    <div>
+                        <p>Game</p>
+                        <div>
+                            <span class="js-game-right"> 0 </span>
+                            <span>USDT</span>
+                        </div>
+                    </div>
+                </div>
+                <button class="bWOwlY js-shortcut-submit">Confirm</button>
+            </div>
+            <div>
+                <div class="one">
+                    <p>Pool</p>
+                    <p class="short-left js-pool"> --</p>
+                </div>
+                <!-- random '19','21','24','09','45','27','06'-->
+                <div>
+                    <div class="bWOwlY js-random" style="background: rgb(209, 108, 0);color: #fff;margin-bottom: 20px;">Random</div>
+                    <ul class="random-ul js-random-ul">
+                        <li>19</li>
+                        <li>21</li>
+                        <li>24</li>
+                        <li>09</li>
+                        <li>45</li>
+                        <li>27</li>
+                        <li>06</li>
+                    </ul>
+                </div>
+            </div>
+           
         </div>
         <!-- Waiting for data to return -->
         <div class="loading-box js-loading-box">
@@ -192,13 +344,10 @@
             </div>
         </div>
     </div>
-
-
 </body>
 <script src="/js/bookieABI.js"></script>
 <script src="/js/usdtABI.js"></script>
 <script src="/js/jquery-2.1.4.min.js"></script>
 <script src="js/web3.js"></script>
 <script src="js/index.js"></script>
-
 </html>

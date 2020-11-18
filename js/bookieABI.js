@@ -1,5 +1,5 @@
 var BASEABI = {
-	"contract":"0xf2fB06a17D06a804A4a7e61Ef616823b823e9970",
+	"contract":"0xf74CB3912F1d499bb341545fC9C3E86FdBd56A05",
 	"abi": [
 		{
 			"anonymous": false,
@@ -90,6 +90,25 @@ var BASEABI = {
 			"inputs": [
 				{
 					"internalType": "uint256",
+					"name": "value",
+					"type": "uint256"
+				}
+			],
+			"name": "BookieValue",
+			"outputs": [
+				{
+					"internalType": "bool",
+					"name": "",
+					"type": "bool"
+				}
+			],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "uint256",
 					"name": "lotteryID",
 					"type": "uint256"
 				},
@@ -139,6 +158,19 @@ var BASEABI = {
 				}
 			],
 			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [],
+			"name": "GetAPY",
+			"outputs": [
+				{
+					"internalType": "uint8",
+					"name": "apy",
+					"type": "uint8"
+				}
+			],
+			"stateMutability": "view",
 			"type": "function"
 		},
 		{
@@ -282,6 +314,71 @@ var BASEABI = {
 			"type": "function"
 		},
 		{
+			"inputs": [],
+			"name": "GetInviteStatus",
+			"outputs": [
+				{
+					"internalType": "address",
+					"name": "inviter_address",
+					"type": "address"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [],
+			"name": "GetLottery",
+			"outputs": [
+				{
+					"internalType": "uint256",
+					"name": "gameID",
+					"type": "uint256"
+				},
+				{
+					"internalType": "uint256",
+					"name": "drawTime",
+					"type": "uint256"
+				},
+				{
+					"internalType": "uint256",
+					"name": "jackpot",
+					"type": "uint256"
+				},
+				{
+					"internalType": "uint256",
+					"name": "lastDrawTime",
+					"type": "uint256"
+				},
+				{
+					"internalType": "uint8[7]",
+					"name": "lastBalls",
+					"type": "uint8[7]"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "address",
+					"name": "inviterAddress",
+					"type": "address"
+				}
+			],
+			"name": "Register",
+			"outputs": [
+				{
+					"internalType": "bool",
+					"name": "",
+					"type": "bool"
+				}
+			],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
 			"inputs": [
 				{
 					"internalType": "uint256",
@@ -295,6 +392,35 @@ var BASEABI = {
 				}
 			],
 			"name": "SetDrawLevel",
+			"outputs": [
+				{
+					"internalType": "bool",
+					"name": "",
+					"type": "bool"
+				}
+			],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "uint256",
+					"name": "bookieValue",
+					"type": "uint256"
+				},
+				{
+					"internalType": "uint256",
+					"name": "betValue",
+					"type": "uint256"
+				},
+				{
+					"internalType": "uint8[7]",
+					"name": "balls",
+					"type": "uint8[7]"
+				}
+			],
+			"name": "Shortcut",
 			"outputs": [
 				{
 					"internalType": "bool",
