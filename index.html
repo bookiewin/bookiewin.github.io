@@ -5,37 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bookie</title>
     <link rel="stylesheet" href="/css/index.css">
-    <style>
-        *{
-          margin: 0;
-          padding: 0;
-        }
-        .scroll{
-          margin:40px auto 0;
-          width: 300px;
-          height: 5px;
-          background: #ccc;
-          position: relative;
-        }
-        .bar{
-          width: 10px;
-          height: 20px;
-          background: rgb(209, 108, 0);
-          position: absolute;
-          top: -7px;
-          left: 0;
-          cursor: pointer;
-        }
-        .mask{
-          position: absolute;
-          left: 0;
-          top: 0;
-          width: 0;
-          height: 10px;
-        }
-    </style>
 </head>
-
 <body>
     <div class="box js-box">
         <!-- top -->
@@ -74,7 +44,7 @@
             </div>
             <div class="estimated-jackpot">
                 <p class="estimated">Estimated Jackpot</p>
-                <div>
+                <div style="margin: 10px 0;">
                     <span class="number">$ </span>
                     <span class="number js-estimated">--</span>
                     <span class="number"> Million</span>

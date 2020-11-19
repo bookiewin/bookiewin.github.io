@@ -7,73 +7,89 @@ var $jsLoadingBox = $('.js-loading-box')
 var $bookieBox = $('.js-bookie-box')
 var $shortcutBox = $('.js-shortcut-box')
 var $inviteUrl = $('.js-inviteUrl')
-var $dashboardBox = $('.js-dashboard-box');
-$('#maskP').hide()
+var $dashboardBox = $('.js-dashboard-box')
+var $selectCurrency = $("#selectCurrency")
+var $dashboard = $('#dashboard')
+var $maskP = $('#maskP')
+var $jsGameBookie = $('#jsGameBookie')
+var $unlockWallet = $('#unlockWallet')
+$maskP.hide()
 $jsLoadingBox.hide()
 $bookieBox.hide()
 $shortcutBox.hide()
 $inviteUrl.hide()
-$("#selectCurrency").hide()
-$('#dashboard').hide()
-$('#jsGameBookie').hide()
-
-$('#unlockWallet').click(function () {
-    $('#maskP').show()
+$selectCurrency.hide()
+$dashboard.hide()
+$jsGameBookie.hide()
+$unlockWallet.click(function () {
+    $maskP.show()
 })
 $('#cancle').click(function () {
-    $('#maskP').hide()
+    $maskP.hide()
 })
 
 $('.js-jion-game').click(function () {
-    $("#selectCurrency").hide()
-    $('#jsGameBookie').show()
+    $selectCurrency.hide()
+    $jsGameBookie.show()
 })
 // head top
 $('.js-Home').click(function () {
-    $("#selectCurrency").show()
-    $('#unlockWallet').hide();
-    $('#maskP').hide()
-    $('#dashboard').hide()
-    $('#jsGameBookie').hide()
-    $bookieBox.hide()
-    $shortcutBox.hide()
+    if(web3.eth.coinbase){
+        $selectCurrency.show()
+        $unlockWallet.hide();
+        $maskP.hide()
+        $dashboard.hide()
+        $jsGameBookie.hide()
+        $bookieBox.hide()
+        $shortcutBox.hide()
+    }
+    
 })
 $('.js-Bookie').click(function () {
-    $bookieBox.show()
-    $("#selectCurrency").hide()
-    $('#unlockWallet').hide();
-    $('#maskP').hide()
-    $('#dashboard').hide()
-    $('#jsGameBookie').hide()
-    $shortcutBox.hide()
+    if(web3.eth.coinbase){
+        $bookieBox.show()
+        $selectCurrency.hide()
+        $unlockWallet.hide();
+        $maskP.hide()
+        $dashboard.hide()
+        $jsGameBookie.hide()
+        $shortcutBox.hide()
+    }
+    
 })
 $('.js-Shortcut').click(function () {
-    $shortcutBox.show()
-    $bookieBox.hide()
-    $("#selectCurrency").hide()
-    $('#unlockWallet').hide();
-    $('#maskP').hide()
-    $('#dashboard').hide()
-    $('#jsGameBookie').hide()
+    if(web3.eth.coinbase){
+        $shortcutBox.show()
+        $bookieBox.hide()
+        $selectCurrency.hide()
+        $unlockWallet.hide();
+        $maskP.hide()
+        $dashboard.hide()
+        $jsGameBookie.hide()
+    }
+    
 })
 $('.js-Dashboard').click(function () {
-    $('#dashboard').show()
-    $("#selectCurrency").hide()
-    $('#unlockWallet').hide();
-    $('#maskP').hide()
-    $('#jsGameBookie').hide()
-    $bookieBox.hide()
-    $shortcutBox.hide()
+    if(web3.eth.coinbase){
+        $dashboard.show()
+        $selectCurrency.hide()
+        $unlockWallet.hide();
+        $maskP.hide()
+        $jsGameBookie.hide()
+        $bookieBox.hide()
+        $shortcutBox.hide()
+    }
 })
 $('.js-Game').click(function () {
-    $('#jsGameBookie').show()
-    $('#dashboard').hide()
-    $("#selectCurrency").hide()
-    $('#unlockWallet').hide();
-    $('#maskP').hide()
-    $bookieBox.hide()
-    $shortcutBox.hide()
-
+    if(web3.eth.coinbase){
+        $jsGameBookie.show()
+        $dashboard.hide()
+        $selectCurrency.hide()
+        $unlockWallet.hide();
+        $maskP.hide()
+        $bookieBox.hide()
+        $shortcutBox.hide()
+    }
 })
 // judge web3
 InitPage()
@@ -95,13 +111,12 @@ async function initWeb3() {
 }
 async function InitPage() {
     isweb3 = await initWeb3();
-
     if (!isweb3) {
         alert("This website needs to install metamask plug-in. Click OK to enter metamask website")
         document.location = "https://metamask.io/"
     } else {
-        $('#unlockWallet').hide()
-        $("#selectCurrency").show()
+        $unlockWallet.hide()
+        $selectCurrency.show()
         _Bookie = web3.eth.contract(_abi).at(contractAddress)
         _account = web3.eth.coinbase;
 
@@ -116,8 +131,8 @@ async function InitPage() {
         _Bookie.GetAwardInfo.call(function (error, result) {
             var usdtAward = web3.fromWei(result.valueOf()[1], "mwei");
             var bookieAward = web3.fromWei(result.valueOf()[2], "ether");
-            $(".js-game-value2").html(usdtAward.toFixed(2))
-            $(".js-game-value3").html(bookieAward.toFixed(2))
+            $(".js-game-value2").html(usdtAward.c[0])
+            $(".js-game-value3").html(bookieAward.c[0])
         });
 
         // Ball49
@@ -130,10 +145,7 @@ async function InitPage() {
 
         // USDT shortcut Banlance 6
         _USDT.balanceOf.call(_USDTACCOUNT, async function (error, result) {
-            console.log(result);
-            
             var USDT = web3.fromWei(result.c[0], "mwei");
-            // $('.js-shortcut-balance').html(result.c[0])
             NumAutoPlusAnimation("js-shortcut-balance", {time: 1500,num: USDT,regulator: 30})
             NumAutoPlusAnimation("js-shortcut-USDT", {time: 1500,num: USDT,regulator: 30})
         })
@@ -144,13 +156,8 @@ async function InitPage() {
 
         //Bookie GetLottery
         _Bookie.GetLottery.call(function (error, result) {
-            console.log(result);
-            
-            // console.log('当前距离目标时间剩余秒数',result.valueOf()[1].c[0] - Date.parse(new Date()))
             let times = result.valueOf()[1].c[0] * 1000 - Date.parse(new Date())
-            // console.log('首次得到时间戳',times);
             timestampToTime(times)
-            // $('.js-estimated').html(result.valueOf()[2].c[0]/10000000)
             NumAutoPlusAnimation("js-estimated", {
                 time: 1500,
                 num: result.valueOf()[2].c[0] / 10000000,
@@ -163,10 +170,6 @@ async function InitPage() {
             // console.log(result);
         });
 
-        //_USDT.allowance
-        _USDT.allowance.call(_USDTACCOUNT, contractAddress, async function (error, result) {
-            var approved = web3.fromWei(result, "mwei")
-        })
         // GetAPY
         _Bookie.GetAPY.call(function (error, result) {
             $('.js-bip-apy').html(result.c[0])
@@ -178,33 +181,45 @@ async function InitPage() {
         });
         // bookie GetAPY
         _Bookie.GetAPY.call(function (error, result) {
-            // console.log(result);
             $('.js-APY-num').html(result.c[0]+ '%')
         });
     }
 }
 // home bookie
 $('.js-home-bookie').click(function(){
-    _Bookie.GetInviteStatus.call(function (error, result) {
-        if(result){
-            $("#selectCurrency").hide()
-            $('.js-bookie-box').show();
-            $('.js-invited').hide();
-            $('.js-bookie-btn').show();
-        }else{
-            $("#selectCurrency").hide()
-            $('.js-bookie-box').show();
-            $('.js-invited').show();
-            $('.js-bookie-btn').hide();
-        }
-        let href = window.location.href.split('=')[1] || '0xbaebe6cf9bd8c37cc49ef66278fbddfafcfe34e2' 
-        $('.js-invited-by').html(href)
-    });
+    if(web3.eth.coinbase){
+        _Bookie.GetInviteStatus.call(function (error, result) {
+            if(result){
+                $selectCurrency.hide()
+                $bookieBox.show();
+                $('.js-invited').hide();
+                $('.js-bookie-btn').show();
+            }else{
+                $selectCurrency.hide()
+                $bookieBox.show();
+                $('.js-invited').show();
+                $('.js-bookie-btn').hide();
+            }
+            let href = window.location.href.split('=')[1] || '0xbaebe6cf9bd8c37cc49ef66278fbddfafcfe34e2' 
+            $('.js-invited-by').html(href)
+        });
+    }
+    
 })
 // bookie Register
 $('.js-register').click(function(){
-    _Bookie.Register.call(function (error, result) {
-        
+    let _inviteV = $('.js-invited-by').html()
+    data = _Bookie.Register.getData(_inviteV);
+    tx = {
+        to: contractAddress,
+        data: data,
+    }
+    web3.eth.sendTransaction(tx, async function (err, result) {
+        if (err) {
+            alert("failed: " + err.message)
+        } else {
+            alert("successed: " + result)
+        }
     })
 })
 
@@ -228,13 +243,17 @@ $('.js-my-bookie-value').click(function(){
         data: data,
     }
     web3.eth.sendTransaction(tx, async function (err, result) {
-        alert(result)
+        if (err) {
+            alert("failed: " + err.message)
+        } else {
+            alert("successed: " + result)
+        }
     })
 })
 // invite-friends
 $('.js-invite-friends').click(function () {
-    $('.js-dashboard-box').hide()
-    $('.js-inviteUrl').show()
+    $dashboardBox.hide()
+    $inviteUrl.show()
 })
 // Copy to Clipboard
 $('.js-Clipboard').click(function () {
@@ -393,10 +412,10 @@ $betFN.click(function () {
         }
         web3.eth.sendTransaction(tx, async function (err, result) {
             if (err) {
-                alert("提交交易失败，错误：" + err.message)
+                alert("Failed to submit transaction：" + err.message)
                 $jsLoadingBox.hide()
             } else {
-                alert("提交成功，交易哈希：" + result)
+                alert("successfully, hash：" + result)
                 $jsLoadingBox.show()
                 var finished = null
                 var time1
@@ -425,11 +444,13 @@ ethereum.on('networkChanged', function (networkIDstring) {
 })
 ethereum.on('accountsChanged', function (networkIDstring) {
     if (web3.eth.coinbase == null) {
-        $('#unlockWallet').show()
-        $("#selectCurrency").hide()
-        $('#maskP').hide()
-        $('#dashboard').hide()
-        $('#jsGameBookie').hide()
+        $unlockWallet.show()
+        $selectCurrency.hide()
+        $maskP.hide()
+        $dashboard.hide()
+        $jsGameBookie.hide()
+        $bookieBox.hide()
+        $shortcutBox.hide()
     }
 })
 
@@ -597,7 +618,6 @@ $('.js-shortcut-submit').click(function () {
     var $bookieLeft = $('.js-bookie-left').html(),
         $gameRight = $('.js-game-right').html(),
         balls = _arr
-        alert(balls)
     data = _Bookie.Shortcut.getData($bookieLeft, $gameRight, balls);
     // console.log(data);
 
@@ -606,7 +626,11 @@ $('.js-shortcut-submit').click(function () {
         data: data,
     }
     web3.eth.sendTransaction(tx, async function (err, result) {
-        alert(result)
+        if (err) {
+            alert("failed: " + err.message)
+        } else {
+            alert("successed: " + result)
+        }
     })
 })
 
