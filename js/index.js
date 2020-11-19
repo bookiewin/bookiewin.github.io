@@ -72,6 +72,8 @@ $('.js-Shortcut').click(function () {
 $('.js-Dashboard').click(function () {
     if(web3.eth.coinbase){
         $dashboard.show()
+        $dashboardBox.show()
+        $inviteUrl.hide()
         $selectCurrency.hide()
         $unlockWallet.hide();
         $maskP.hide()
@@ -155,14 +157,29 @@ async function InitPage() {
         });
 
         //Bookie GetLottery
+        let $homeBookieList = $('.js-home-bookie-list li')
+        let $winningNumbers = $('.js-winning-numbers')
+        let $nextDrawing = $('.js-next-drawing')
         _Bookie.GetLottery.call(function (error, result) {
+            $('.js-target-time').html(new Date(result.valueOf()[1].c[0] * 1000).toDateString())
             let times = result.valueOf()[1].c[0] * 1000 - Date.parse(new Date())
             timestampToTime(times)
-            NumAutoPlusAnimation("js-estimated", {
-                time: 1500,
-                num: result.valueOf()[2].c[0] / 10000000,
-                regulator: 30
-            })
+            NumAutoPlusAnimation("js-estimated", {time: 1500,num: result.valueOf()[2].c[0] / 10000000,regulator: 30})
+            if(result.valueOf()[3].c[0] == 0){
+                $winningNumbers.hide()
+                $nextDrawing.show()
+            }else{
+                $winningNumbers.show()
+                $nextDrawing.hide()
+                $('.js-Winning-time').html(new Date(result.valueOf()[3].c[0] * 1000).toDateString())
+                $homeBookieList.eq(0).html(result.valueOf()[4].valueOf()[0].c[0])
+                $homeBookieList.eq(1).html(result.valueOf()[4].valueOf()[1].c[0])
+                $homeBookieList.eq(2).html(result.valueOf()[4].valueOf()[2].c[0])
+                $homeBookieList.eq(3).html(result.valueOf()[4].valueOf()[3].c[0])
+                $homeBookieList.eq(4).html(result.valueOf()[4].valueOf()[4].c[0])
+                $homeBookieList.eq(5).html(result.valueOf()[4].valueOf()[5].c[0])
+                $homeBookieList.eq(6).html(result.valueOf()[4].valueOf()[6].c[0])
+            }
         });
 
         // GetInviteStatus

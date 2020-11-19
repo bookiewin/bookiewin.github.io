@@ -40,7 +40,7 @@
         <!--Home Select -->
         <div class="home-box" id="selectCurrency">
             <div class="next-drawing">
-                Next Drawing – <span>Thu, Nov 19</span>
+                Next Drawing – <span class="js-target-time">--</span>
             </div>
             <div class="estimated-jackpot">
                 <p class="estimated">Estimated Jackpot</p>
@@ -52,19 +52,23 @@
                 
             </div>
             <div class="countdown">
-                Countdown to Drawing
+                <p class="estimated">Countdown to Drawing</p> 
                 <time class="js-times">-- : -- : --</time>
                 <div class="time-content"><span>Hr</span><span>Min</span><span>Sec</span></div>
             </div>
-            <ul class="bookie-list home-bookie-list">
-                <li>07</li>
-                <li>14</li>
-                <li>34</li>
-                <li>23</li>
-                <li>15</li>
-                <li>09</li>
-                <li>03</li>
-            </ul>
+            <div class="js-winning-numbers" style="display: none;">
+                <div style="margin: 10px 0;" class="next-drawing">Winning Numbers - <span class="js-Winning-time">--</span></div>
+                <ul class="bookie-list home-bookie-list js-home-bookie-list">
+                    <li>07</li>
+                    <li>14</li>
+                    <li>34</li>
+                    <li>23</li>
+                    <li>15</li>
+                    <li>09</li>
+                    <li>03</li>
+                </ul>
+            </div>
+            <div class="next-drawing js-next-drawing" style="margin-top: 10px;display: none;">Waiting for the prize</div>
             <div class="home-btn">
                 <button class="bWOwlY js-home-bookie">Bookie</button>
                 <button class="bWOwlY js-jion-game">Jion Game</button>
@@ -78,16 +82,16 @@
                 <button class="bWOwlY js-register">Register</button >
             </div>
             <div class="bookie-btn js-bookie-btn">
-                <div >My USDT Balance</div>
+                <div class="estimated" style="font-family: 'ProximaNova-Bold';">My USDT Balance</div>
                 <div class="bookie-money ">
-                    <span>$ </span><span class="js-shortcut-balance"></span>
+                    <span>$ </span><span class="js-shortcut-balance" style="font-size:36px"></span>
                 </div>
-                <span class="bookie-balance-title">Bookie Value</span>
+                <span class="bookie-balance-title estimated">Bookie Value</span>
                 <div>
                     <input class="bookie-periods-value js-bookie-input" type="text" value="0"  placeholder="Please enter">
                     <span class="bookie-max js-bookie-max">MAX</span>
                 </div>
-                <div style="margin: 10px 0;">
+                <div class="estimated" style="margin: 10px 0;">
                     <span>APY</span>
                     <span class="js-APY-num" style="color: rgb(209, 108, 0);" >--</span>
                 </div>
@@ -99,12 +103,12 @@
             <div class="js-dashboard-box">
                 <div class="taNNC1">
                     <div class="one HUGIJKL">
-                        <p>USDT award</p >
+                        <p class="font-20">USDT award</p >
                         <p class="caVnyU js-game-value2">--</p >
                         <button class="bWOwlY js-widhdraw js-widhdraw-uw">Claim</button>
                     </div>
                     <div class="one HUGIJKL">
-                        <p>Bookie award(BLP)</p >
+                        <p class="font-20">Bookie award(BLP)</p >
                         <p class="caVnyU js-game-value3">--</p >
                         <button class="bWOwlY js-widhdraw js-widhdraw-bw">Claim</button>
                     </div>
@@ -115,7 +119,7 @@
             <!-- Invite my friends box -->
             <div class="invited js-inviteUrl">
                 <span class="invited-title">Invite url</span>
-                <p class="invited-address js-invite-address"> -- </p>
+                <p class="invited-address js-invite-address" style="font-size:20px"> -- </p>
                 <textarea style="opacity: 0;" class="invited-address js-invite-address-hide" id='js-invite-address-hide'> -- </textarea>
                 <button class="bWOwlY js-Clipboard">Copy to Clipboard</button >
             </div>
@@ -124,11 +128,11 @@
         <div class="game-bookie" id="jsGameBookie">
             <div>
                 <div class="one asde">
-                    <p>Pool</p >
+                    <p class="font-20">Pool</p >
                     <p class="caVnyU js-bookie-value1">--</p >
                 </div>
                 <div class="one asde">
-                    <p>Jackpot</p >
+                    <p class="font-20">Jackpot</p >
                     <p class="caVnyU js-bookie-value3">--</p >
                 </div>
             </div>
@@ -198,7 +202,7 @@
                     <li>10</li>
                 </ul>
                 <!-- Selected ball -->
-                <p  style="margin-top: 10px;">Bet balls</p >
+                <p  style="margin: 10px 0">Bet balls</p >
                 <div class="active-list js-active-list">
                     <ul class="active-blue-box text-l js-active-blue-box">
                         <!-- <li>1</li>
@@ -219,28 +223,28 @@
                 <div class="bWOwlY js-betFN" οnclick="betFN()">BET</div>
             </div>
             <div style="width: 230px;">
-                <p>My bet</p >
+                <p class="font-20">My bet</p >
             </div>
         </div>
         <!-- Shortcut -->
         <div class="shortcut-box js-shortcut-box">
             <div>
                 <div class="one">
-                    <p>BIP APY</p>
+                    <p class="font-20">BIP APY</p>
                     <div class="short-left ">
                         <span class="js-bip-apy">--</span>
                         <span>%</span>
                     </div>
                 </div>
                 <div class="one">
-                    <p>Estimate harvest</p>
+                    <p class="font-20">Estimate harvest</p>
                     <div class="short-left " >
                         <span class="js-harvest">0</span>
                         <span>BIP</span>
                     </div>
                 </div>
                 <div class="one">
-                    <p>Estimate annual income</p>
+                    <p class="font-20">Estimate annual income</p>
                     <p class="short-left ">
                         <span class="js-annual-income">0</span>
                         <span>USDT</span>
@@ -248,7 +252,7 @@
                 </div>
             </div>
             <div>
-                <div style="font-size: 20px;margin: 20px;">My USDT Balance</div>
+                <div style="font-size: 30px;margin: 20px;">My USDT Balance</div>
                 <div class="bookie-money "><span>$ </span><span class="js-shortcut-USDT"></span></div>
                 <div>
                     <input class="bookie-periods-value js-shortcut-value" type="text" value="0" placeholder="Please enter">
@@ -282,7 +286,7 @@
             </div>
             <div>
                 <div class="one">
-                    <p>Pool</p>
+                    <p class="font-20">Pool</p>
                     <p class="short-left js-pool"> --</p>
                 </div>
                 <!-- random '19','21','24','09','45','27','06'-->

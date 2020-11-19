@@ -200,8 +200,8 @@ textarea {
 
     .head-top-img {
         display: inline-block;
-        width: 40px;
-        height: 40px;
+        width: 45px;
+        height: 45px;
     }
 
     .head-top-list {
@@ -214,7 +214,9 @@ textarea {
         margin-left: 50px;
 
     }
-
+    .font-20{
+        font-size: 20px;
+    }
     .head-top-list li {
         padding: 0 20px;
         background-color: rgb(240, 233, 231);
@@ -223,7 +225,7 @@ textarea {
         color: rgb(209, 108, 0);
         cursor: pointer !important;
         display: flex;
-        font-size: 16px;
+        font-size: 18px;
         font-weight: 700;
         margin: 0 15px;
     }
@@ -335,7 +337,7 @@ textarea {
         color: rgb(209, 108, 0);
         cursor: pointer !important;
         display: flex;
-        font-size: 16px;
+        font-size: 20px;
         font-weight: 700;
         height: 56px;
         -webkit-box-pack: center;
@@ -426,8 +428,8 @@ textarea {
     }
 
     .game-bookie {
-        width: 1100px;
-        padding: 10px 20px;
+        width: 1200px;
+        padding: 20px 20px;
         background: rgb(240, 233, 231);
         display: flex;
         justify-content: space-around;
@@ -601,11 +603,14 @@ textarea {
 
     .invited-title {
         display: inline-block;
-        font-size: 30px;
+        font-size: 50px;
+        font-family: 'ProximaNova-Regular';
+        padding-top: 5px;
+        margin: 10px 0;
     }
 
     .invited-address {
-        font-size: 14px;
+        font-size: 26px;
         margin: 10px 0;
     }
 
@@ -660,17 +665,9 @@ textarea {
         justify-content: space-around;
     }
 
-    .home-box {
-        /* width: 1000px;
-    padding: 20px;
-    background:rgb(240, 233, 231);
-    display: flex;
-    justify-content: space-around; */
-    }
-
     .next-drawing {
         font-family: 'ProximaNova-Bold';
-        font-size: 19px;
+        font-size: 30px;
         position: relative;
         padding: 0 0 10px;
     }
@@ -679,10 +676,11 @@ textarea {
         padding: 5px 0;
     }
 
-    .estimated-jackpot .estimated {
+     .estimated {
         font-family: 'ProximaNova-Regular';
-        font-size: 15px;
+        font-size: 26px;
         padding-top: 5px;
+        margin: 10px 0;
     }
 
     .estimated-jackpot .number {
