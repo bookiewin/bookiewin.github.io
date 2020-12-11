@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>crowd-funding</title>
+    <link rel="stylesheet" href="/css/index.css">
+</head>
+<body>
+    <div class="box js-box">
+        <!-- top -->
+        <div class="head-top">
+            <img src="/img/game-nine.png" class="head-top-img" alt="">
+            <ul class="head-top-list">
+                <li class="js-Home">Home</li>
+                <li class="js-Bookie js-home-bookie">Bookie</li>
+                <li class="js-Game">Game</li>
+                <li class="js-Shortcut">Shortcut</li>
+                <li class="js-Dashboard">Dashboard</li>
+            </ul>
+        </div>
+        <!-- Crowd-funding -->
+        <div class="crowd-funding-box js-cfunding-box">
+            <div style="font-size: 30px;margin: 20px;">Crowd-funding target</div>
+            <div class="bookie-money ">
+                <span>$ </span>
+                <span class="js-crowd-funding-money"></span>
+            </div>
+            <div style="font-size: 30px;margin: 20px;">Crowd-funding progress</div>
+            <div id="myProgress">
+                <div class="js-myBar" id="myBar">--</div>
+              </div>
+            <div style="font-size: 30px;margin: 20px;">Crowd-funding</div>
+            <div>
+                <input class="bookie-periods-value js-crowd-value" type="text" value="0" placeholder="Please enter" oninput="value=value.replace(/[^\d]/g,'')">
+                <span class="bookie-max js-crowd-max">MAX</span>
+            </div>
+            <button class="bWOwlY js-crowd-submit">Submit</button>
+        </div>
+        
+        <!-- Waiting for data to return -->
+        <div class="loading-box js-loading-box">
+            <img class="loading" src="/img/loading.jpg" alt="">
+            <p style="color: #ffffff;">Submitting...</p>
+        </div>
+       
+    </div>
+</body>
+<script src="/js/jquery-2.1.4.min.js"></script>
+<script src="/js/bookieABI.js"></script>
+<script src="/js/usdtABI.js"></script>
+<script src="js/web3.js"></script>
+<script src="js/common.js"></script>
+<script src="js/crowgFunding.js"></script>
+
+</html>

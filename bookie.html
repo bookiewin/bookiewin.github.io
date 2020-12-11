@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bookie</title>
+    <link rel="stylesheet" href="/css/index.css">
+</head>
+<body>
+    <div class="box js-box">
+        <!-- top -->
+        <div class="head-top">
+            <img src="/img/game-nine.png" class="head-top-img" alt="">
+            <ul class="head-top-list">
+                <li class="js-Home">Home</li>
+                <li class="js-Bookie js-home-bookie">Bookie</li>
+                <li class="js-Game">Game</li>
+                <li class="js-Shortcut">Shortcut</li>
+                <li class="js-Dashboard">Dashboard</li>
+            </ul>
+        </div>
+        
+        <!-- bookie -->
+        <div class="bookie-box js-bookie-box">
+            <div class="invited js-invited">
+                <span class="invited-title">Invite code</span>
+                <input type="text" class="invited-address-v js-invited-by">
+                <button class="bWOwlY js-register">Register</button >
+            </div>
+            <div class="bookie-btn js-bookie-btn">
+                <div class="estimated" style="font-family: 'ProximaNova-Bold';">My USDT Balance</div>
+                <div class="bookie-money ">
+                    <span>$ </span><span class="js-shortcut-balance" style="font-size:36px"></span>
+                </div>
+                <span class="bookie-balance-title estimated">Bookie Value</span>
+                <div>
+                    <input class="bookie-periods-value js-bookie-input" id="js-bookie-d" type="text" value=""  placeholder="Please enter" oninput="value=value.replace(/[^\d]/g,'')">
+                    <span class="bookie-max js-bookie-max">MAX</span>
+                </div>
+                <div class="estimated" style="margin: 10px 0;">
+                    <span>APY</span>
+                    <span>
+                        <span class="js-APY-num" style="color: rgb(209, 108, 0);" >--</span>
+                        <span> %</span>
+                    </span>
+                </div>
+
+                <div class="estimated" style="margin: 10px 0;">
+                    <span>Expected</span>
+                    <span class="js-expect" style="color: rgb(209, 108, 0);" >--</span>
+                </div>
+
+                <button class="bWOwlY js-my-bookie-value">Bookie</button >
+            </div>
+        </div>
+        
+        <!-- Waiting for data to return -->
+        <div class="loading-box js-loading-box">
+            <img class="loading" src="/img/loading.jpg" alt="">
+            <p style="color: #ffffff;">Submitting...</p>
+        </div>
+        <!-- Waiting for data to return -->
+        <div class="loading-box js-wait-box">
+            <img class="loading" src="/img/loading.jpg" alt="">
+            <p style="color: #ffffff;">Waiting...</p>
+        </div>
+    </div>
+</body>
+<script src="/js/jquery-2.1.4.min.js"></script>
+<script src="/js/bookieABI.js"></script>
+<script src="/js/usdtABI.js"></script>
+<script src="js/web3.js"></script>
+<script src="js/common.js"></script>
+<script src="js/bookie.js"></script>
+
+</html>

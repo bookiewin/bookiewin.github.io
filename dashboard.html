@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bookie</title>
+    <link rel="stylesheet" href="/css/index.css">
+</head>
+<body>
+    <div class="box js-box">
+        <!-- top -->
+        <div class="head-top">
+            <img src="/img/game-nine.png" class="head-top-img" alt="">
+            <ul class="head-top-list">
+                <li class="js-Home">Home</li>
+                <li class="js-Bookie js-home-bookie">Bookie</li>
+                <li class="js-Game">Game</li>
+                <li class="js-Shortcut">Shortcut</li>
+                <li class="js-Dashboard">Dashboard</li>
+            </ul>
+        </div>
+        <!-- Dashboard -->
+        <div class="game-data" id="dashboard">
+            <div class="js-dashboard-box">
+                <div class="taNNC1">
+                    <div class="one HUGIJKL">
+                        <p class="font-20">Invite award</p >
+                        <p class="caVnyU js-dash-invite">--</p >
+                        <button class="bWOwlY js-claim-invite">Claim</button>
+                    </div>
+                    <div class="one HUGIJKL">
+                        <p class="font-20">Game award</p >
+                        <p class="caVnyU js-dash-game">--</p >
+                        <button class="bWOwlY js-claim-game">Claim</button>
+                    </div>
+                    <div class="one HUGIJKL">
+                        <p class="font-20">Bookie award</p >
+                        <p class="caVnyU js-dash-bookie">--</p >
+                        <button class="bWOwlY js-claim-bookie">Claim</button>
+                    </div>
+                </div>
+                <!-- Invite my friends btn -->
+                <button class="bWOwlY js-invite-friends">Invite friends</button>
+            </div>
+            <!-- Invite my friends box -->
+            <div class=" js-inviteUrl">
+                <span class="invited-title">Invite url</span>
+                <p class="invited-address js-invite-address" style="font-size:20px"> -- </p>
+                <textarea style="opacity: 0;" class="invited-address js-invite-address-hide" id='js-invite-address-hide'> -- </textarea>
+                <button class="bWOwlY js-Clipboard">Copy to Clipboard</button >
+            </div>
+            
+        </div>
+        <!-- Waiting for data to return -->
+        <div class="loading-box js-loading-box">
+            <img class="loading" src="/img/loading.jpg" alt="">
+            <p style="color: #ffffff;">Submitting...</p>
+        </div>
+    </div>
+</body>
+<script src="/js/jquery-2.1.4.min.js"></script>
+<script src="/js/bookieABI.js"></script>
+<script src="/js/usdtABI.js"></script>
+<script src="js/web3.js"></script>
+<script src="js/common.js"></script>
+<script src="js/dashboard.js"></script>
+</html>

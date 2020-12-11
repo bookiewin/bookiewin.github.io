@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>shortcut</title>
+    <link rel="stylesheet" href="/css/index.css">
+</head>
+<body>
+    <div class="box js-box">
+        <!-- top -->
+        <div class="head-top">
+            <img src="/img/game-nine.png" class="head-top-img" alt="">
+            <ul class="head-top-list">
+                <li class="js-Home">Home</li>
+                <li class="js-Bookie js-home-bookie">Bookie</li>
+                <li class="js-Game">Game</li>
+                <li class="js-Shortcut">Shortcut</li>
+                <li class="js-Dashboard">Dashboard</li>
+            </ul>
+        </div>
+        <!-- Shortcut -->
+        <div class="shortcut-box js-shortcut-box">
+            <div>
+                <div class="one">
+                    <p class="font-20">BLP APY</p>
+                    <div class="short-left ">
+                        <span class="js-bip-apy">0</span>
+                        <span>%</span>
+                    </div>
+                </div>
+                <div class="one">
+                    <p class="font-20">Estimate harvest</p>
+                    <div class="short-left " >
+                        <span class="js-harvest">0</span>
+                        <span>BLP</span>
+                    </div>
+                </div>
+                <div class="one">
+                    <p class="font-20">Estimate annual income</p>
+                    <p class="short-left ">
+                        <span class="js-annual-income">0</span>
+                        <span>USDT</span>
+                    </p>
+                </div>
+            </div>
+            <div>
+                <div style="font-size: 30px;margin: 20px;">My USDT Balance</div>
+                <div class="bookie-money "><span>$ </span><span class="js-shortcut-USDT"></span></div>
+                <div>
+                    <input class="bookie-periods-value js-shortcut-value" type="text" value="0" placeholder="Please enter" oninput="value=value.replace(/[^\d]/g,'')">
+                    <span class="bookie-max js-ShortcutVal-max">MAX</span>
+                </div>
+                <div class="scroll" id="scroll">
+                    <div class="bar" id="bar">
+                    </div>
+                    <div class="mask" id="mask">
+                    </div>
+                </div>
+                <!-- <input type="button" name="test" onclick="changePercent(50)" value="跳转到20%"></input> -->
+                <p class="scroll-p" id="scrollP" style="margin-top: 10px;"></p>
+                <div class="scroll-num">
+                    <div>
+                        <p>Bookie</p>
+                        <div>
+                            <span class="js-bookie-left"> 0 </span>
+                            <span>USDT</span>
+                        </div>
+                    </div>
+                    <div>
+                        <p>Game</p>
+                        <div>
+                            <span class="js-game-right"> 0 </span>
+                            <span>USDT</span>
+                        </div>
+                    </div>
+                </div>
+                <button class="bWOwlY js-shortcut-submit">Confirm</button>
+            </div>
+            <div>
+                <div class="one">
+                    <p class="font-20">Pool</p>
+                    <p class="short-left js-pool"> --</p>
+                </div>
+                <!-- random '19','21','24','09','45','27','06'-->
+                <div>
+                    <div class="bWOwlY js-random" style="background: rgb(209, 108, 0);color: #fff;margin-bottom: 20px;">Random</div>
+                    <ul class="random-ul js-random-ul">
+                        <li>19</li>
+                        <li>21</li>
+                        <li>24</li>
+                        <li>09</li>
+                        <li>45</li>
+                        <li>27</li>
+                        <li>06</li>
+                    </ul>
+                </div>
+            </div>
+           
+        </div>
+        <!-- Waiting for data to return -->
+        <div class="loading-box js-loading-box">
+            <img class="loading" src="/img/loading.jpg" alt="">
+            <p style="color: #ffffff;">Submitting...</p>
+        </div>
+    </div>
+</body>
+<script src="/js/jquery-2.1.4.min.js"></script>
+<script src="/js/bookieABI.js"></script>
+<script src="/js/usdtABI.js"></script>
+<script src="js/web3.js"></script>
+<script src="js/common.js"></script>
+<script src="js/shortcut.js"></script>
+</html>

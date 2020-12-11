@@ -21,18 +21,17 @@ Param
     value:      value of usdt
 ```
 
+## Crowd-funding
+```
+Bookie.CrowdFunding(uint256 value) public returns (bool)
+Param
+    value
+Return
+    bool:   true for successed, otherwise is false
+```
 
 ## Home
 ```
-* DELETED
-* Bookie.GetBookieInfo() returns(uint256 userBLP, uint256 userAward, uint256 totalBookie)
-Param
-    None
-Return
-    userBLP: BLP of user(Bookie LP)
-    userAward: award of user (USDT)
-    totoalBookie: total bookie supply(Bookie LP)
-
 Bookie.GetLottery() public view returns(uint256 gameID, uint256 drawTime, uint256 jackpot, uint256 lastDrawTime, uint8[7] memory lastBalls)
 Param
     None
@@ -54,17 +53,27 @@ Return
 
 ## Bookie page
 ```
-Bookie.GetInviteStatus() public view returns (address inviter_address)
+Bookie.GetInviter() public view returns (address inviter_address)
 Param
     None
 Return
     inviter_address: address of inviter, return 0 if not have inviter
 
-Bookie.Register(address inviterAddress) public returns (bool)
+Bookie.MyInviteCode() public view returns (string invite_code)
 Param
-    inviterAddress: address of inviter
+    None
+Return
+    invite_code: a code of inviter, return 0 if there is no more
+Description
+    A user can generate multiple invitation codes. The invitation code will be invalid after being used. After using the invitation code, user cannot continue to invite others
+
+Bookie.SetInviteCode(string inviteCode) public returns (bool)
+Param
+    string inviteCode: code of invite (Test invite codes: 0x6b665085, 0xf5a6d1e4, 0x40b21367, 0x23255477, 0x099c86a0)
 Return
     bool: true for success, otherwise is false
+Description
+    If return is false, one reason is that the invitation code does not exist, and the other is that the invitation code has been used
 
 Bookie.GetAPY() public view returns (uint8 apy)
 Param
@@ -89,12 +98,12 @@ Return
 
 ## Award
 ```
-Bookie.GetAwardInfo() returns(uint256 totalAward, uint256 inviteAward, uint256 bookieAward)
+Bookie.GetAwardInfo() returns(uint256 gameAward, uint256 inviteAward, uint256 bookieAward)
 Param
     None
 Return
-    totalAward: total award for user(Bookie LP)
-    inviteAward: award of invite(Bookie LP)
+    gameAward:  award for game(USDT)
+    inviteAward: award of invite(USDT)
     bookieAward: award of bookie(Bookie LP)
 ```
 
@@ -125,18 +134,23 @@ Param
 Return
     bool:   true for successed, otherwise is false
 
-
-Bookie.WithdrawUsdt() public returns(uint256)
+Bookie.ClaimGame() public returns(uint256)
 Param
     None
 Return
-    uint256: withdraw value of usdt
+    uint256: Claim game bonus
 
-Bookie.WithdrawBlp() public returns(uint256)
+Bookie.ClaimInvite() public returns(uint256)
 Param
     None
 Return
-    uint256: withdraw value of blp
+    uint256: Claim invite bonus
+
+Bookie.CliamBlp() public returns(uint256)
+Param
+    None
+Return
+    uint256: Claim value of blp
 
 Bookie.GetBLPSupply() public returns(uint256){
 Param

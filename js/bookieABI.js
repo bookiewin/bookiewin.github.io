@@ -1,6 +1,11 @@
 var BASEABI = {
-	"contract":"0xf74CB3912F1d499bb341545fC9C3E86FdBd56A05",
+	"contract":"0x948BD8A052810cD33911a989C762dA3e01EA76CE",
 	"abi": [
+		{
+			"inputs": [],
+			"stateMutability": "nonpayable",
+			"type": "constructor"
+		},
 		{
 			"anonymous": false,
 			"inputs": [
@@ -17,7 +22,7 @@ var BASEABI = {
 					"type": "uint256"
 				}
 			],
-			"name": "_mintBlp",
+			"name": "_mintBookieLP",
 			"type": "event"
 		},
 		{
@@ -44,12 +49,44 @@ var BASEABI = {
 			"inputs": [
 				{
 					"indexed": false,
+					"internalType": "uint256",
+					"name": "",
+					"type": "uint256"
+				}
+			],
+			"name": "debug",
+			"type": "event"
+		},
+		{
+			"anonymous": false,
+			"inputs": [
+				{
+					"indexed": false,
 					"internalType": "address",
 					"name": "",
 					"type": "address"
 				}
 			],
 			"name": "deploy",
+			"type": "event"
+		},
+		{
+			"anonymous": false,
+			"inputs": [
+				{
+					"indexed": false,
+					"internalType": "address",
+					"name": "",
+					"type": "address"
+				},
+				{
+					"indexed": false,
+					"internalType": "bytes4",
+					"name": "",
+					"type": "bytes4"
+				}
+			],
+			"name": "generation_inviter",
 			"type": "event"
 		},
 		{
@@ -106,6 +143,32 @@ var BASEABI = {
 			"type": "function"
 		},
 		{
+			"inputs": [],
+			"name": "ClaimBlp",
+			"outputs": [
+				{
+					"internalType": "uint256",
+					"name": "",
+					"type": "uint256"
+				}
+			],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [],
+			"name": "ClaimUsdt",
+			"outputs": [
+				{
+					"internalType": "uint256",
+					"name": "",
+					"type": "uint256"
+				}
+			],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
 			"inputs": [
 				{
 					"internalType": "uint256",
@@ -116,10 +179,34 @@ var BASEABI = {
 					"internalType": "uint256",
 					"name": "poolFund",
 					"type": "uint256"
+				},
+				{
+					"internalType": "uint256",
+					"name": "duration",
+					"type": "uint256"
 				}
 			],
 			"name": "CreateLottery",
 			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "uint256",
+					"name": "value",
+					"type": "uint256"
+				}
+			],
+			"name": "CrowdFunding",
+			"outputs": [
+				{
+					"internalType": "bool",
+					"name": "",
+					"type": "bool"
+				}
+			],
 			"stateMutability": "nonpayable",
 			"type": "function"
 		},
@@ -158,6 +245,19 @@ var BASEABI = {
 				}
 			],
 			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [],
+			"name": "Duration",
+			"outputs": [
+				{
+					"internalType": "uint256",
+					"name": "",
+					"type": "uint256"
+				}
+			],
+			"stateMutability": "view",
 			"type": "function"
 		},
 		{
@@ -262,29 +362,6 @@ var BASEABI = {
 			"type": "function"
 		},
 		{
-			"inputs": [],
-			"name": "GetBookieInfo",
-			"outputs": [
-				{
-					"internalType": "uint256",
-					"name": "userBLP",
-					"type": "uint256"
-				},
-				{
-					"internalType": "uint256",
-					"name": "userAward",
-					"type": "uint256"
-				},
-				{
-					"internalType": "uint256",
-					"name": "totalBookie",
-					"type": "uint256"
-				}
-			],
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
 			"inputs": [
 				{
 					"internalType": "uint256",
@@ -305,22 +382,65 @@ var BASEABI = {
 					"type": "uint8"
 				},
 				{
-					"internalType": "uint8[6]",
+					"internalType": "uint256[6]",
 					"name": "level_counts",
-					"type": "uint8[6]"
+					"type": "uint256[6]"
 				}
 			],
 			"stateMutability": "view",
 			"type": "function"
 		},
 		{
+			"inputs": [
+				{
+					"internalType": "uint256",
+					"name": "lotteryID",
+					"type": "uint256"
+				}
+			],
+			"name": "GetGameAward",
+			"outputs": [
+				{
+					"internalType": "uint256",
+					"name": "award",
+					"type": "uint256"
+				}
+			],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
 			"inputs": [],
-			"name": "GetInviteStatus",
+			"name": "GetInviter",
 			"outputs": [
 				{
 					"internalType": "address",
 					"name": "inviter_address",
 					"type": "address"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "address",
+					"name": "inviter",
+					"type": "address"
+				},
+				{
+					"internalType": "uint256",
+					"name": "index",
+					"type": "uint256"
+				}
+			],
+			"name": "GetInviterCode",
+			"outputs": [
+				{
+					"internalType": "bytes4",
+					"name": "invite_code",
+					"type": "bytes4"
 				}
 			],
 			"stateMutability": "view",
@@ -360,22 +480,23 @@ var BASEABI = {
 			"type": "function"
 		},
 		{
-			"inputs": [
-				{
-					"internalType": "address",
-					"name": "inviterAddress",
-					"type": "address"
-				}
-			],
-			"name": "Register",
+			"inputs": [],
+			"name": "InitInviter",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [],
+			"name": "MyInviteCode",
 			"outputs": [
 				{
-					"internalType": "bool",
-					"name": "",
-					"type": "bool"
+					"internalType": "bytes4",
+					"name": "invite_code",
+					"type": "bytes4"
 				}
 			],
-			"stateMutability": "nonpayable",
+			"stateMutability": "view",
 			"type": "function"
 		},
 		{
@@ -392,6 +513,25 @@ var BASEABI = {
 				}
 			],
 			"name": "SetDrawLevel",
+			"outputs": [
+				{
+					"internalType": "bool",
+					"name": "",
+					"type": "bool"
+				}
+			],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "bytes4",
+					"name": "inviteCode",
+					"type": "bytes4"
+				}
+			],
+			"name": "SetInviteCode",
 			"outputs": [
 				{
 					"internalType": "bool",
@@ -433,56 +573,6 @@ var BASEABI = {
 		},
 		{
 			"inputs": [],
-			"name": "WithdrawBlp",
-			"outputs": [
-				{
-					"internalType": "uint256",
-					"name": "",
-					"type": "uint256"
-				}
-			],
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
-			"inputs": [],
-			"name": "WithdrawUsdt",
-			"outputs": [
-				{
-					"internalType": "uint256",
-					"name": "",
-					"type": "uint256"
-				}
-			],
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
-			"inputs": [
-				{
-					"internalType": "address",
-					"name": "",
-					"type": "address"
-				}
-			],
-			"name": "awards",
-			"outputs": [
-				{
-					"internalType": "uint256",
-					"name": "award_usdt",
-					"type": "uint256"
-				},
-				{
-					"internalType": "uint256",
-					"name": "award_blp",
-					"type": "uint256"
-				}
-			],
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"inputs": [],
 			"name": "blp_address",
 			"outputs": [
 				{
@@ -496,12 +586,90 @@ var BASEABI = {
 		},
 		{
 			"inputs": [],
+			"name": "crowd_funding",
+			"outputs": [
+				{
+					"internalType": "uint256",
+					"name": "",
+					"type": "uint256"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [],
+			"name": "crowd_funding_progress",
+			"outputs": [
+				{
+					"internalType": "uint256",
+					"name": "",
+					"type": "uint256"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [],
+			"name": "crowd_funding_target",
+			"outputs": [
+				{
+					"internalType": "uint256",
+					"name": "",
+					"type": "uint256"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [],
+			"name": "crowd_status",
+			"outputs": [
+				{
+					"internalType": "uint256",
+					"name": "",
+					"type": "uint256"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [],
 			"name": "current_lottery",
 			"outputs": [
 				{
 					"internalType": "uint256",
 					"name": "",
 					"type": "uint256"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [],
+			"name": "developer_address",
+			"outputs": [
+				{
+					"internalType": "address",
+					"name": "",
+					"type": "address"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [],
+			"name": "foundation_address",
+			"outputs": [
+				{
+					"internalType": "address",
+					"name": "",
+					"type": "address"
 				}
 			],
 			"stateMutability": "view",

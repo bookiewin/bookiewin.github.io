@@ -244,6 +244,38 @@ textarea {
     .random-ul li:last-child {
         background: #e30c07;
     }
+    .my-bet-box{
+        width: 280px;
+        padding: 20px;
+        height: 400px;
+        margin-top: 10px;
+        overflow-y: auto;
+        background: lavender;
+        border: 1px solid rgb(226, 214, 207);
+        border-radius: 12px;
+    }
+
+    .game-detail-ul{
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 5px;
+    }
+    /* .game-detail-ul:nth-child(odd){
+        background: lavender;
+    } */
+    .game-detail-ul li{
+        display: inline-block;
+        width: 26px;
+        height: 26px;
+        line-height: 26px;
+        background: rgb(72, 79, 177);
+        border-radius: 50%;
+        font-size: 14px;
+        color: #ffffff;
+    }
+    .game-detail-ul li:last-child {
+        background: #e30c07;
+    }
 
     .wallet {
         width: 180px;
@@ -327,7 +359,7 @@ textarea {
 
     .bWOwlY {
         width: 80%;
-        margin: 50px auto 0;
+        margin: 30px auto 0;
         -webkit-box-align: center;
         align-items: center;
         background-color: rgb(240, 233, 231);
@@ -336,12 +368,10 @@ textarea {
         box-shadow: rgb(226, 214, 207) 6px 6px 12px, rgb(247, 244, 242) -12px -12px 24px -2px;
         color: rgb(209, 108, 0);
         cursor: pointer !important;
-        display: flex;
         font-size: 20px;
         font-weight: 700;
         height: 56px;
-        -webkit-box-pack: center;
-        justify-content: center;
+        line-height: 56px;
         outline: none;
     }
 
@@ -394,7 +424,7 @@ textarea {
     }
 
     .game-data {
-        width: 800px;
+        width: 1100px;
     }
 
     .taNNC {
@@ -409,7 +439,7 @@ textarea {
     }
 
     .HUGIJKL {
-        width: 400px;
+        width: 340px;
     }
 
     .widhdraw {
@@ -430,6 +460,7 @@ textarea {
     .game-bookie {
         width: 1200px;
         padding: 20px 20px;
+        margin: 100px 0;
         background: rgb(240, 233, 231);
         display: flex;
         justify-content: space-around;
@@ -492,10 +523,11 @@ textarea {
     .text-l {
         text-align: left;
     }
-
+    .active-list{
+        min-height: 100px;
+    }
     .active-list .active-blue-box {
         width: 435px;
-        max-height: 175px;
     }
 
     .active-list .active-blue-box li {
@@ -552,6 +584,7 @@ textarea {
         bottom: 0px;
         left: 0px;
         background-color: rgba(163, 136, 120, 0.667);
+        z-index: 22;
     }
 
     .loading {
@@ -600,7 +633,9 @@ textarea {
         border-radius: 10px;
         padding: 0 4px;
     }
-
+    .invited{
+        width: 255px;
+    }
     .invited-title {
         display: inline-block;
         font-size: 50px;
@@ -608,10 +643,20 @@ textarea {
         padding-top: 5px;
         margin: 10px 0;
     }
-
+    .js-invited,.js-bookie-btn{
+        display: none;
+    }
     .invited-address {
         font-size: 26px;
         margin: 10px 0;
+    }
+    .invited-address-v {
+        width: 220px;
+        height: 40px;
+        font-size: 26px;
+        margin: 10px auto;
+        display: inherit;
+        text-align: center;
     }
 
     .bookie-balance-title {
@@ -620,9 +665,11 @@ textarea {
     }
 
     .bookie-periods-value {
-        width: 180px;
+        width: 220px;
         height: 40px;
         text-align: center;
+        color: rgb(209, 108, 0);
+        font-size: 28px;
     }
 
     .bookie-max {
@@ -695,16 +742,17 @@ textarea {
         font-size: 16px;
         font-family: 'ProximaNova-Regular';
     }
-
     .countdown time {
-        font-family: 'ProximaNova-Bold';
+        width: 162px;
         font-size: 38px;
         color: #fc0;
         padding: 5px;
         display: block;
-        white-space: nowrap;
+        text-align: justify;
+        text-align-last: justify;
+        margin: 0 auto;
+        font-family: 'ProximaNova-Bold';
     }
-
     .countdown .time-content {
         display: flex;
         justify-content: space-between;
@@ -714,5 +762,29 @@ textarea {
     }
 
     .countdown .time-content span {
-        padding: 0 19px;
+        padding: 0 22px;
     }
+    #myProgress {
+        width: 100%;
+        background-color: #ddd;
+        text-align: center;
+      }
+      
+      #myBar {
+        height: 30px;
+        text-align: center;
+        line-height: 30px;
+        color: white;
+      }
+      .utc{
+          padding: 10px;
+          border-radius: 50%;
+          color: #fc0;
+          cursor: pointer;
+          font-size: 16px;
+          margin-left: 30px;
+          background: rgb(209, 108, 0);
+      }
+      .home-box{
+          min-width: 500px;
+      }

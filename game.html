@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bookie</title>
+    <link rel="stylesheet" href="/css/index.css">
+</head>
+<body>
+    <div class="box js-box">
+        <!-- top -->
+        <div class="head-top">
+            <img src="/img/game-nine.png" class="head-top-img" alt="">
+            <ul class="head-top-list">
+                <li class="js-Home">Home</li>
+                <li class="js-Bookie js-home-bookie">Bookie</li>
+                <li class="js-Game">Game</li>
+                <li class="js-Shortcut">Shortcut</li>
+                <li class="js-Dashboard">Dashboard</li>
+            </ul>
+        </div>
+        <!-- game -->
+        <div class="game-bookie" id="jsGameBookie">
+            <div>
+                <div class="one asde">
+                    <p class="font-20">Pool</p >
+                    <p class="caVnyU js-bookie-value1">--</p >
+                </div>
+                <div class="one asde">
+                    <p class="font-20">Jackpot</p >
+                    <p class="caVnyU js-bookie-value3">--</p >
+                </div>
+            </div>
+            <div>
+                <h1>6/49</h1>
+                <ul class="bookie-list text-l js-bookie-list">
+                    <li>01</li>
+                    <li>02</li>
+                    <li>03</li>
+                    <li>04</li>
+                    <li>05</li>
+                    <li>06</li>
+                    <li>07</li>
+                    <li>08</li>
+                    <li>09</li>
+                    <li>10</li>
+                    <li>11</li>
+                    <li>12</li>
+                    <li>13</li>
+                    <li>14</li>
+                    <li>15</li>
+                    <li>16</li>
+                    <li>17</li>
+                    <li>18</li>
+                    <li>19</li>
+                    <li>20</li>
+                    <li>21</li>
+                    <li>22</li>
+                    <li>23</li>
+                    <li>24</li>
+                    <li>25</li>
+                    <li>26</li>
+                    <li>27</li>
+                    <li>28</li>
+                    <li>29</li>
+                    <li>30</li>
+                    <li>31</li>
+                    <li>32</li>
+                    <li>33</li>
+                    <li>34</li>
+                    <li>35</li>
+                    <li>36</li>
+                    <li>37</li>
+                    <li>38</li>
+                    <li>39</li>
+                    <li>40</li>
+                    <li>41</li>
+                    <li>42</li>
+                    <li>43</li>
+                    <li>44</li>
+                    <li>45</li>
+                    <li>46</li>
+                    <li>47</li>
+                    <li>48</li>
+                    <li>49</li>
+                </ul>
+                <ul class="bookie-red text-l js-bookie-red" >
+                    <li>01</li>
+                    <li>02</li>
+                    <li>03</li>
+                    <li>04</li>
+                    <li>05</li>
+                    <li>06</li>
+                    <li>07</li>
+                    <li>08</li>
+                    <li>09</li>
+                    <li>10</li>
+                </ul>
+                <!-- Selected ball -->
+                <p  style="margin: 10px 0">Bet balls</p >
+                <div class="active-list js-active-list">
+                    <ul class="active-blue-box text-l js-active-blue-box">
+                        <!-- <li>1</li>
+                        <li>2</li> -->
+                    </ul>
+                    <ul class="active-red-box text-l js-active-red-box"></ul>
+                </div>
+                <!-- periods -->
+                <div style="margin-top: 10px;">
+                    <p>Beting periods</p>
+                    <span class="min-add js-min" οnclick="min()">-</span>
+                    <input type="text" value="1" class="periods-value js-periods-value" readonly="readonly">
+                    <span class="min-add js-add" οnclick="add()">+</span>
+                </div>
+                <!-- bet value -->
+                <p style="margin-top: 10px;">Bet value</p>
+                <div class="js-betValue" style="color: rgb(209, 108, 0);">--</div>
+                <div class="bWOwlY js-betFN">BET</div>
+            </div>
+            <div>
+                <p class="font-20">My bet</p >
+                <div class="my-bet-box js-my-bet-box">
+                </div>
+            </div>
+        </div>
+        <!-- Waiting for data to return -->
+        <div class="loading-box js-loading-box">
+            <img class="loading" src="/img/loading.jpg" alt="">
+            <p style="color: #ffffff;">Submitting...</p>
+        </div>
+    </div>
+</body>
+<script src="/js/jquery-2.1.4.min.js"></script>
+<script src="/js/bookieABI.js"></script>
+<script src="/js/usdtABI.js"></script>
+<script src="js/web3.js"></script>
+<script src="js/common.js"></script>
+<script src="js/game.js"></script>
+
+</html>
