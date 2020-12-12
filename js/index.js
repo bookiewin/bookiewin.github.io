@@ -4,18 +4,13 @@ var contractAddress = BASEABI.contract
 var contractAddressUSDT = USDTABI.contract
 var _Bookie, _account, _USDT, _USDTACCOUNT
 var $selectCurrency = $("#selectCurrency")
-var $unlockWallet = $('#unlockWallet')
-var $maskP = $('#maskP')
 var $waitBox = $('.js-wait-box')
 var $crowdFunding = $('.js-crowd-funding')
-$maskP.hide()
-$selectCurrency.hide()
-$unlockWallet.click(function () {
-    $maskP.show()
-})
-$('#cancle').click(function () {
-    $maskP.hide()
-})
+let $crowdBox = $('.js-crowd-box')
+let targetTime
+let downTime
+let times
+
 // head top
 $('.js-Home').click(function () {
     if(web3.eth.coinbase){
@@ -52,8 +47,7 @@ $crowdFunding.click(function () {
 })
 // href
 $('.js-jion-game').click(function () {
-    $selectCurrency.hide()
-    $jsGameBookie.show()
+    window.location.href = '/game.html'
 })
 // judge web3
 InitPage()
@@ -79,8 +73,6 @@ async function InitPage() {
         alert("This website needs to install metamask plug-in. Click OK to enter metamask website")
         document.location = "https://metamask.io/"
     } else {
-        $unlockWallet.hide()
-        $selectCurrency.show()
         _Bookie = web3.eth.contract(_abi).at(contractAddress)
         _account = web3.eth.coinbase;
 
@@ -91,22 +83,16 @@ async function InitPage() {
         let $homeBookieList = $('.js-home-bookie-list li')
         let $winningNumbers = $('.js-winning-numbers')
         let $bookieJoin = $('.js-bookie-join')
-        let $crowdFunding = $('.js-crowd-funding')
         let $nextDrawing = $('.js-next-drawing')
         let gameID = ''
         
         _Bookie.GetLottery.call(function (error, result) {
-            gameID = result.valueOf()[0].c[0]
-            if(result) {
-                // GetDraw
-                _Bookie.GetDrawResult.call(gameID, function (error, result) {
-                    console.log(result);
-                });
-            }
+            gameID = result.valueOf()[0].toNumber()
             targetTime = result.valueOf()[1].toNumber()
             downTime = result.valueOf()[1].toNumber() * 1000
+            now = Date.parse(new Date()); // location
+            times = downTime - (now + new Date().getTimezoneOffset()*60000);
             $('.js-target-time').html(new Date(targetTime * 1000).toDateString())
-            let times = result.valueOf()[1].c[0] * 1000 - Date.parse(new Date())
             if(times > 0) {
                 timestampToTime(times)
             } else {
@@ -115,7 +101,7 @@ async function InitPage() {
             }
 
             NumAutoPlusAnimation("js-estimated", {time: 1500,num: result.valueOf()[2].c[0] / 10000000,regulator: 30})
-            if(result.valueOf()[3].c[0] == 0){
+            if(result.valueOf()[3].toNumber() == 0){
                 $winningNumbers.hide()
                 $nextDrawing.show()
             }else{
@@ -135,10 +121,10 @@ async function InitPage() {
         _Bookie.crowd_status.call(function (error, result) {
             if(result.toNumber()) {
                 $bookieJoin.hide()
-                $crowdFunding.show()
+                $crowdBox.show()
             }else {
                 $bookieJoin.show()
-                $crowdFunding.hide()
+                $crowdBox.hide()
             }
             $waitBox.hide()
         });
@@ -149,15 +135,12 @@ async function InitPage() {
 $('.js-home-bookie').click(function(){
     $waitBox.show()
     if(web3.eth.coinbase){
+        window.location.href = '/bookie.html'
         _Bookie.GetInviter.call(function (error, result) {
             if(result == "0x0000000000000000000000000000000000000000"){
-                $selectCurrency.hide()
-                $bookieBox.show();
                 $('.js-invited').hide();
                  $('.js-bookie-btn').show();
             }else{
-                $selectCurrency.hide()
-                $bookieBox.show();
                 $('.js-invited').show();
                 $('.js-bookie-btn').hide();
             }
@@ -172,12 +155,13 @@ $('.js-home-bookie').click(function(){
 $('.js-utc').click(function() {
     if($(this).attr('change') == 'utc') {
         $('.js-target-time').html(new Date((targetTime ) * 1000).toDateString())
-        timestampToTime((downTime) - Date.parse(new Date()))
+        timestampToTime(times)
         $(this).removeAttr('change')
     }else {
         $(this).attr('change','utc')
-        $('.js-target-time').html(new Date((targetTime + 28800) * 1000).toDateString())
-        timestampToTime((downTime + 28800000) - Date.parse(new Date()))
+        let localtime = Number(targetTime) + Number(new Date().getTimezoneOffset()*60)
+        $('.js-target-time').html(new Date(localtime * 1000).toDateString())
+        timestampToTime(times)
     }
 })
 // listen
@@ -188,13 +172,7 @@ ethereum.on('networkChanged', function (networkIDstring) {
 })
 ethereum.on('accountsChanged', function (networkIDstring) {
     if (web3.eth.coinbase == null) {
-        $unlockWallet.show()
-        $selectCurrency.hide()
-        $maskP.hide()
-        $dashboard.hide()
-        $jsGameBookie.hide()
-        $bookieBox.hide()
-        $shortcutBox.hide()
+        window.location.href = '/unclock.html'
     }
 })
 // 时间戳转时分秒
@@ -225,32 +203,16 @@ function timestampToTime(timestamp) {
         }
     }, 1000)
 }
-// pop
-var popType = 'USDT'
-$subPop = $('.js-submit-pop')
-$subPop.on('click', function () {
-    $subPop.hide()
-})
-$subPop.on('click', '.con', function (e) {
-    e.stopPropagation()
-})
 
-$subPop.on('click', '.js-submit-btn', function (e) {
-    var val = $subPop.find('.js-inp').val()
-    var approvedAmount = web3.toWei(val, "mwei")
-    if (popType === 'USDT') {
-        data = _USDT.approve.getData(contractAddress, approvedAmount);
-        tx = {
-            to: contractAddressUSDT,
-            data: data,
-        }
-        web3.eth.sendTransaction(tx, async function (err, result) {
+// View status
+async function getReceipt(data) {
+    return new Promise(function (resolve, reject) {
+        web3.eth.getTransactionReceipt(data, function (err, result) {
             if (err) {
-                alert("failed: " + err.message)
+                reject(err);
             } else {
-                alert("successed: " + result)
+                resolve(result);
             }
         })
-        $subPop.hide()
-    }
-})
+    })
+}

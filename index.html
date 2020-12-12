@@ -13,32 +13,14 @@
             <img src="/img/game-nine.png" class="head-top-img" alt="">
             <ul class="head-top-list">
                 <li class="js-Home">Home</li>
-                <li class="js-Bookie js-home-bookie">Bookie</li>
+                <li class="js-Bookie">Bookie</li>
                 <li class="js-Game">Game</li>
                 <li class="js-Shortcut">Shortcut</li>
                 <li class="js-Dashboard">Dashboard</li>
             </ul>
         </div>
-        <!-- metamask status -->
-        <div class="wallet"  id="unlockWallet">
-            <img class="img-wallet" src="/img/game-nine.png" alt="" />
-             <div class="unlock-wallet">🔓 Unlock Wallet</div>
-        </div>
-        <!-- Connect -->
-        <div class="maskP" id="maskP">
-            <div class="swpb">
-                <div class="drBCHb">
-                    <div class="sc-fznJRM hyCpna">
-                        <img src="/img/metamask.svg" style="height: 32px;"/>
-                    </div>
-                    <p>Metamask</p >
-                    <div color="#d16c00" font-size="16" size="56" class="bWOwlY" id="connectCD" οnclick="connFN()" >Connect</div>
-                </div>
-                <button color="#d16c00" font-size="16" size="56" class="bWOwlY cancle" id="cancle">Cancle</button>
-            </div>
-        </div>
         <!--Home Select -->
-        <div class="home-box" id="selectCurrency">
+        <div class="home-box js-bookie-join" id="selectCurrency" style="display: none;">
             <div class="next-drawing">
                 Next Drawing – 
                 <span class="js-target-time">--</span> 
@@ -74,27 +56,25 @@
                 </ul>
             </div>
             <div class="next-drawing js-next-drawing" style="margin-top: 10px;display: none;">Waiting for the prize</div>
-            <div class="home-btn js-bookie-join" style="display: none;">
-                <button class="bWOwlY js-home-bookie">Bookie</button>
+            <div class="home-btn ">
+                <button class="bWOwlY js-Bookie">Bookie</button>
                 <button class="bWOwlY js-jion-game">Join Game</button>
             </div>
-            <div class="home-btn js-crowd-funding" style="display: none;">
+        </div>
+
+        <!-- crowd-funding -->
+        <div class="home-box js-crowd-box" style="display: none;">
+            <p class="crowd-p">Bookie is in the process of crowdfunding. When the crowdfunding amount reaches the target, the first issue of bookie game will be launched</p>
+            <div class="home-btn js-crowd-funding">
                 <button class="bWOwlY">Crowd-funding</button>
             </div>
         </div>
-       
         <!-- Waiting for data to return -->
         <div class="loading-box js-wait-box">
             <img class="loading" src="/img/loading.jpg" alt="">
             <p style="color: #ffffff;">Waiting...</p>
         </div>
-        <!-- pop -->
-        <div class="submit-pop js-submit-pop">
-            <div class="con">
-                <input class="inp js-inp" placeholder="Max approve value">
-                <div class="bWOwlY btn js-submit-btn">Submit</div>
-            </div>
-        </div>
+        
     </div>
 </body>
 <script src="/js/jquery-2.1.4.min.js"></script>

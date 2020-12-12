@@ -45,7 +45,6 @@ async function InitPage() {
         });
         //award
         _Bookie.GetAwardInfo.call(function (error, result) {
-            console.log(result);
             let gameAward = web3.fromWei(result.valueOf()[0], "mwei");
             let inviteAward = web3.fromWei(result.valueOf()[1], "mwei");
             let bookieAward = web3.fromWei(result.valueOf()[2], "ether");
@@ -77,11 +76,23 @@ $('.js-claim-invite').click(function () {
     web3.eth.sendTransaction(tx, async function (err, result) {
         if (err) {
             alert("failed: " + err.message)
+            $jsLoadingBox.hide()
+            window.location.reload();
         } else {
             alert("successed: " + result)
+            $jsLoadingBox.show()
+            var finished = null
+            var time1
+            time1 = setInterval(async () => {
+                var receipt = await getReceipt(result);
+                if (null == receipt) {} else {
+                    $jsLoadingBox.hide()
+                    finished = 1
+                    clearInterval(time1)
+                    window.location.reload();
+                }
+            }, 3000)
         }
-        $jsLoadingBox.hide()
-        window.location.reload();
     })
 })
 $('.js-claim-game').click(function () {
@@ -94,11 +105,23 @@ $('.js-claim-game').click(function () {
     web3.eth.sendTransaction(tx, async function (err, result) {
         if (err) {
             alert("failed: " + err.message)
+            $jsLoadingBox.hide()
+            window.location.reload();
         } else {
             alert("successed: " + result)
+            $jsLoadingBox.show()
+            var finished = null
+            var time1
+            time1 = setInterval(async () => {
+                var receipt = await getReceipt(result);
+                if (null == receipt) {} else {
+                    $jsLoadingBox.hide()
+                    finished = 1
+                    clearInterval(time1)
+                    window.location.reload();
+                }
+            }, 3000)
         }
-        $jsLoadingBox.hide()
-        window.location.reload();
     })
 })
 $('.js-claim-bookie').click(function () {
@@ -111,11 +134,24 @@ $('.js-claim-bookie').click(function () {
     web3.eth.sendTransaction(tx, async function (err, result) {
         if (err) {
             alert("failed: " + err.message)
+            $jsLoadingBox.hide()
+            window.location.reload();
         } else {
             alert("successed: " + result)
+            $jsLoadingBox.show()
+            var finished = null
+            var time1
+            time1 = setInterval(async () => {
+                var receipt = await getReceipt(result);
+                if (null == receipt) {} else {
+                    $jsLoadingBox.hide()
+                    finished = 1
+                    clearInterval(time1)
+                    window.location.reload();
+                }
+            }, 3000)
         }
-        $jsLoadingBox.hide()
-        window.location.reload();
+        
     })
 })
 // head top
@@ -142,5 +178,28 @@ $('.js-Dashboard').click(function () {
 $('.js-Game').click(function () {
     if(web3.eth.coinbase){
         window.location.href = '/game.html'
+    }
+})
+// View status
+async function getReceipt(data) {
+    return new Promise(function (resolve, reject) {
+        web3.eth.getTransactionReceipt(data, function (err, result) {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(result);
+            }
+        })
+    })
+}
+// listen
+ethereum.on('networkChanged', function (networkIDstring) {
+    if (window.ethereum.networkVersion != 3) {
+        alert("Please link to ropsten test network");
+    }
+})
+ethereum.on('accountsChanged', function (networkIDstring) {
+    if (web3.eth.coinbase == null) {
+        window.location.href = '/unclock.html'
     }
 })

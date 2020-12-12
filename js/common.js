@@ -85,3 +85,15 @@ function GetBets(blueBalls, redBalls) {
     });
     return results;
 }
+// View status
+async function getReceipt(data) {
+    return new Promise(function (resolve, reject) {
+        web3.eth.getTransactionReceipt(data, function (err, result) {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(result);
+            }
+        })
+    })
+}

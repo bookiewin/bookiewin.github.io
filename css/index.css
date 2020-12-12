@@ -788,3 +788,10 @@ textarea {
       .home-box{
           min-width: 500px;
       }
+      .crowd-p{
+          width: 660px;
+          font-size: 28px;
+      }
+      .js-bookie-join{
+          display: none;
+      }

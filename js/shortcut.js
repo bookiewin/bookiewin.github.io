@@ -185,3 +185,26 @@ $('.js-Game').click(function () {
         window.location.href = '/game.html'
     }
 })
+// View status
+async function getReceipt(data) {
+    return new Promise(function (resolve, reject) {
+        web3.eth.getTransactionReceipt(data, function (err, result) {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(result);
+            }
+        })
+    })
+}
+// listen
+ethereum.on('networkChanged', function (networkIDstring) {
+    if (window.ethereum.networkVersion != 3) {
+        alert("Please link to ropsten test network");
+    }
+})
+ethereum.on('accountsChanged', function (networkIDstring) {
+    if (web3.eth.coinbase == null) {
+        window.location.href = '/unclock.html'
+    }
+})

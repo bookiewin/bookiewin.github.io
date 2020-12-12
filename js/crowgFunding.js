@@ -6,6 +6,7 @@ var _Bookie, _account, _USDT, _USDTACCOUNT
 var $cfundingBox = $('.js-cfunding-box')
 var $jsLoadingBox = $('.js-loading-box')
 var $waitBox = $('.js-wait-box')
+let crowdMax
 $jsLoadingBox.hide()
 // judge web3
 InitPage()
@@ -41,16 +42,71 @@ async function InitPage() {
         //crowd-funding target
         _Bookie.crowd_funding_target.call(function (error, result) {
             let resultVal = web3.fromWei(result, "mwei")
-            $('.js-crowd-value').val(resultVal)
             NumAutoPlusAnimation("js-crowd-funding-money", {time: 1500,num: resultVal,regulator: 30})
         });
         //crowd-funding
-        _Bookie.crowd_funding.call(function (error, result) {
-            var myBar = $('.js-myBar').html(result.toNumber() + '%')
-            var myBar = $('.js-myBar').css('width',result.toNumber())
-            var myBar = $('.js-myBar').css('backgroundColor', '#4CAF50')
+        _Bookie.crowd_funding_progress.call(function (error, result) {
+            $('.js-myBar').html(result.toNumber() + '%')
+            $('.js-myBar').css('width',result.toNumber()+ '%')
+            $('.js-myBar').css('backgroundColor', '#4CAF50')
          });
+
+         // USDT shortcut Banlance 6
+         let USDTVal
+         let USDT
+        _USDT.allowance.call(_USDTACCOUNT,contractAddress, async function (error, result) {
+            USDT = web3.fromWei(result.toNumber(), "mwei");
+            $('.js-crowd-value').val(parseInt(USDT))
+            crowdMax = parseInt(USDT)
+            if(web3.fromWei(result,'mwei') < 1) {
+                _USDT.balanceOf.call(_USDTACCOUNT, async function (error, result) {
+                    if(result.toNumber() <= 0){
+                        alert("Your USDT balance is ZERO.");
+                        return;
+                    }
+                    data = _USDT.approve.getData(contractAddress, result.toNumber());
+                    tx = {
+                        to: contractAddressUSDT,
+                        data: data,
+                    }
+                    web3.eth.sendTransaction(tx, async function (err, result) {
+                        if (err) {
+                            alert("failed: " + err.message)
+                            $jsLoadingBox.hide()
+                            window.location.reload();
+                        } else {
+                            alert("successed: " + result)
+                            $jsLoadingBox.show()
+                            var finished = null
+                            var time1
+                            time1 = setInterval(async () => {
+                                var receipt = await getReceipt(result);
+                                if (null == receipt) {} else {
+                                    $jsLoadingBox.hide()
+                                    finished = 1
+                                    clearInterval(time1)
+                                    window.location.reload();
+                                }
+                            }, 3000)
+                        }
+                    })
+                })
+            }
+            
+        })
     }
+}
+// View status
+async function getReceipt(data) {
+    return new Promise(function (resolve, reject) {
+        web3.eth.getTransactionReceipt(data, function (err, result) {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(result);
+            }
+        })
+    })
 }
 // head top
 $('.js-Home').click(function () {
@@ -84,14 +140,13 @@ $('.js-Game').click(function () {
 
 //js-crowd-funding
 $('.js-crowd-max').on('click',function() {
-    crowdVal = $('.js-crowd-value').html()
-    $('.js-crowd-value').val($('.js-crowd-funding-money').html())
+    $('.js-crowd-value').val(crowdMax)
 })
 //crowd-funding submit
 $('.js-crowd-submit').click(function() {
     $jsLoadingBox.show()
-    var $crowdSubmit = $('.js-crowd-value').val(),
-    data = _Bookie.CrowdFunding.getData($crowdSubmit);
+    var $crowdSubmit = $('.js-crowd-value').val()
+    data = _Bookie.CrowdFunding.getData(web3.toWei($crowdSubmit,'mwei'));
     tx = {
         to: contractAddress,
         data: data,
@@ -99,11 +154,34 @@ $('.js-crowd-submit').click(function() {
     web3.eth.sendTransaction(tx, async function (err, result) {
         if (err) {
             alert("failed: " + err.message)
+            $jsLoadingBox.hide()
+            window.location.reload();
         } else {
             alert("successed: " + result)
+            $jsLoadingBox.show()
+            var finished = null
+            var time1
+            time1 = setInterval(async () => {
+                var receipt = await getReceipt(result);
+                if (null == receipt) {} else {
+                    $jsLoadingBox.hide()
+                    finished = 1
+                    clearInterval(time1)
+                    window.location.reload();
+                }
+            }, 3000)
         }
-        $jsLoadingBox.hide()
-        window.location.reload();
+        
     })
 })
-
+// listen
+ethereum.on('networkChanged', function (networkIDstring) {
+    if (window.ethereum.networkVersion != 3) {
+        alert("Please link to ropsten test network");
+    }
+})
+ethereum.on('accountsChanged', function (networkIDstring) {
+    if (web3.eth.coinbase == null) {
+        window.location.href = '/unclock.html'
+    }
+})

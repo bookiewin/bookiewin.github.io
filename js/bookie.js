@@ -39,7 +39,7 @@ async function InitPage() {
         _USDTACCOUNT = web3.eth.coinbase;
 
         _Bookie.GetInviter.call(function (error, result) {
-            if (result == "0x0000000000000000000000000000000000000000") {
+            if (result != "0x0000000000000000000000000000000000000000") {
                 $('.js-bookie-btn').show();
             } else {
                 $('.js-invited').show();
@@ -48,22 +48,17 @@ async function InitPage() {
             let href = window.location.href.split('=')[1] || ' '
             $('.js-invited-by').val(href)
         });
-        // Ball49
-        _Bookie.GetBall49Info.call(function (error, result) {
-            var pool = web3.fromWei(result.valueOf()[0], "mwei");
-            var Jackpot = web3.fromWei(result.valueOf()[2], "mwei");
-            NumAutoPlusAnimation("js-bookie-value1", {time: 1500,num: pool,regulator: 30})
-            NumAutoPlusAnimation("js-bookie-value3", {time: 1500,num: Jackpot,regulator: 30})
-        });
-
+        
         // USDT shortcut Banlance 6
         _USDT.balanceOf.call(_USDTACCOUNT, async function (error, result) {
             var USDT = web3.fromWei(result.toNumber(), "mwei");
             $('.js-bookie-input').val(parseInt(USDT))
-            NumAutoPlusAnimation("js-shortcut-balance", {time: 1500,num: USDT,regulator: 30})
+            if(USDT < 1){
+                $('.js-shortcut-balance').html(USDT)
+            }else {
+                NumAutoPlusAnimation("js-shortcut-balance", {time: 1500,num: USDT,regulator: 30})
+            }
         })
-
-
         // GetAPY
         _Bookie.GetAPY.call(function (error, result) {
             $('.js-bip-apy').html(result.c[0])
@@ -72,7 +67,7 @@ async function InitPage() {
         // bookie GetAPY
         _Bookie.GetAPY.call(function (error, result) {
             $('.js-APY-num').html(result.c[0])
-            $('.js-expect').html($('.js-bookie-input').val() * result.toNumber())
+            $('.js-expect').html($('.js-bookie-input').val() * result.toNumber()/100)
         });
     }
 }
@@ -80,7 +75,7 @@ async function InitPage() {
 // bookie Register
 $('.js-register').click(function(){
     $jsLoadingBox.show()
-    let _inviteV = $('.js-invited-by').html()
+    let _inviteV = $('.js-invited-by').val()
     data = _Bookie.SetInviteCode.getData(_inviteV);
     tx = {
         to: contractAddress,
@@ -89,11 +84,23 @@ $('.js-register').click(function(){
     web3.eth.sendTransaction(tx, async function (err, result) {
         if (err) {
             alert("failed: " + err.message)
+            $jsLoadingBox.hide()
+            window.location.reload();
         } else {
             alert("successed: " + result)
+            $jsLoadingBox.show()
+            var finished = null
+            var time1
+            time1 = setInterval(async () => {
+                var receipt = await getReceipt(result);
+                if (null == receipt) {} else {
+                    $jsLoadingBox.hide()
+                    finished = 1
+                    clearInterval(time1)
+                    window.location.reload();
+                }
+            }, 3000)
         }
-        $jsLoadingBox.hide()
-        window.location.reload();
     })
 })
 // bookie max
@@ -112,7 +119,7 @@ $('.js-my-bookie-value').click(function(){
         return 
     }
     $jsLoadingBox.show()
-     data = _Bookie.BookieValue.getData(_value);
+     data = _Bookie.BookieValue.getData(web3.toWei( _value , 'mwei') );
      tx = {
          to: contractAddress,
          data: data,
@@ -120,11 +127,24 @@ $('.js-my-bookie-value').click(function(){
      web3.eth.sendTransaction(tx, async function (err, result) {
          if (err) {
              alert("failed: " + err.message)
+             $jsLoadingBox.hide()
+            window.location.reload();
          } else {
              alert("successed: " + result)
+             $jsLoadingBox.show()
+            var finished = null
+            var time1
+            time1 = setInterval(async () => {
+                var receipt = await getReceipt(result);
+                if (null == receipt) {} else {
+                    $jsLoadingBox.hide()
+                    finished = 1
+                    clearInterval(time1)
+                    window.location.reload();
+                }
+            }, 3000)
          }
-         $jsLoadingBox.hide()
-         window.location.reload();
+         
      })
  })
  // Expected
@@ -159,5 +179,28 @@ $('.js-Dashboard').click(function () {
 $('.js-Game').click(function () {
     if(web3.eth.coinbase){
         window.location.href = '/game.html'
+    }
+})
+// View status
+async function getReceipt(data) {
+    return new Promise(function (resolve, reject) {
+        web3.eth.getTransactionReceipt(data, function (err, result) {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(result);
+            }
+        })
+    })
+}
+// listen
+ethereum.on('networkChanged', function (networkIDstring) {
+    if (window.ethereum.networkVersion != 3) {
+        alert("Please link to ropsten test network");
+    }
+})
+ethereum.on('accountsChanged', function (networkIDstring) {
+    if (web3.eth.coinbase == null) {
+        window.location.href = '/unclock.html'
     }
 })

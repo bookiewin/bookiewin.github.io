@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bookie</title>
+    <link rel="stylesheet" href="/css/index.css">
+</head>
+<body>
+    <div class="box js-box">
+        <!-- top -->
+        <div class="head-top">
+            <img src="/img/game-nine.png" class="head-top-img" alt="">
+            <ul class="head-top-list">
+                <li class="js-Home">Home</li>
+                <li class="js-Bookie js-home-bookie">Bookie</li>
+                <li class="js-Game">Game</li>
+                <li class="js-Shortcut">Shortcut</li>
+                <li class="js-Dashboard">Dashboard</li>
+            </ul>
+        </div>
+        <!-- metamask status -->
+        <div class="wallet"  id="unlockWallet">
+            <img class="img-wallet" src="/img/game-nine.png" alt="" />
+             <div class="unlock-wallet">🔓 Unlock Wallet</div>
+        </div>
+        <!-- Connect -->
+        <div class="maskP" id="maskP">
+            <div class="swpb">
+                <div class="drBCHb">
+                    <div class="sc-fznJRM hyCpna">
+                        <img src="/img/metamask.svg" style="height: 32px;"/>
+                    </div>
+                    <p>Metamask</p >
+                    <div color="#d16c00" font-size="16" size="56" class="bWOwlY js-unclock" id="connectCD" οnclick="connFN()" >Connect</div>
+                </div>
+                <button color="#d16c00" font-size="16" size="56" class="bWOwlY cancle" id="cancle">Cancle</button>
+            </div>
+        </div>
+        
+        
+    </div>
+</body>
+<script src="/js/jquery-2.1.4.min.js"></script>
+<script src="/js/bookieABI.js"></script>
+<script src="/js/usdtABI.js"></script>
+<script src="js/web3.js"></script>
+<script src="js/common.js"></script>
+<script src="js/unclock.js"></script>
+
+</html>
