@@ -50,15 +50,56 @@ async function InitPage() {
         });
         
         // USDT shortcut Banlance 6
-        _USDT.balanceOf.call(_USDTACCOUNT, async function (error, result) {
-            var USDT = web3.fromWei(result.toNumber(), "mwei");
+        _USDT.allowance.call(_USDTACCOUNT,contractAddress, async function (error, result) {
+            USDT = web3.fromWei(result.toNumber(), "mwei");
             $('.js-bookie-input').val(parseInt(USDT))
-            if(USDT < 1){
-                $('.js-shortcut-balance').html(USDT)
-            }else {
-                NumAutoPlusAnimation("js-shortcut-balance", {time: 1500,num: USDT,regulator: 30})
+            boolieMax = parseInt(USDT)
+            if(web3.fromWei(result,'mwei') < 1) {
+                _USDT.balanceOf.call(_USDTACCOUNT, async function (error, result) {
+                    if(result.toNumber() <= 0){
+                        alert("Your USDT balance is ZERO.");
+                        return;
+                    }
+                    data = _USDT.approve.getData(contractAddress, result.toNumber());
+                    tx = {
+                        to: contractAddressUSDT,
+                        data: data,
+                    }
+                    web3.eth.sendTransaction(tx, async function (err, result) {
+                        if (err) {
+                            alert("failed: " + err.message)
+                            $jsLoadingBox.hide()
+                            window.location.reload();
+                        } else {
+                            alert("successed: " + result)
+                            $jsLoadingBox.show()
+                            var finished = null
+                            var time1
+                            time1 = setInterval(async () => {
+                                var receipt = await getReceipt(result);
+                                if (null == receipt) {} else {
+                                    $jsLoadingBox.hide()
+                                    finished = 1
+                                    clearInterval(time1)
+                                    window.location.reload();
+                                }
+                            }, 3000)
+                        }
+                    })
+                })
+            }else{
+                _USDT.balanceOf.call(_USDTACCOUNT, async function (error, result) {
+                    var USDT = web3.fromWei(result.toNumber(), "mwei");
+                    $('.js-bookie-input').val(parseInt(USDT))
+                    if(USDT < 1){
+                        $('.js-shortcut-balance').html(USDT)
+                    }else {
+                        NumAutoPlusAnimation("js-shortcut-balance", {time: 1500,num: USDT,regulator: 30})
+                    }
+                })
             }
         })
+
         // GetAPY
         _Bookie.GetAPY.call(function (error, result) {
             $('.js-bip-apy').html(result.c[0])
