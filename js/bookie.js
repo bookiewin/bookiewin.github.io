@@ -1,12 +1,16 @@
 
 var _abi = BASEABI.abi
 var _USDTABI = USDTABI.abi
+var _CROWDABI = CROWDFUNDINGABI.abi
 var contractAddress = BASEABI.contract
 var contractAddressUSDT = USDTABI.contract
-var _Bookie, _account, _USDT, _USDTACCOUNT
-var $bookieBox = $('.js-bookie-box')
-var $jsLoadingBox = $('.js-loading-box')
-var $waitBox = $('.js-wait-box')
+var contractAddressCROWD = CROWDFUNDINGABI.contract
+let _Bookie, _account, _USDT, _USDTACCOUNT
+let $bookieBox = $('.js-bookie-box')
+let $jsLoadingBox = $('.js-loading-box')
+let $waitBox = $('.js-wait-box')
+let uAllowanceV
+let ubalanceOfV
 $jsLoadingBox.hide()
 // judge web3
 InitPage()
@@ -37,74 +41,35 @@ async function InitPage() {
 
         _USDT = web3.eth.contract(_USDTABI).at(contractAddressUSDT)
         _USDTACCOUNT = web3.eth.coinbase;
-
+        _CROWD = web3.eth.contract(_CROWDABI).at(contractAddressCROWD)
         _Bookie.GetInviter.call(function (error, result) {
-            if (result != "0x0000000000000000000000000000000000000000") {
-                $('.js-bookie-btn').show();
-            } else {
+            if (result == "0x0000000000000000000000000000000000000000" || result == '0x') {
                 $('.js-invited').show();
+            } else {
+                $('.js-bookie-btn').show();
             }
             $waitBox.hide()
             let href = window.location.href.split('=')[1] || ' '
             $('.js-invited-by').val(href)
         });
-        
-        // USDT shortcut Banlance 6
+        //_USDT.allowance
         _USDT.allowance.call(_USDTACCOUNT,contractAddress, async function (error, result) {
-            USDT = web3.fromWei(result.toNumber(), "mwei");
-            $('.js-bookie-input').val(parseInt(USDT))
-            boolieMax = parseInt(USDT)
-            if(web3.fromWei(result,'mwei') < 1) {
-                _USDT.balanceOf.call(_USDTACCOUNT, async function (error, result) {
-                    if(result.toNumber() <= 0){
-                        alert("Your USDT balance is ZERO.");
-                        return;
-                    }
-                    data = _USDT.approve.getData(contractAddress, result.toNumber());
-                    tx = {
-                        to: contractAddressUSDT,
-                        data: data,
-                    }
-                    web3.eth.sendTransaction(tx, async function (err, result) {
-                        if (err) {
-                            alert("failed: " + err.message)
-                            $jsLoadingBox.hide()
-                            window.location.reload();
-                        } else {
-                            alert("successed: " + result)
-                            $jsLoadingBox.show()
-                            var finished = null
-                            var time1
-                            time1 = setInterval(async () => {
-                                var receipt = await getReceipt(result);
-                                if (null == receipt) {} else {
-                                    $jsLoadingBox.hide()
-                                    finished = 1
-                                    clearInterval(time1)
-                                    window.location.reload();
-                                }
-                            }, 3000)
-                        }
-                    })
-                })
-            }else{
-                _USDT.balanceOf.call(_USDTACCOUNT, async function (error, result) {
-                    var USDT = web3.fromWei(result.toNumber(), "mwei");
-                    $('.js-bookie-input').val(parseInt(USDT))
-                    if(USDT < 1){
-                        $('.js-shortcut-balance').html(USDT)
-                    }else {
-                        NumAutoPlusAnimation("js-shortcut-balance", {time: 1500,num: USDT,regulator: 30})
-                    }
-                })
+            uAllowanceV = web3.fromWei(result.toNumber(), "mwei");
+        })
+        //_USDT.balanceOf
+        _USDT.balanceOf.call(_USDTACCOUNT, async function (error, result) {
+            ubalanceOfV = web3.fromWei(result.toNumber(), "mwei");
+            $('.js-bookie-input').val(parseInt(ubalanceOfV))
+            if(ubalanceOfV < 1){
+                $('.js-shortcut-balance').html(ubalanceOfV)
+            }else {
+                NumAutoPlusAnimation("js-shortcut-balance", {time: 1000,num: ubalanceOfV,regulator: 30})
+                setTimeout(() => {
+                    $('.js-shortcut-balance').html(numFormat(retain2(ubalanceOfV , 2)))
+                }, 1100);
             }
         })
-
-        // GetAPY
-        _Bookie.GetAPY.call(function (error, result) {
-            $('.js-bip-apy').html(result.c[0])
-        });
-        
+       
         // bookie GetAPY
         _Bookie.GetAPY.call(function (error, result) {
             $('.js-APY-num').html(result.c[0])
@@ -114,7 +79,8 @@ async function InitPage() {
 }
 
 // bookie Register
-$('.js-register').click(function(){
+let $register = $('.js-register')
+$register.click(function(){
     $jsLoadingBox.show()
     let _inviteV = $('.js-invited-by').val()
     data = _Bookie.SetInviteCode.getData(_inviteV);
@@ -150,43 +116,69 @@ $('.js-bookie-max').click(function(){
     let expect = ($('.js-bookie-input').val() * $('.js-APY-num').html()/100)
     $('.js-expect').html(expect)
 })
-// my-bookie-value
+// bookie btn
+let $bookieBtn = $('.js-my-bookie-value')
 $('.js-my-bookie-value').click(function(){
     let _value = $('.js-bookie-input').val()
     let maxV = $('.js-shortcut-balance').html()
-    
+    // input value
     if(_value < 1 || (_value - maxV > 0)){
         alert('Please enter a valid value')
         return 
     }
-    $jsLoadingBox.show()
-     data = _Bookie.BookieValue.getData(web3.toWei( _value , 'mwei') );
-     tx = {
-         to: contractAddress,
-         data: data,
-     }
-     web3.eth.sendTransaction(tx, async function (err, result) {
-         if (err) {
-             alert("failed: " + err.message)
-             $jsLoadingBox.hide()
-            window.location.reload();
-         } else {
-             alert("successed: " + result)
-             $jsLoadingBox.show()
-            var finished = null
-            var time1
-            time1 = setInterval(async () => {
-                var receipt = await getReceipt(result);
-                if (null == receipt) {} else {
+    if(uAllowanceV < _value){
+        data = _USDT.approve.getData(contractAddress, ubalanceOfV);
+            tx = {
+                to: contractAddressUSDT,
+                data: data,
+            }
+            web3.eth.sendTransaction(tx, async function (err, result) {
+                if (err) {
+                    alert("failed: " + err.message)
                     $jsLoadingBox.hide()
-                    finished = 1
-                    clearInterval(time1)
                     window.location.reload();
+                } else {
+                    alert("successed: " + result)
+                    $jsLoadingBox.show()
+                    var finished = null
+                    var time1
+                    time1 = setInterval(async () => {
+                        var receipt = await getReceipt(result);
+                        if (null == receipt) {} else {
+                            finished = 1
+                            clearInterval(time1)
+                            data = _Bookie.BookieValue.getData(web3.toWei( _value , 'mwei') );
+                            tx = {
+                                to: contractAddress,
+                                data: data,
+                            }
+                            web3.eth.sendTransaction(tx, async function (err, result) {
+                                if (err) {
+                                    alert("failed2: " + err.message)
+                                    $jsLoadingBox.hide()
+                                    // window.location.reload();
+                                } else {
+                                    alert("successed: " + result)
+                                    $jsLoadingBox.show()
+                                    var finished2 = null
+                                    var time2
+                                    time2 = setInterval(async () => {
+                                        var receipt2 = await getReceipt(result);
+                                        if (null == receipt2) {} else {
+                                            $jsLoadingBox.hide()
+                                            finished2 = 1
+                                            clearInterval(time2)
+                                            window.location.reload();
+                                        }
+                                    }, 3000)
+                                }
+                                
+                            })
+                        }
+                    }, 3000)
                 }
-            }, 3000)
-         }
-         
-     })
+            })
+    }
  })
  // Expected
 document.getElementById('js-bookie-d').addEventListener('keyup', function(e){
@@ -243,5 +235,9 @@ ethereum.on('networkChanged', function (networkIDstring) {
 ethereum.on('accountsChanged', function (networkIDstring) {
     if (web3.eth.coinbase == null) {
         window.location.href = '/unclock.html'
+        $('.connect-btn').show()
+    }else {
+        $('.connect-con').show()
+        $('.js-coinbase').html(getSubStr(web3.eth.coinbase) )
     }
 })

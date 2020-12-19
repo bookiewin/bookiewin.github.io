@@ -1,10 +1,29 @@
 var BASEABI = {
-	"contract":"0xdc53719c2A79160109a6069b878f526b373655B4",
+	"contract":"0xAFF7F071561e145C7561668fc796F80F59f56dc5",
 	"abi": [
 		{
 			"inputs": [],
 			"stateMutability": "nonpayable",
 			"type": "constructor"
+		},
+		{
+			"anonymous": false,
+			"inputs": [
+				{
+					"indexed": false,
+					"internalType": "uint8",
+					"name": "",
+					"type": "uint8"
+				},
+				{
+					"indexed": false,
+					"internalType": "uint8",
+					"name": "",
+					"type": "uint8"
+				}
+			],
+			"name": "Balls_Gen",
+			"type": "event"
 		},
 		{
 			"anonymous": false,
@@ -179,32 +198,6 @@ var BASEABI = {
 			"type": "function"
 		},
 		{
-			"anonymous": false,
-			"inputs": [
-				{
-					"indexed": false,
-					"internalType": "address",
-					"name": "",
-					"type": "address"
-				}
-			],
-			"name": "deploy",
-			"type": "event"
-		},
-		{
-			"inputs": [
-				{
-					"internalType": "address",
-					"name": "usdtToken",
-					"type": "address"
-				}
-			],
-			"name": "Deploy",
-			"outputs": [],
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
 			"inputs": [
 				{
 					"internalType": "uint256",
@@ -248,19 +241,7 @@ var BASEABI = {
 			"type": "event"
 		},
 		{
-			"inputs": [],
-			"name": "InitInviter",
-			"outputs": [],
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
 			"inputs": [
-				{
-					"internalType": "uint256",
-					"name": "lotteryID",
-					"type": "uint256"
-				},
 				{
 					"internalType": "uint8[6]",
 					"name": "level_counts",
@@ -312,51 +293,12 @@ var BASEABI = {
 		},
 		{
 			"inputs": [],
-			"name": "crowd_funding",
+			"name": "crowd_funding_address",
 			"outputs": [
 				{
-					"internalType": "uint256",
+					"internalType": "address",
 					"name": "",
-					"type": "uint256"
-				}
-			],
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"inputs": [],
-			"name": "crowd_funding_progress",
-			"outputs": [
-				{
-					"internalType": "uint256",
-					"name": "",
-					"type": "uint256"
-				}
-			],
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"inputs": [],
-			"name": "crowd_funding_target",
-			"outputs": [
-				{
-					"internalType": "uint256",
-					"name": "",
-					"type": "uint256"
-				}
-			],
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"inputs": [],
-			"name": "crowd_status",
-			"outputs": [
-				{
-					"internalType": "uint256",
-					"name": "",
-					"type": "uint256"
+					"type": "address"
 				}
 			],
 			"stateMutability": "view",
@@ -370,6 +312,19 @@ var BASEABI = {
 					"internalType": "uint256",
 					"name": "",
 					"type": "uint256"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [],
+			"name": "default_invite_code",
+			"outputs": [
+				{
+					"internalType": "bytes4",
+					"name": "",
+					"type": "bytes4"
 				}
 			],
 			"stateMutability": "view",
@@ -415,6 +370,30 @@ var BASEABI = {
 			"type": "function"
 		},
 		{
+			"inputs": [
+				{
+					"internalType": "uint8[]",
+					"name": "currentballs",
+					"type": "uint8[]"
+				},
+				{
+					"internalType": "uint256",
+					"name": "randNumber",
+					"type": "uint256"
+				}
+			],
+			"name": "GenOneBall",
+			"outputs": [
+				{
+					"internalType": "uint8",
+					"name": "",
+					"type": "uint8"
+				}
+			],
+			"stateMutability": "pure",
+			"type": "function"
+		},
+		{
 			"inputs": [],
 			"name": "GetAPY",
 			"outputs": [
@@ -444,6 +423,21 @@ var BASEABI = {
 				{
 					"internalType": "uint256",
 					"name": "bookieAward",
+					"type": "uint256"
+				},
+				{
+					"internalType": "uint256",
+					"name": "trackNumber",
+					"type": "uint256"
+				},
+				{
+					"internalType": "uint256",
+					"name": "betNumber",
+					"type": "uint256"
+				},
+				{
+					"internalType": "uint256",
+					"name": "invitee",
 					"type": "uint256"
 				}
 			],
@@ -499,7 +493,7 @@ var BASEABI = {
 					"type": "uint256"
 				}
 			],
-			"stateMutability": "view",
+			"stateMutability": "pure",
 			"type": "function"
 		},
 		{
@@ -577,6 +571,35 @@ var BASEABI = {
 			"type": "function"
 		},
 		{
+			"inputs": [
+				{
+					"internalType": "uint256",
+					"name": "index",
+					"type": "uint256"
+				}
+			],
+			"name": "GetLastPrize",
+			"outputs": [
+				{
+					"internalType": "uint256",
+					"name": "lottery_id",
+					"type": "uint256"
+				},
+				{
+					"internalType": "uint8[7]",
+					"name": "balls",
+					"type": "uint8[7]"
+				},
+				{
+					"internalType": "uint256[6]",
+					"name": "level_counts",
+					"type": "uint256[6]"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
 			"inputs": [],
 			"name": "GetLottery",
 			"outputs": [
@@ -611,6 +634,101 @@ var BASEABI = {
 		},
 		{
 			"inputs": [],
+			"name": "GetMyInivited",
+			"outputs": [
+				{
+					"internalType": "address[10]",
+					"name": "",
+					"type": "address[10]"
+				},
+				{
+					"internalType": "uint256",
+					"name": "",
+					"type": "uint256"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "uint256",
+					"name": "index",
+					"type": "uint256"
+				}
+			],
+			"name": "GetUserLastBet",
+			"outputs": [
+				{
+					"internalType": "uint256",
+					"name": "lottery_id",
+					"type": "uint256"
+				},
+				{
+					"internalType": "uint8[49]",
+					"name": "blue_balls",
+					"type": "uint8[49]"
+				},
+				{
+					"internalType": "uint8[10]",
+					"name": "red_balls",
+					"type": "uint8[10]"
+				},
+				{
+					"internalType": "uint256",
+					"name": "bet_count",
+					"type": "uint256"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "address",
+					"name": "",
+					"type": "address"
+				},
+				{
+					"internalType": "uint256",
+					"name": "",
+					"type": "uint256"
+				}
+			],
+			"name": "invited_address",
+			"outputs": [
+				{
+					"internalType": "address",
+					"name": "",
+					"type": "address"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "uint256",
+					"name": "",
+					"type": "uint256"
+				}
+			],
+			"name": "lottery_prize",
+			"outputs": [
+				{
+					"internalType": "uint256",
+					"name": "lottery_id",
+					"type": "uint256"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [],
 			"name": "MyInviteCode",
 			"outputs": [
 				{
@@ -633,35 +751,6 @@ var BASEABI = {
 				}
 			],
 			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"inputs": [
-				{
-					"internalType": "uint256",
-					"name": "bookieValue",
-					"type": "uint256"
-				},
-				{
-					"internalType": "uint256",
-					"name": "betValue",
-					"type": "uint256"
-				},
-				{
-					"internalType": "uint8[7]",
-					"name": "balls",
-					"type": "uint8[7]"
-				}
-			],
-			"name": "Shortcut",
-			"outputs": [
-				{
-					"internalType": "bool",
-					"name": "",
-					"type": "bool"
-				}
-			],
-			"stateMutability": "pure",
 			"type": "function"
 		},
 		{
@@ -688,6 +777,64 @@ var BASEABI = {
 					"internalType": "uint256",
 					"name": "",
 					"type": "uint256"
+				}
+			],
+			"name": "user_bet_tickets",
+			"outputs": [
+				{
+					"internalType": "uint256",
+					"name": "lottery_id",
+					"type": "uint256"
+				},
+				{
+					"internalType": "address",
+					"name": "bet_user",
+					"type": "address"
+				},
+				{
+					"internalType": "uint256",
+					"name": "bet_count",
+					"type": "uint256"
+				},
+				{
+					"internalType": "uint256",
+					"name": "award",
+					"type": "uint256"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "address",
+					"name": "",
+					"type": "address"
+				}
+			],
+			"name": "user_bets",
+			"outputs": [
+				{
+					"internalType": "uint256",
+					"name": "",
+					"type": "uint256"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "address",
+					"name": "",
+					"type": "address"
+				},
+				{
+					"internalType": "uint256",
+					"name": "",
+					"type": "uint256"
 				},
 				{
 					"internalType": "uint256",
@@ -697,6 +844,11 @@ var BASEABI = {
 			],
 			"name": "user_tickets",
 			"outputs": [
+				{
+					"internalType": "uint256",
+					"name": "lottery_id",
+					"type": "uint256"
+				},
 				{
 					"internalType": "address",
 					"name": "bet_user",

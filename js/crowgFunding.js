@@ -1,7 +1,9 @@
 var _abi = BASEABI.abi
 var _USDTABI = USDTABI.abi
+var _CROWDABI = CROWDFUNDINGABI.abi
 var contractAddress = BASEABI.contract
 var contractAddressUSDT = USDTABI.contract
+var contractAddressCROWD = CROWDFUNDINGABI.contract
 var _Bookie, _account, _USDT, _USDTACCOUNT
 var $cfundingBox = $('.js-cfunding-box')
 var $jsLoadingBox = $('.js-loading-box')
@@ -38,21 +40,24 @@ async function InitPage() {
 
         _USDT = web3.eth.contract(_USDTABI).at(contractAddressUSDT)
         _USDTACCOUNT = web3.eth.coinbase;
+        _CROWD = web3.eth.contract(_CROWDABI).at(contractAddressCROWD)
        
         //crowd-funding target
-        _Bookie.crowd_funding_target.call(function (error, result) {
+        _CROWD.crowd_funding_target.call(function (error, result) {
             let resultVal = web3.fromWei(result, "mwei")
-            NumAutoPlusAnimation("js-crowd-funding-money", {time: 1500,num: resultVal,regulator: 30})
+            NumAutoPlusAnimation("js-crowd-funding-money", {time: 1000,num: resultVal,regulator: 30})
+            setTimeout(() => {
+                $('.js-crowd-funding-money').html(numFormat(retain2(resultVal , 2)))
+            }, 1100);
         });
         //crowd-funding
-        _Bookie.crowd_funding_progress.call(function (error, result) {
+        _CROWD.crowd_funding_progress.call(function (error, result) {
             $('.js-myBar').html(result.toNumber() + '%')
             $('.js-myBar').css('width',result.toNumber()+ '%')
             $('.js-myBar').css('backgroundColor', '#4CAF50')
          });
 
          // USDT shortcut Banlance 6
-         let USDTVal
          let USDT
         _USDT.allowance.call(_USDTACCOUNT,contractAddress, async function (error, result) {
             USDT = web3.fromWei(result.toNumber(), "mwei");
@@ -183,5 +188,9 @@ ethereum.on('networkChanged', function (networkIDstring) {
 ethereum.on('accountsChanged', function (networkIDstring) {
     if (web3.eth.coinbase == null) {
         window.location.href = '/unclock.html'
+        $('.connect-btn').show()
+    }else {
+        $('.connect-con').show()
+        $('.js-coinbase').html(getSubStr(web3.eth.coinbase) )
     }
 })

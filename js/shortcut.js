@@ -1,7 +1,9 @@
 var _abi = BASEABI.abi
 var _USDTABI = USDTABI.abi
+var _CROWDABI = CROWDFUNDINGABI.abi
 var contractAddress = BASEABI.contract
 var contractAddressUSDT = USDTABI.contract
+var contractAddressCROWD = CROWDFUNDINGABI.contract
 var _Bookie, _account, _USDT, _USDTACCOUNT
 var $jsLoadingBox = $('.js-loading-box')
 $jsLoadingBox.hide()
@@ -34,6 +36,7 @@ async function InitPage() {
 
         _USDT = web3.eth.contract(_USDTABI).at(contractAddressUSDT)
         _USDTACCOUNT = web3.eth.coinbase;
+        _CROWD = web3.eth.contract(_CROWDABI).at(contractAddressCROWD)
 
         // USDT shortcut Banlance 6
         _USDT.balanceOf.call(_USDTACCOUNT, async function (error, result) {
@@ -206,5 +209,9 @@ ethereum.on('networkChanged', function (networkIDstring) {
 ethereum.on('accountsChanged', function (networkIDstring) {
     if (web3.eth.coinbase == null) {
         window.location.href = '/unclock.html'
+        $('.connect-btn').show()
+    }else {
+        $('.connect-con').show()
+        $('.js-coinbase').html(getSubStr(web3.eth.coinbase) )
     }
 })

@@ -1,7 +1,9 @@
 var _abi = BASEABI.abi
 var _USDTABI = USDTABI.abi
+var _CROWDABI = CROWDFUNDINGABI.abi
 var contractAddress = BASEABI.contract
 var contractAddressUSDT = USDTABI.contract
+var contractAddressCROWD = CROWDFUNDINGABI.contract
 var _Bookie, _account, _USDT, _USDTACCOUNT
 var $selectCurrency = $("#selectCurrency")
 var $waitBox = $('.js-wait-box')
@@ -78,6 +80,7 @@ async function InitPage() {
 
         _USDT = web3.eth.contract(_USDTABI).at(contractAddressUSDT)
         _USDTACCOUNT = web3.eth.coinbase;
+        _CROWD = web3.eth.contract(_CROWDABI).at(contractAddressCROWD)
 
         //Bookie GetLottery
         let $homeBookieList = $('.js-home-bookie-list li')
@@ -85,7 +88,7 @@ async function InitPage() {
         let $bookieJoin = $('.js-bookie-join')
         let $nextDrawing = $('.js-next-drawing')
         let gameID = ''
-        
+        let estimated = ''
         _Bookie.GetLottery.call(function (error, result) {
             gameID = result.valueOf()[0].toNumber()
             targetTime = result.valueOf()[1].toNumber()
@@ -99,8 +102,14 @@ async function InitPage() {
                 $('.js-time').html('--:--:--')
                 $('.js-target-time').html('--')
             }
-
-            NumAutoPlusAnimation("js-estimated", {time: 1500,num: result.valueOf()[2].c[0] / 10000000,regulator: 30})
+            estimated = web3.fromWei(result.valueOf()[2].toNumber(), "mwei")
+            NumAutoPlusAnimation("js-estimated", {time: 1000,num: estimated,regulator: 30})
+            if(estimated > 0){
+                setTimeout(() => {
+                    $('.js-estimated').html(numFormat(retain2(estimated , 2)))
+                }, 1100);
+            }
+            
             if(result.valueOf()[3].toNumber() == 0){
                 $winningNumbers.hide()
                 $nextDrawing.show()
@@ -118,7 +127,7 @@ async function InitPage() {
             }
         });
         //bookie crowd_status
-        _Bookie.crowd_status.call(function (error, result) {
+        _CROWD.crowd_status.call(function (error, result) {
             if(result.toNumber()) {
                 $bookieJoin.hide()
                 $crowdBox.show()
@@ -173,6 +182,10 @@ ethereum.on('networkChanged', function (networkIDstring) {
 ethereum.on('accountsChanged', function (networkIDstring) {
     if (web3.eth.coinbase == null) {
         window.location.href = '/unclock.html'
+        $('.connect-btn').show()
+    }else {
+        $('.connect-con').show()
+        $('.js-coinbase').html(getSubStr(web3.eth.coinbase) )
     }
 })
 // 时间戳转时分秒
@@ -183,7 +196,6 @@ function timestampToTime(timestamp) {
     let tt = timestamp
     time_1 = setInterval(() => {
         tt -= 1000
-        // console.log('timestamp2',tt);
         let days
         let endTimes
         if (tt > 86400000) {

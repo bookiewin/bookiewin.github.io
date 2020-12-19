@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bookie</title>
+    <title>Game</title>
     <link rel="stylesheet" href="/css/index.css">
 </head>
 <body>
@@ -17,6 +17,8 @@
                 <li class="js-Game">Game</li>
                 <li class="js-Shortcut">Shortcut</li>
                 <li class="js-Dashboard">Dashboard</li>
+                <li class="connect connect-btn">Connect</li>
+                <li class="connect connect-con js-coinbase"></li>
             </ul>
         </div>
         <!-- game -->
@@ -114,11 +116,11 @@
                 </div>
                 <!-- bet value -->
                 <p style="margin-top: 10px;">Bet value</p>
-                <div class="js-betValue" style="color: rgb(209, 108, 0);">--</div>
+                <div class="bet-value js-betValue" style="color: rgb(209, 108, 0);">--</div>
                 <div class="bWOwlY js-betFN">BET</div>
             </div>
             <div>
-                <p class="font-20">My bet</p >
+                <p class="font-20">Betting set</p >
                 <div class="my-bet-box js-my-bet-box">
                 </div>
             </div>
@@ -130,11 +132,13 @@
         </div>
     </div>
 </body>
-<script src="/js/jquery-2.1.4.min.js"></script>
-<script src="/js/bookieABI.js"></script>
-<script src="/js/usdtABI.js"></script>
-<script src="js/web3.js"></script>
 <script src="js/common.js"></script>
+<script src="/js/jquery-2.1.4.min.js"></script>
+<script src="/js/abi/bookieABI.js"></script>
+<script src="/js/abi/usdtABI.js"></script>
+<script src="/js/abi/blpABI.js"></script>
+<script src="/js/abi/crowdfundingABI.js"></script>
+<script src="js/web3.js"></script>
 <script src="js/game.js"></script>
 
 </html>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bookie</title>
+    <title>Home</title>
     <link rel="stylesheet" href="/css/index.css">
 </head>
 <body>
@@ -17,6 +17,8 @@
                 <li class="js-Game">Game</li>
                 <li class="js-Shortcut">Shortcut</li>
                 <li class="js-Dashboard">Dashboard</li>
+                <li class="connect connect-btn">Connect</li>
+                <li class="connect connect-con js-coinbase"></li>
             </ul>
         </div>
         <!--Home Select -->
@@ -65,8 +67,8 @@
         <!-- crowd-funding -->
         <div class="home-box js-crowd-box" style="display: none;">
             <p class="crowd-p">Bookie is in the process of crowdfunding. When the crowdfunding amount reaches the target, the first issue of bookie game will be launched</p>
-            <div class="home-btn js-crowd-funding">
-                <button class="bWOwlY">Crowd-funding</button>
+            <div class="home-btn">
+                <button class="bWOwlY js-crowd-funding">Crowd-funding</button>
             </div>
         </div>
         <!-- Waiting for data to return -->
@@ -77,11 +79,13 @@
         
     </div>
 </body>
-<script src="/js/jquery-2.1.4.min.js"></script>
-<script src="/js/bookieABI.js"></script>
-<script src="/js/usdtABI.js"></script>
-<script src="js/web3.js"></script>
 <script src="js/common.js"></script>
+<script src="/js/jquery-2.1.4.min.js"></script>
+<script src="/js/abi/bookieABI.js"></script>
+<script src="/js/abi/usdtABI.js"></script>
+<script src="/js/abi/blpABI.js"></script>
+<script src="/js/abi/crowdfundingABI.js"></script>
+<script src="js/web3.js"></script>
 <script src="js/index.js"></script>
 
 </html>

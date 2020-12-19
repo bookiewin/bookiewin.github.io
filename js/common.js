@@ -12,9 +12,7 @@ function NumAutoPlusAnimation(targetEle, options) {
         initial = 0;
 
     var timer = setInterval(function () {
-
         count = count + step;
-
         if (count >= finalNum) {
             clearInterval(timer);
             count = finalNum;
@@ -23,7 +21,6 @@ function NumAutoPlusAnimation(targetEle, options) {
         //避免调用text函数，提高DOM性能
         var t = Math.floor(count);
         if (t == initial) return;
-
         initial = t;
         $this.innerHTML = ''
         $this.innerHTML = initial;
@@ -96,4 +93,39 @@ async function getReceipt(data) {
             }
         })
     })
+}
+//截取字符串中间用省略号显示
+function getSubStr (str){
+    let subStr1 = str.substr(0,6);
+    let subStr2 = str.substr(str.length-4,4);
+    let subStr = subStr1 + "..." + subStr2 ;
+    return subStr;
+}
+//截取字符串中间用省略号显示8
+function getSubStrEight (str){
+    let subStr1 = str.substr(0,10);
+    let subStr2 = str.substr(str.length-8,8);
+    let subStr = subStr1 + "..." + subStr2 ;
+    return subStr;
+}
+function numFormat(num){
+    num=num.toString().split(".");  // 分隔小数点
+    var arr=num[0].split("").reverse();  // 转换成字符数组并且倒序排列
+    var res=[];
+    for(var i=0,len=arr.length;i<len;i++){
+      if(i%3===0&&i!==0){
+         res.push(",");   // 添加分隔符
+      }
+      res.push(arr[i]);
+    }
+    res.reverse(); // 再次倒序成为正确的顺序
+    if(num[1]){  // 如果有小数的话添加小数部分
+      res=res.join("").concat("."+num[1]);
+    }else{
+      res=res.join("");
+    }
+    return res
+}
+function retain2(num,d){
+    return (parseInt(num*100)/100).toFixed(d)
 }

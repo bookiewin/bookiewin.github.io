@@ -1,7 +1,9 @@
 var _abi = BASEABI.abi
 var _USDTABI = USDTABI.abi
+var _CROWDABI = CROWDFUNDINGABI.abi
 var contractAddress = BASEABI.contract
 var contractAddressUSDT = USDTABI.contract
+var contractAddressCROWD = CROWDFUNDINGABI.contract
 var _Bookie, _account, _USDT, _USDTACCOUNT
 var $jsLoadingBox = $('.js-loading-box')
 $jsLoadingBox.hide()
@@ -34,13 +36,17 @@ async function InitPage() {
 
         _USDT = web3.eth.contract(_USDTABI).at(contractAddressUSDT)
         _USDTACCOUNT = web3.eth.coinbase;
-
+        _CROWD = web3.eth.contract(_CROWDABI).at(contractAddressCROWD)
         // Ball49
         _Bookie.GetBall49Info.call(function (error, result) {
-            var pool = web3.fromWei(result.valueOf()[0], "mwei");
-            var Jackpot = web3.fromWei(result.valueOf()[2], "mwei");
-            NumAutoPlusAnimation("js-bookie-value1", {time: 1500,num: pool,regulator: 30})
-            NumAutoPlusAnimation("js-bookie-value3", {time: 1500,num: Jackpot,regulator: 30})
+            let pool =web3.fromWei(result.valueOf()[0], "mwei")
+            let Jackpot =web3.fromWei(result.valueOf()[2], "mwei")
+            NumAutoPlusAnimation("js-bookie-value1", {time: 1000,num: pool,regulator: 30})
+            NumAutoPlusAnimation("js-bookie-value3", {time: 1000,num: Jackpot,regulator: 30})
+            setTimeout(() => {
+                $('.js-bookie-value1').html(numFormat(retain2(pool , 2)))
+                $('.js-bookie-value3').html(numFormat(retain2(Jackpot , 2)))
+            }, 1100);
         });
     }
 }
@@ -168,13 +174,15 @@ var $periods = $('.js-periods-value')
 var $periods = $('.js-periods-value')
 $('.js-min').click(function () {
     $periods.val(parseInt($periods.val()) - 1)
-    if ($periods.val() <= 1) {
-        $periods.val(1)
-    }
+    if ($periods.val() <= 1) {$periods.val(1)}
     submitFN()
 })
 $('.js-add').click(function () {
-    $periods.val(parseInt($periods.val()) + 1)
+    if($periods.val() >= 10){
+        $periods.val(10)
+    }else {
+        $periods.val(parseInt($periods.val()) + 1)
+    }
     submitFN()
 })
 var $betFN = $('.js-betFN')
@@ -254,6 +262,27 @@ async function getReceipt(data) {
         })
     })
 }
+function numFormat(num){
+    num=num.toString().split(".");  // 分隔小数点
+    var arr=num[0].split("").reverse();  // 转换成字符数组并且倒序排列
+    var res=[];
+    for(var i=0,len=arr.length;i<len;i++){
+      if(i%3===0&&i!==0){
+         res.push(",");   // 添加分隔符
+      }
+      res.push(arr[i]);
+    }
+    res.reverse(); // 再次倒序成为正确的顺序
+    if(num[1]){  // 如果有小数的话添加小数部分
+      res=res.join("").concat("."+num[1]);
+    }else{
+      res=res.join("");
+    }
+    return res
+}
+function retain2(num,d){
+    return (parseInt(num*100)/100).toFixed(d)
+}
 // listen
 ethereum.on('networkChanged', function (networkIDstring) {
     if (window.ethereum.networkVersion != 3) {
@@ -263,5 +292,9 @@ ethereum.on('networkChanged', function (networkIDstring) {
 ethereum.on('accountsChanged', function (networkIDstring) {
     if (web3.eth.coinbase == null) {
         window.location.href = '/unclock.html'
+        $('.connect-btn').show()
+    }else {
+        $('.connect-con').show()
+        $('.js-coinbase').html(getSubStr(web3.eth.coinbase) )
     }
 })

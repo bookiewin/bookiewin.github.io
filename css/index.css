@@ -41,6 +41,11 @@
 body {
     margin: 0;
     font-family: 'ProximaNova-Bold', "OpenSans", Arial,sans-serif;
+    -moz-user-select:none;
+    -webkit-user-select:none;
+    -ms-user-select:none;
+    -khtml-user-select:none;
+    user-select:none;
 }
 
 * {
@@ -181,6 +186,7 @@ textarea {
         display: flex;
         justify-content: center;
         align-items: center;
+        padding-bottom: 60px;
     }
 
     .head-top {
@@ -214,6 +220,7 @@ textarea {
         margin-left: 50px;
 
     }
+    
     .font-20{
         font-size: 20px;
     }
@@ -229,7 +236,21 @@ textarea {
         font-weight: 700;
         margin: 0 15px;
     }
-
+    .head-top-list li.connect{
+        display: none;
+        margin-left: 80px;
+    }
+    .head-top-list li.connect-con span{
+        display: inline-block;
+        vertical-align: top;
+    }
+    .head-top-list li.connect-con .js-coinbase{
+        width: 55px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    
     .random-ul li {
         display: inline-block;
         width: 35px;
@@ -263,6 +284,11 @@ textarea {
     /* .game-detail-ul:nth-child(odd){
         background: lavender;
     } */
+    .bet-value{
+        font-size: 30px;
+        margin: 10px 0;
+        color: rgb(209, 108, 0);
+    }
     .game-detail-ul li{
         display: inline-block;
         width: 26px;
@@ -359,7 +385,7 @@ textarea {
 
     .bWOwlY {
         width: 80%;
-        margin: 30px auto 0;
+        margin: 20px auto 0;
         -webkit-box-align: center;
         align-items: center;
         background-color: rgb(240, 233, 231);
@@ -368,13 +394,16 @@ textarea {
         box-shadow: rgb(226, 214, 207) 6px 6px 12px, rgb(247, 244, 242) -12px -12px 24px -2px;
         color: rgb(209, 108, 0);
         cursor: pointer !important;
-        font-size: 20px;
+        font-size: 26px;
         font-weight: 700;
         height: 56px;
         line-height: 56px;
         outline: none;
+        font-family: 'ProximaNova-Bold', "OpenSans", Arial,sans-serif;
     }
-
+    .bWOwlY.copy{
+        width: 50%;
+    }
     .home-btn {
         min-width: 115px !important;
     }
@@ -415,12 +444,15 @@ textarea {
         border-radius: 12px;
         box-shadow: rgb(247, 244, 242) 1px 1px 0px inset;
     }
+    .asde{
+        min-width: 220px;
+    }
 
     .caVnyU {
         color: rgb(91, 57, 38);
         font-size: 36px;
         font-weight: 700;
-        margin: 30px 0;
+        margin: 20px 0;
     }
 
     .game-data {
@@ -436,10 +468,16 @@ textarea {
         display: flex;
         justify-content: space-between;
         align-items: center;
+        margin-top: 100px;
     }
 
     .HUGIJKL {
-        width: 340px;
+        min-width: 320px;
+        padding: 10px 10px;
+        background: rgb(240, 233, 231);
+        border: 1px solid rgb(226, 214, 207);
+        border-radius: 12px;
+        box-shadow: rgb(247, 244, 242) 1px 1px 0px inset;
     }
 
     .widhdraw {
@@ -510,7 +548,7 @@ textarea {
     }
 
     .home-btn button {
-        width: 180px;
+        width: 200px;
     }
 
     /* 接手 */
@@ -566,6 +604,7 @@ textarea {
         background: rgb(209, 108, 0);
         border-radius: 10%;
         cursor: pointer;
+        -moz-user-select:   none;
     }
 
     .periods-value {
@@ -585,6 +624,32 @@ textarea {
         left: 0px;
         background-color: rgba(163, 136, 120, 0.667);
         z-index: 22;
+    }
+    .drawings-box{
+        width: 1000px;
+        min-height: 500px;
+        margin: 20px auto;
+        padding: 30px 0;
+        background-color:rgb(240, 233, 231);
+        border-radius: 10px;
+    }
+    .drawings-box .title{
+        font-size: 26px;
+        margin-bottom: 20px;
+    }
+    .list-detail{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 600px;
+        height: 45px; 
+        line-height: 45px;
+        font-size: 20px;
+        margin: 0 auto;
+       
+    }
+    .drawings-box ul li{
+        margin: 0 10px;
     }
 
     .loading {
@@ -638,8 +703,8 @@ textarea {
     }
     .invited-title {
         display: inline-block;
-        font-size: 50px;
-        font-family: 'ProximaNova-Regular';
+        font-size: 30px;
+        font-family: 'ProximaNova-Bold';
         padding-top: 5px;
         margin: 10px 0;
     }
@@ -649,6 +714,7 @@ textarea {
     .invited-address {
         font-size: 26px;
         margin: 10px 0;
+        display: block;
     }
     .invited-address-v {
         width: 220px;
@@ -787,6 +853,7 @@ textarea {
       }
       .home-box{
           min-width: 500px;
+          margin-top: 60px;
       }
       .crowd-p{
           width: 660px;
@@ -794,4 +861,10 @@ textarea {
       }
       .js-bookie-join{
           display: none;
+      }
+      .invited-box{
+          width: 400px;
+          min-height: 300px;
+          margin: 30px auto 0;
+          font-size: 28px;
       }

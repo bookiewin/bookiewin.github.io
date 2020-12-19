@@ -1,9 +1,12 @@
 
 var _abi = BASEABI.abi
 var _USDTABI = USDTABI.abi
+var _CROWDABI = CROWDFUNDINGABI.abi
 var contractAddress = BASEABI.contract
 var contractAddressUSDT = USDTABI.contract
+var contractAddressCROWD = CROWDFUNDINGABI.contract
 var _Bookie, _account, _USDT, _USDTACCOUNT
+$('.connect-btn').show()
 // judge web3
 InitPage()
 async function initWeb3() {
@@ -33,6 +36,7 @@ async function InitPage() {
 
         _USDT = web3.eth.contract(_USDTABI).at(contractAddressUSDT)
         _USDTACCOUNT = web3.eth.coinbase;
+        _CROWD = web3.eth.contract(_CROWDABI).at(contractAddressCROWD)
         
     }
 }
@@ -55,5 +59,6 @@ ethereum.on('networkChanged', function (networkIDstring) {
 ethereum.on('accountsChanged', function (networkIDstring) {
         if (web3.eth.coinbase) {
             window.location.href = '/index.html'
+            $('.js-coinbase').html(getSubStr(web3.eth.coinbase) )
         }
 })
