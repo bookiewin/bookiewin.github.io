@@ -9,6 +9,8 @@ var $cfundingBox = $('.js-cfunding-box')
 var $jsLoadingBox = $('.js-loading-box')
 var $waitBox = $('.js-wait-box')
 let crowdMax
+let uAllowanceV
+let ubalanceOfV
 $jsLoadingBox.hide()
 // judge web3
 InitPage()
@@ -57,47 +59,19 @@ async function InitPage() {
             $('.js-myBar').css('backgroundColor', '#4CAF50')
          });
 
-         // USDT shortcut Banlance 6
-         let USDT
-        _USDT.allowance.call(_USDTACCOUNT,contractAddress, async function (error, result) {
-            USDT = web3.fromWei(result.toNumber(), "mwei");
-            $('.js-crowd-value').val(parseInt(USDT))
-            crowdMax = parseInt(USDT)
-            if(web3.fromWei(result,'mwei') < 1) {
-                _USDT.balanceOf.call(_USDTACCOUNT, async function (error, result) {
-                    if(result.toNumber() <= 0){
-                        alert("Your USDT balance is ZERO.");
-                        return;
-                    }
-                    data = _USDT.approve.getData(contractAddress, result.toNumber());
-                    tx = {
-                        to: contractAddressUSDT,
-                        data: data,
-                    }
-                    web3.eth.sendTransaction(tx, async function (err, result) {
-                        if (err) {
-                            alert("failed: " + err.message)
-                            $jsLoadingBox.hide()
-                            window.location.reload();
-                        } else {
-                            alert("successed: " + result)
-                            $jsLoadingBox.show()
-                            var finished = null
-                            var time1
-                            time1 = setInterval(async () => {
-                                var receipt = await getReceipt(result);
-                                if (null == receipt) {} else {
-                                    $jsLoadingBox.hide()
-                                    finished = 1
-                                    clearInterval(time1)
-                                    window.location.reload();
-                                }
-                            }, 3000)
-                        }
-                    })
-                })
+         // USDT shortcut Banlance 
+        _USDT.balanceOf.call(_USDTACCOUNT, async function (error, result) {
+            if(result.toNumber() <= 0){
+                alert("Your USDT balance is ZERO.");
+                return;
+            }else{
+                $('.js-crowd-value').val(parseInt(web3.fromWei(result, "mwei")))
+                ubalanceOfV = web3.fromWei(result, "mwei");
             }
-            
+        })
+        //_USDT.allowance
+        _USDT.allowance.call(_USDTACCOUNT,contractAddress, async function (error, result) {
+            uAllowanceV = web3.fromWei(result, "mwei");
         })
     }
 }
@@ -145,39 +119,72 @@ $('.js-Game').click(function () {
 
 //js-crowd-funding
 $('.js-crowd-max').on('click',function() {
-    $('.js-crowd-value').val(crowdMax)
+    $('.js-crowd-value').val(parseInt(ubalanceOfV.toNumber()))
 })
 //crowd-funding submit
 $('.js-crowd-submit').click(function() {
     $jsLoadingBox.show()
     var $crowdSubmit = $('.js-crowd-value').val()
-    data = _Bookie.CrowdFunding.getData(web3.toWei($crowdSubmit,'mwei'));
-    tx = {
-        to: contractAddress,
-        data: data,
+    // check balance
+    if($crowdSubmit > ubalanceOfV.toNumber()){
+        alert("Your balance is NOT enough.");
+        return;
     }
-    web3.eth.sendTransaction(tx, async function (err, result) {
-        if (err) {
-            alert("failed: " + err.message)
-            $jsLoadingBox.hide()
-            window.location.reload();
-        } else {
-            alert("successed: " + result)
-            $jsLoadingBox.show()
-            var finished = null
-            var time1
-            time1 = setInterval(async () => {
-                var receipt = await getReceipt(result);
-                if (null == receipt) {} else {
-                    $jsLoadingBox.hide()
-                    finished = 1
-                    clearInterval(time1)
-                    window.location.reload();
-                }
-            }, 3000)
+    // check allowance
+    if($crowdSubmit > uAllowanceV.toNumber()){
+        data = _USDT.approve.getData(contractAddress, web3.toWei(ubalanceOfV,"mwei"));
+        tx = {
+            to: contractAddressUSDT,
+            data: data,
         }
-        
-    })
+        web3.eth.sendTransaction(tx, async function (err, result) {
+            if (err) {
+                alert("failed: " + err.message)
+                $jsLoadingBox.hide()
+                window.location.reload();
+            } else {
+                alert("successed: " + result)
+                $jsLoadingBox.show()
+                var finished = null
+                var time1
+                time1 = setInterval(async () => {
+                    var receipt = await getReceipt(result);
+                    if (null == receipt) {} else {
+                        finished = 1
+                        clearInterval(time1)
+
+                    data = _Bookie.CrowdFunding.getData(web3.toWei($crowdSubmit,'mwei'));
+                    tx = {
+                        to: contractAddress,
+                        data: data,
+                    }
+                    web3.eth.sendTransaction(tx, async function (err, result) {
+                        if (err) {
+                            alert("failed: " + err.message)
+                            $jsLoadingBox.hide()
+                            window.location.reload();
+                        } else {
+                            alert("successed: " + result)
+                            $jsLoadingBox.show()
+                            var finished = null
+                            var time1
+                            time1 = setInterval(async () => {
+                                var receipt = await getReceipt(result);
+                                if (null == receipt) {} else {
+                                    $jsLoadingBox.hide()
+                                    finished = 1
+                                    clearInterval(time1)
+                                    window.location.reload();
+                                }
+                            }, 3000)
+                        }
+                        
+                    })
+                    }
+                }, 3000)
+            }
+        })
+    }
 })
 // listen
 ethereum.on('networkChanged', function (networkIDstring) {
