@@ -59,35 +59,96 @@ async function InitPage() {
         });
         //Get invited friends address list
         _Bookie.GetMyInivited.call(function (error, result) {
+            let ivitedNum = result[1].toNumber()
             let strhtml = ''
             let curIndex
-            for( var i= 0; i<result[0].length; i++) {
-                curIndex = result[0][i]
-                strhtml+='<li>'+getSubStrEight(curIndex)+'</li>'
+            if(result[1].toNumber()) {
+                for(var i = 0; i < ivitedNum; i++) {
+                    curIndex = result[0][i]
+                    strhtml+='<li>'+getSubStrEight(curIndex)+'</li>'
+                }
+                $('.js-invited-ul').html(strhtml)
             }
-            $('.js-invited-ul').html(strhtml)
         });
         //Get invited friends address list10
         let index = 0
         _Bookie.GetLastPrize.call(index, function (error, result) {
             if(result) {
-                index +=1
                 GetLastPrizeFn(index)
             }
         });
         //30
-        let indexhostory = 0
-        _Bookie.GetUserLastBet.call(indexhostory, function (error, result) {
-            console.log(result);
-            
+        let indexHistory = 0
+        _Bookie.GetUserLastBet.call(indexHistory, function (error, result) {
+            if(result) {
+                LastBetFn(indexHistory)
+            }
         });
 
     }
 }
+//history
+function LastBetFn(indexHistory) {
+    _Bookie.GetUserLastBet.call(indexHistory, function (error, result) {
+        if(result) {
+            indexHistory +=1
+            let arr = []
+            let hisCurArrB 
+            for(var i = 0 ;i < result[1].length; i++) {
+                hisCurArrB = result[1][i].toNumber()
+                if(hisCurArrB){
+                    arr.push(i+1)
+               }
+            }
+            let hisCurArrR
+            for(var j = 0 ;j < result[2].length; j++) {
+                hisCurArrR = result[2][j].toNumber()
+                if(hisCurArrR){
+                    arr.push(j+1)
+               }
+            }
+            let historyHtml = '' 
+            let kIndex
+            for(var k = 0 ;k < arr.length; k++) {
+                kIndex = arr[k]
+                historyHtml+=
+                '<li>'+kIndex+'</li>'
+            }
+            let firstHtml = ''
+            for(var i = 0;i < 1; i++) {
+                firstHtml+='<div class="list-detail">'+
+                '<span>'+result[0].toNumber()+'</span>'+
+                '<ul class="game-detail-ul js-betting-ul">'+historyHtml+'</ul>'+
+                '<span> </span>'+
+                '</div>'
+            }
+            $('.js-history-list').after(firstHtml)
+            return LastBetFn(indexHistory)
+        }
+    });
+}
+//track
 function GetLastPrizeFn(index) {
     _Bookie.GetLastPrize.call(index, function (error, result) {
         if(result) {
             index +=1
+            let trackHtml = ''
+            for(var i = 0;i < 1; i++) {
+                trackHtml+='<div class="list-detail">'+
+                '<span>'+result[0].toNumber()+'</span>'+
+                '<ul class="game-detail-ul">'+
+                    '<li>'+result[1][0]+'</li>'+
+                    '<li>'+result[1][1]+'</li>'+
+                    '<li>'+result[1][2]+'</li>'+
+                    '<li>'+result[1][3]+'</li>'+
+                    '<li>'+result[1][4]+'</li>'+
+                    '<li>'+result[1][5]+'</li>'+
+                    '<li>'+result[1][6]+'</li>'+
+                '</ul>'+
+                '<span>Detail</span>'+
+            '</div>'
+            }
+            $('.js-list-box').after(trackHtml)
          return  GetLastPrizeFn(index)
         }
     }) 
@@ -101,7 +162,7 @@ $('.js-track-box').click(function(event) {$(this).hide()})
 //history
 let $historyBtn = $('.js-history-btn')
 $historyBtn.click(function() {$('.js-history-box').show()})
-$('.js-history-box').click(function(event) {event.stopPropagation();})
+$('.js-historyD-box').click(function(event) {event.stopPropagation();})
 $('.js-history-box').click(function(event) {$(this).hide()})
 
 // invite-friends

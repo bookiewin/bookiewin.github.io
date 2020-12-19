@@ -868,3 +868,9 @@ textarea {
           margin: 30px auto 0;
           font-size: 28px;
       }
+      .js-betting-ul{
+        width: 460px;
+        display: flex;
+        flex-wrap:wrap;
+        justify-content: normal;
+      }

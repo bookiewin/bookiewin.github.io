@@ -94,7 +94,7 @@ $register.click(function(){
             $jsLoadingBox.hide()
             window.location.reload();
         } else {
-            alert("successed: " + result)
+            //alert("successed: " + result)
             $jsLoadingBox.show()
             var finished = null
             var time1
@@ -138,7 +138,7 @@ $('.js-my-bookie-value').click(function(){
                     $jsLoadingBox.hide()
                     window.location.reload();
                 } else {
-                    alert("successed: " + result)
+                    //alert("successed: " + result)
                     $jsLoadingBox.show()
                     var finished = null
                     var time1
@@ -147,39 +147,72 @@ $('.js-my-bookie-value').click(function(){
                         if (null == receipt) {} else {
                             finished = 1
                             clearInterval(time1)
-                            data = _Bookie.BookieValue.getData(web3.toWei( _value , 'mwei') );
-                            tx = {
-                                to: contractAddress,
-                                data: data,
-                            }
-                            web3.eth.sendTransaction(tx, async function (err, result) {
-                                if (err) {
-                                    alert("failed2: " + err.message)
-                                    $jsLoadingBox.hide()
-                                    // window.location.reload();
-                                } else {
-                                    alert("successed: " + result)
-                                    $jsLoadingBox.show()
-                                    var finished2 = null
-                                    var time2
-                                    time2 = setInterval(async () => {
-                                        var receipt2 = await getReceipt(result);
-                                        if (null == receipt2) {} else {
-                                            $jsLoadingBox.hide()
-                                            finished2 = 1
-                                            clearInterval(time2)
-                                            window.location.reload();
-                                        }
-                                    }, 3000)
-                                }
+                            BookieSubmit(web3.toWei( _value , 'mwei'));
+                            // data = _Bookie.BookieValue.getData(web3.toWei( _value , 'mwei') );
+                            // tx = {
+                            //     to: contractAddress,
+                            //     data: data,
+                            // }
+                            // web3.eth.sendTransaction(tx, async function (err, result) {
+                            //     if (err) {
+                            //         alert("failed2: " + err.message)
+                            //         $jsLoadingBox.hide()
+                            //         // window.location.reload();
+                            //     } else {
+                            //         alert("successed: " + result)
+                            //         $jsLoadingBox.show()
+                            //         var finished2 = null
+                            //         var time2
+                            //         time2 = setInterval(async () => {
+                            //             var receipt2 = await getReceipt(result);
+                            //             if (null == receipt2) {} else {
+                            //                 $jsLoadingBox.hide()
+                            //                 finished2 = 1
+                            //                 clearInterval(time2)
+                            //                 window.location.reload();
+                            //             }
+                            //         }, 3000)
+                            //     }
                                 
-                            })
+                            // })
                         }
                     }, 3000)
                 }
             })
+    }else{
+        BookieSubmit(web3.toWei( _value , 'mwei'));
     }
  })
+
+ function BookieSubmit(SubmitValue) {
+    data = _Bookie.BookieValue.getData(SubmitValue);
+    tx = {
+        to: contractAddress,
+        data: data,
+    }
+    web3.eth.sendTransaction(tx, async function (err, result) {
+        if (err) {
+            alert("failed2: " + err.message)
+            $jsLoadingBox.hide()
+            // window.location.reload();
+        } else {
+            //alert("successed: " + result)
+            $jsLoadingBox.show()
+            var finished2 = null
+            var time2
+            time2 = setInterval(async () => {
+                var receipt2 = await getReceipt(result);
+                if (null == receipt2) {} else {
+                    $jsLoadingBox.hide()
+                    finished2 = 1
+                    clearInterval(time2)
+                    window.location.reload();
+                }
+            }, 3000)
+        }
+        
+    })
+ }
  // Expected
 document.getElementById('js-bookie-d').addEventListener('keyup', function(e){
     let expect = ($('.js-bookie-input').val() * $('.js-APY-num').html()/100)

@@ -143,7 +143,7 @@ $('.js-crowd-submit').click(function() {
                 $jsLoadingBox.hide()
                 window.location.reload();
             } else {
-                alert("successed: " + result)
+                //alert("successed: " + result)
                 $jsLoadingBox.show()
                 var finished = null
                 var time1
@@ -153,39 +153,97 @@ $('.js-crowd-submit').click(function() {
                         finished = 1
                         clearInterval(time1)
 
-                    data = _Bookie.CrowdFunding.getData(web3.toWei($crowdSubmit,'mwei'));
-                    tx = {
-                        to: contractAddress,
-                        data: data,
-                    }
-                    web3.eth.sendTransaction(tx, async function (err, result) {
-                        if (err) {
-                            alert("failed: " + err.message)
-                            $jsLoadingBox.hide()
-                            window.location.reload();
-                        } else {
-                            alert("successed: " + result)
-                            $jsLoadingBox.show()
-                            var finished = null
-                            var time1
-                            time1 = setInterval(async () => {
-                                var receipt = await getReceipt(result);
-                                if (null == receipt) {} else {
-                                    $jsLoadingBox.hide()
-                                    finished = 1
-                                    clearInterval(time1)
-                                    window.location.reload();
-                                }
-                            }, 3000)
-                        }
-                        
-                    })
+                        CrowdFundingSubmit(web3.toWei($crowdSubmit,'mwei'));
+                        // data = _Bookie.CrowdFunding.getData(web3.toWei($crowdSubmit,'mwei'));
+                        // tx = {
+                        //     to: contractAddress,
+                        //     data: data,
+                        // }
+                        // web3.eth.sendTransaction(tx, async function (err, result) {
+                        //     if (err) {
+                        //         alert("failed: " + err.message)
+                        //         $jsLoadingBox.hide()
+                        //         window.location.reload();
+                        //     } else {
+                        //         alert("successed: " + result)
+                        //         $jsLoadingBox.show()
+                        //         var finished = null
+                        //         var time1
+                        //         time1 = setInterval(async () => {
+                        //             var receipt = await getReceipt(result);
+                        //             if (null == receipt) {} else {
+                        //                 $jsLoadingBox.hide()
+                        //                 finished = 1
+                        //                 clearInterval(time1)
+                        //                 window.location.reload();
+                        //             }
+                        //         }, 3000)
+                        //     }
+                            
+                        // })
                     }
                 }, 3000)
             }
         })
+    }else{
+        CrowdFundingSubmit(web3.toWei($crowdSubmit,'mwei'));
+        // data = _Bookie.CrowdFunding.getData(web3.toWei($crowdSubmit,'mwei'));
+        // tx = {
+        //     to: contractAddress,
+        //     data: data,
+        // }
+        // web3.eth.sendTransaction(tx, async function (err, result) {
+        //     if (err) {
+        //         alert("failed: " + err.message)
+        //         $jsLoadingBox.hide()
+        //         window.location.reload();
+        //     } else {
+        //         alert("successed: " + result)
+        //         $jsLoadingBox.show()
+        //         var finished = null
+        //         var time1
+        //         time1 = setInterval(async () => {
+        //             var receipt = await getReceipt(result);
+        //             if (null == receipt) {} else {
+        //                 $jsLoadingBox.hide()
+        //                 finished = 1
+        //                 clearInterval(time1)
+        //                 window.location.reload();
+        //             }
+        //         }, 3000)
+        //     }
+        // })
     }
 })
+
+function CrowdFundingSubmit(SubmitValue) {
+    data = _Bookie.CrowdFunding.getData(SubmitValue);
+    tx = {
+        to: contractAddress,
+        data: data,
+    }
+    web3.eth.sendTransaction(tx, async function (err, result) {
+        if (err) {
+            alert("failed: " + err.message)
+            $jsLoadingBox.hide()
+            window.location.reload();
+        } else {
+            //alert("successed: " + result)
+            $jsLoadingBox.show()
+            var finished = null
+            var time1
+            time1 = setInterval(async () => {
+                var receipt = await getReceipt(result);
+                if (null == receipt) {} else {
+                    $jsLoadingBox.hide()
+                    finished = 1
+                    clearInterval(time1)
+                    window.location.reload();
+                }
+            }, 3000)
+        }
+    })
+}
 // listen
 ethereum.on('networkChanged', function (networkIDstring) {
     if (window.ethereum.networkVersion != 3) {
