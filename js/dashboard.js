@@ -237,7 +237,7 @@ $('.js-claim-game').click(function () {
 })
 $('.js-claim-bookie').click(function () {
     $jsLoadingBox.show()
-    data = _Bookie.CliamBlp.getData();
+    data = _Bookie.ClaimBlp.getData();
     tx = {
         to: contractAddress,
         data: data,
