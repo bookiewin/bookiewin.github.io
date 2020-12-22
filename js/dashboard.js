@@ -15,12 +15,9 @@ InitPage()
 async function initWeb3() {
     if (window.ethereum) {
         window.web3 = new Web3(ethereum);
-        try {await ethereum.enable();return true} catch (error) {return false}
-    } else if (window.web3) {
-        window.web3 = new Web3(web3.currentProvider);
-        return true
-    } else if (window.web3.eth.coinbase) {
-        await ethereum.enable();
+        try {await ethereum.enable();return true} catch (error) {return false}} 
+        else if (window.web3) {window.web3 = new Web3(web3.currentProvider); return true} 
+        else if (window.web3.eth.coinbase) {await ethereum.enable();
     }
 }
 async function InitPage() {
@@ -34,7 +31,6 @@ async function InitPage() {
         _USDT = web3.eth.contract(_USDTABI).at(contractAddressUSDT)
         _USDTACCOUNT = web3.eth.coinbase;
         _CROWD = web3.eth.contract(_CROWDABI).at(contractAddressCROWD)
-
         //award
         _Bookie.GetAwardInfo.call(function (error, result) {
             let gameAward = web3.fromWei(result.valueOf()[0].toNumber(), "mwei");
@@ -66,93 +62,81 @@ async function InitPage() {
                 for(var i = 0; i < ivitedNum; i++) {
                     curIndex = result[0][i]
                     strhtml+='<li>'+getSubStrEight(curIndex)+'</li>'
-                }
-                $('.js-invited-ul').html(strhtml)
-            }
+                }$('.js-invited-ul').html(strhtml)}
         });
         //Get invited friends address list10
         let index = 0
         _Bookie.GetLastPrize.call(index, function (error, result) {
-            if(result) {
-                GetLastPrizeFn(index)
-            }
+            if(result) {GetLastPrizeFn(index) }
         });
         //30
         let indexHistory = 0
         _Bookie.GetUserLastBet.call(indexHistory, function (error, result) {
-            if(result) {
-                LastBetFn(indexHistory)
-            }
+            if(result) {LastBetFn(indexHistory)}
         });
-
     }
 }
-//history
-function LastBetFn(indexHistory) {
-    _Bookie.GetUserLastBet.call(indexHistory, function (error, result) {
-        if(result) {
-            indexHistory +=1
-            let arr = []
-            let hisCurArrB 
-            for(var i = 0 ;i < result[1].length; i++) {
-                hisCurArrB = result[1][i].toNumber()
-                if(hisCurArrB){
-                    arr.push(i+1)
-               }
-            }
-            let hisCurArrR
-            for(var j = 0 ;j < result[2].length; j++) {
-                hisCurArrR = result[2][j].toNumber()
-                if(hisCurArrR){
-                    arr.push(j+1)
-               }
-            }
-            let historyHtml = '' 
-            let kIndex
-            for(var k = 0 ;k < arr.length; k++) {
-                kIndex = arr[k]
-                historyHtml+=
-                '<li>'+kIndex+'</li>'
-            }
-            let firstHtml = ''
-            for(var i = 0;i < 1; i++) {
-                firstHtml+='<div class="list-detail">'+
-                '<span>'+result[0].toNumber()+'</span>'+
-                '<ul class="game-detail-ul js-betting-ul">'+historyHtml+'</ul>'+
-                '<span> </span>'+
-                '</div>'
-            }
-            $('.js-history-list').after(firstHtml)
-            return LastBetFn(indexHistory)
+$('.js-claim-invite').click(function () {
+    $jsLoadingBox.show()
+    data = _Bookie.ClaimInvite.getData();
+    tx = {to: contractAddress,data: data,}
+    web3.eth.sendTransaction(tx, async function (err, result) {
+        if (err) {
+            alert("failed: " + err.message)
+            $jsLoadingBox.hide()
+            window.location.reload();
+        } else {let time1
+            time1 = setInterval(async () => {
+                var receipt = await getReceipt(result);
+                if (null == receipt) {} else {
+                    $jsLoadingBox.hide()
+                    clearInterval(time1)
+                    window.location.reload();
+                }}, 3000)
         }
-    });
-}
-//track
-function GetLastPrizeFn(index) {
-    _Bookie.GetLastPrize.call(index, function (error, result) {
-        if(result) {
-            index +=1
-            let trackHtml = ''
-            for(var i = 0;i < 1; i++) {
-                trackHtml+='<div class="list-detail">'+
-                '<span>'+result[0].toNumber()+'</span>'+
-                '<ul class="game-detail-ul">'+
-                    '<li>'+result[1][0]+'</li>'+
-                    '<li>'+result[1][1]+'</li>'+
-                    '<li>'+result[1][2]+'</li>'+
-                    '<li>'+result[1][3]+'</li>'+
-                    '<li>'+result[1][4]+'</li>'+
-                    '<li>'+result[1][5]+'</li>'+
-                    '<li>'+result[1][6]+'</li>'+
-                '</ul>'+
-                '<span>Detail</span>'+
-            '</div>'
-            }
-            $('.js-list-box').after(trackHtml)
-         return  GetLastPrizeFn(index)
+    })
+})
+$('.js-claim-game').click(function () {
+    $jsLoadingBox.show()
+    data = _Bookie.ClaimGame.getData();
+    tx = {to: contractAddress,data: data,}
+    web3.eth.sendTransaction(tx, async function (err, result) {
+        if (err) {
+            alert("failed: " + err.message)
+            $jsLoadingBox.hide()
+            window.location.reload();
+        } else {var time1
+            time1 = setInterval(async () => {
+                var receipt = await getReceipt(result);
+                if (null == receipt) {} else {
+                    $jsLoadingBox.hide()
+                    clearInterval(time1)
+                    window.location.reload();
+                }
+            }, 3000)
         }
-    }) 
-}
+    })
+})
+$('.js-claim-bookie').click(function () {
+    $jsLoadingBox.show()
+    data = _Bookie.ClaimBlp.getData();
+    tx = {to: contractAddress,data: data,}
+    web3.eth.sendTransaction(tx, async function (err, result) {
+        if (err) {
+            alert("failed: " + err.message)
+            $jsLoadingBox.hide()
+            window.location.reload();
+        } else {let time1
+            time1 = setInterval(async () => {
+                var receipt = await getReceipt(result);
+                if (null == receipt) {} else {
+                    $jsLoadingBox.hide()
+                    clearInterval(time1)
+                    window.location.reload();
+                }}, 3000)
+        }
+    })
+})
 //track
 let $trackBtn = $('.js-track-btn')
 $trackBtn.click(function() {$('.js-track-box').show()})
@@ -177,129 +161,78 @@ $('.js-Clipboard').click(function () {
     document.execCommand("Copy"); 
     alert("Content copied successfully!");
 })
-$('.js-claim-invite').click(function () {
-    $jsLoadingBox.show()
-    data = _Bookie.ClaimInvite.getData();
-    tx = {
-        to: contractAddress,
-        data: data,
-    }
-    web3.eth.sendTransaction(tx, async function (err, result) {
-        if (err) {
-            alert("failed: " + err.message)
-            $jsLoadingBox.hide()
-            window.location.reload();
-        } else {
-            alert("successed: " + result)
-            $jsLoadingBox.show()
-            var finished = null
-            var time1
-            time1 = setInterval(async () => {
-                var receipt = await getReceipt(result);
-                if (null == receipt) {} else {
-                    $jsLoadingBox.hide()
-                    finished = 1
-                    clearInterval(time1)
-                    window.location.reload();
-                }
-            }, 3000)
+//history
+function LastBetFn(indexHistory) {
+    _Bookie.GetUserLastBet.call(indexHistory, function (error, result) {
+        if(result) {
+            indexHistory +=1
+            let arr = []
+            let hisCurArrB 
+            for(var i = 0 ;i < result[1].length; i++) {
+                hisCurArrB = result[1][i].toNumber()
+                if(hisCurArrB){arr.push(i+1)}
+            }
+            let hisCurArrR
+            for(var j = 0 ;j < result[2].length; j++) {
+                hisCurArrR = result[2][j].toNumber()
+                if(hisCurArrR){arr.push(j+1)}
+            }
+            let historyHtml = '' ,kIndex ,firstHtml = ''
+            for(var k = 0 ;k < arr.length; k++) {
+                kIndex = arr[k]
+                historyHtml+='<li>'+kIndex+'</li>'
+            }
+            for(var i = 0;i < 1; i++) {
+                firstHtml+='<div class="list-detail">'+'<span>'+result[0].toNumber()+'</span>'+'<ul class="game-detail-ul js-betting-ul">'+historyHtml+'</ul>'+'<span> </span>'+'</div>'
+            }
+            $('.js-history-list').after(firstHtml)
+            return LastBetFn(indexHistory)
         }
-    })
-})
-$('.js-claim-game').click(function () {
-    $jsLoadingBox.show()
-    data = _Bookie.ClaimGame.getData();
-    tx = {
-        to: contractAddress,
-        data: data,
-    }
-    web3.eth.sendTransaction(tx, async function (err, result) {
-        if (err) {
-            alert("failed: " + err.message)
-            $jsLoadingBox.hide()
-            window.location.reload();
-        } else {
-            alert("successed: " + result)
-            $jsLoadingBox.show()
-            var finished = null
-            var time1
-            time1 = setInterval(async () => {
-                var receipt = await getReceipt(result);
-                if (null == receipt) {} else {
-                    $jsLoadingBox.hide()
-                    finished = 1
-                    clearInterval(time1)
-                    window.location.reload();
-                }
-            }, 3000)
+    });
+}
+//track
+function GetLastPrizeFn(index) {
+    _Bookie.GetLastPrize.call(index, function (error, result) {
+        if(result) {index +=1
+            let trackHtml = ''
+            for(var i = 0;i < 1; i++) {
+                trackHtml+='<div class="list-detail">'+
+                '<span>'+result[0].toNumber()+'</span>'+
+                '<ul class="game-detail-ul">'+
+                    '<li>'+result[1][0]+'</li>'+
+                    '<li>'+result[1][1]+'</li>'+
+                    '<li>'+result[1][2]+'</li>'+
+                    '<li>'+result[1][3]+'</li>'+
+                    '<li>'+result[1][4]+'</li>'+
+                    '<li>'+result[1][5]+'</li>'+
+                    '<li>'+result[1][6]+'</li>'+
+                '</ul>'+'<span>Detail</span>'+'</div>'}
+            $('.js-list-box').after(trackHtml)
+            return  GetLastPrizeFn(index)
         }
-    })
-})
-$('.js-claim-bookie').click(function () {
-    $jsLoadingBox.show()
-    data = _Bookie.ClaimBlp.getData();
-    tx = {
-        to: contractAddress,
-        data: data,
-    }
-    web3.eth.sendTransaction(tx, async function (err, result) {
-        if (err) {
-            alert("failed: " + err.message)
-            $jsLoadingBox.hide()
-            window.location.reload();
-        } else {
-            alert("successed: " + result)
-            $jsLoadingBox.show()
-            var finished = null
-            var time1
-            time1 = setInterval(async () => {
-                var receipt = await getReceipt(result);
-                if (null == receipt) {} else {
-                    $jsLoadingBox.hide()
-                    finished = 1
-                    clearInterval(time1)
-                    window.location.reload();
-                }
-            }, 3000)
-        }
-        
-    })
-})
+    }) 
+}
 // head top
 $('.js-Home').click(function () {
-    if(web3.eth.coinbase){
-        window.location.href = '/index.html'
-    }
+    if(web3.eth.coinbase){window.location.href = '/index.html'}
 })
 $('.js-Bookie').click(function () {
-    if(web3.eth.coinbase){
-        window.location.href = '/bookie.html'
-    }
+    if(web3.eth.coinbase){window.location.href = '/bookie.html'}
 })
 $('.js-Shortcut').click(function () {
-    if(web3.eth.coinbase){
-        window.location.href = '/shortcut.html'
-    }
+    if(web3.eth.coinbase){window.location.href = '/shortcut.html'}
 })
 $('.js-Dashboard').click(function () {
-    if(web3.eth.coinbase){
-        window.location.href = '/dashboard.html'
-    }
+    if(web3.eth.coinbase){window.location.href = '/dashboard.html'}
 })
 $('.js-Game').click(function () {
-    if(web3.eth.coinbase){
-        window.location.href = '/game.html'
-    }
+    if(web3.eth.coinbase){window.location.href = '/game.html'}
 })
 // View status
 async function getReceipt(data) {
     return new Promise(function (resolve, reject) {
         web3.eth.getTransactionReceipt(data, function (err, result) {
-            if (err) {
-                reject(err);
-            } else {
-                resolve(result);
-            }
+            if (err) {reject(err)} else {resolve(result)}
         })
     })
 }

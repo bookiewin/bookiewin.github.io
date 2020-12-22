@@ -12,17 +12,9 @@ InitPage()
 async function initWeb3() {
     if (window.ethereum) {
         window.web3 = new Web3(ethereum);
-        try {
-            await ethereum.enable();
-            return true
-        } catch (error) {
-            return false
-        }
-    } else if (window.web3) {
-        window.web3 = new Web3(web3.currentProvider);
-        return true
-    } else if (window.web3.eth.coinbase) {
-        await ethereum.enable();
+        try {await ethereum.enable();return true} catch (error) {return false}} 
+        else if (window.web3) {window.web3 = new Web3(web3.currentProvider); return true} 
+        else if (window.web3.eth.coinbase) {await ethereum.enable();
     }
 }
 async function InitPage() {
@@ -48,16 +40,16 @@ async function InitPage() {
 
         // GetAPY
         _Bookie.GetAPY.call(function (error, result) {
-            $('.js-bip-apy').html(result.c[0])
+            $('.js-bip-apy').html(result.toNumber())
         });
 
         // GetBall49Info
         _Bookie.GetBall49Info.call(function (error, result) {
-            $('.js-pool').html('$' + result.valueOf()[0].c[0])
+            $('.js-pool').html('$' + result.valueOf()[0].toNumber())
         });
         // bookie GetAPY
         _Bookie.GetAPY.call(function (error, result) {
-            $('.js-APY-num').html(result.c[0])
+            $('.js-APY-num').html(result.toNumber())
             $('.js-expect').html($('.js-bookie-input').val() * result.toNumber())
         });
     }
@@ -86,8 +78,7 @@ bar.onmousedown = function (event) {
             bar.offsetWidth) * 100) + "%";
 
         curBb = parseInt(barleft / (scroll.offsetWidth - bar.offsetWidth) * 100)
-        window.getSelection ? window.getSelection().removeAllRanges() :
-            document.selection.empty();
+        window.getSelection ? window.getSelection().removeAllRanges() : document.selection.empty();
     }
 }
 
@@ -100,12 +91,10 @@ $('.js-shortcut-value').on('blur',function() {
 $('.js-ShortcutVal-max').on('click',function() {
     ShortcutVal = $('.js-shortcut-balance').html()
     $('.js-shortcut-value').val($('.js-shortcut-balance').html())
-     assignsM(curBb,ShortcutVal)
+    assignsM(curBb,ShortcutVal)
 })
 bar.onmouseup = function () {
-    if(ShortcutVal) {
-        assignsM(curBb,ShortcutVal)
-    }
+    if(ShortcutVal) {assignsM(curBb,ShortcutVal)}
     document.onmousemove = null; 
 }
 // random
@@ -127,10 +116,7 @@ $('.js-shortcut-submit').click(function () {
         $gameRight = $('.js-game-right').html(),
         balls = _arr
     data = _Bookie.Shortcut.getData($bookieLeft, $gameRight, balls);
-    tx = {
-        to: contractAddress,
-        data: data,
-    }
+    tx = {to: contractAddress,data: data,}
     web3.eth.sendTransaction(tx, async function (err, result) {
         if (err) {
             alert("failed: " + err.message)
@@ -148,7 +134,6 @@ function assignsM(Bb,num) {
     r = m - l
     $('.js-bookie-left').html(parseInt(l))
     $('.js-game-right').html(parseInt(r))
-    
     NumAutoPlusAnimation("js-harvest", {time: 1500,num: parseInt(l) * $('.js-bip-apy').html()/100,regulator: 30})
     NumAutoPlusAnimation("js-annual-income", {time: 1500,num: parseInt(parseInt(l) / 2),regulator: 30})
 }
@@ -161,42 +146,25 @@ function changePercent(percent) {
 changePercent(50)
 // head top
 $('.js-Home').click(function () {
-    if(web3.eth.coinbase){
-        window.location.href = '/index.html'
-    }
-    
+    if(web3.eth.coinbase){window.location.href = '/index.html'}
 })
 $('.js-Bookie').click(function () {
-    if(web3.eth.coinbase){
-        window.location.href = '/bookie.html'
-    }
-    
+    if(web3.eth.coinbase){window.location.href = '/bookie.html'}
 })
 $('.js-Shortcut').click(function () {
-    if(web3.eth.coinbase){
-        window.location.href = '/shortcut.html'
-    }
-    
+    if(web3.eth.coinbase){window.location.href = '/shortcut.html'}
 })
 $('.js-Dashboard').click(function () {
-    if(web3.eth.coinbase){
-        window.location.href = '/dashboard.html'
-    }
+    if(web3.eth.coinbase){window.location.href = '/dashboard.html'}
 })
 $('.js-Game').click(function () {
-    if(web3.eth.coinbase){
-        window.location.href = '/game.html'
-    }
+    if(web3.eth.coinbase){window.location.href = '/game.html'}
 })
 // View status
 async function getReceipt(data) {
     return new Promise(function (resolve, reject) {
         web3.eth.getTransactionReceipt(data, function (err, result) {
-            if (err) {
-                reject(err);
-            } else {
-                resolve(result);
-            }
+            if (err) {reject(err)} else {resolve(result)}
         })
     })
 }

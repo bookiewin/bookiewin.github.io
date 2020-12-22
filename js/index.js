@@ -12,61 +12,14 @@ let $crowdBox = $('.js-crowd-box')
 let targetTime
 let downTime
 let times
-
-// head top
-$('.js-Home').click(function () {
-    if(web3.eth.coinbase){
-        window.location.href = '/index.html'
-    }
-    
-})
-$('.js-Bookie').click(function () {
-    if(web3.eth.coinbase){
-        window.location.href = '/bookie.html'
-    }
-    
-})
-$('.js-Shortcut').click(function () {
-    if(web3.eth.coinbase){
-        window.location.href = '/shortcut.html'
-    }
-    
-})
-$('.js-Dashboard').click(function () {
-    if(web3.eth.coinbase){
-        window.location.href = '/dashboard.html'
-    }
-})
-$('.js-Game').click(function () {
-    if(web3.eth.coinbase){
-        window.location.href = '/game.html'
-    }
-})
-$crowdFunding.click(function () {
-    if(web3.eth.coinbase){
-        window.location.href = '/crowgFunding.html'
-    }
-})
-// href
-$('.js-jion-game').click(function () {
-    window.location.href = '/game.html'
-})
 // judge web3
 InitPage()
 async function initWeb3() {
     if (window.ethereum) {
         window.web3 = new Web3(ethereum);
-        try {
-            await ethereum.enable();
-            return true
-        } catch (error) {
-            return false
-        }
-    } else if (window.web3) {
-        window.web3 = new Web3(web3.currentProvider);
-        return true
-    } else if (window.web3.eth.coinbase) {
-        await ethereum.enable();
+        try {await ethereum.enable();return true} catch (error) {return false}} 
+        else if (window.web3) {window.web3 = new Web3(web3.currentProvider); return true} 
+        else if (window.web3.eth.coinbase) {await ethereum.enable();
     }
 }
 async function InitPage() {
@@ -77,7 +30,6 @@ async function InitPage() {
     } else {
         _Bookie = web3.eth.contract(_abi).at(contractAddress)
         _account = web3.eth.coinbase;
-
         _USDT = web3.eth.contract(_USDTABI).at(contractAddressUSDT)
         _USDTACCOUNT = web3.eth.coinbase;
         _CROWD = web3.eth.contract(_CROWDABI).at(contractAddressCROWD)
@@ -96,18 +48,14 @@ async function InitPage() {
             now = Date.parse(new Date()); // location
             times = downTime - (now + new Date().getTimezoneOffset()*60000);
             $('.js-target-time').html(new Date(targetTime * 1000).toDateString())
-            if(times > 0) {
-                timestampToTime(times)
-            } else {
+            if(times > 0) { timestampToTime(times)} else {
                 $('.js-time').html('--:--:--')
                 $('.js-target-time').html('--')
             }
             estimated = web3.fromWei(result.valueOf()[2].toNumber(), "mwei")
             NumAutoPlusAnimation("js-estimated", {time: 1000,num: estimated,regulator: 30})
             if(estimated > 0){
-                setTimeout(() => {
-                    $('.js-estimated').html(numFormat(retain2(estimated , 2)))
-                }, 1100);
+                setTimeout(() => {$('.js-estimated').html(numFormat(retain2(estimated , 2)))}, 1100);
             }
             
             if(result.valueOf()[3].toNumber() == 0){
@@ -116,14 +64,14 @@ async function InitPage() {
             }else{
                 $nextDrawing.hide()
                 $winningNumbers.show()
-                $('.js-Winning-time').html(new Date(result.valueOf()[3].c[0] * 1000).toDateString())
-                $homeBookieList.eq(0).html(result.valueOf()[4].valueOf()[0].c[0])
-                $homeBookieList.eq(1).html(result.valueOf()[4].valueOf()[1].c[0])
-                $homeBookieList.eq(2).html(result.valueOf()[4].valueOf()[2].c[0])
-                $homeBookieList.eq(3).html(result.valueOf()[4].valueOf()[3].c[0])
-                $homeBookieList.eq(4).html(result.valueOf()[4].valueOf()[4].c[0])
-                $homeBookieList.eq(5).html(result.valueOf()[4].valueOf()[5].c[0])
-                $homeBookieList.eq(6).html(result.valueOf()[4].valueOf()[6].c[0])
+                $('.js-Winning-time').html(new Date(result.valueOf()[3].toNumber() * 1000).toDateString())
+                $homeBookieList.eq(0).html(result.valueOf()[4].valueOf()[0].toNumber())
+                $homeBookieList.eq(1).html(result.valueOf()[4].valueOf()[1].toNumber())
+                $homeBookieList.eq(2).html(result.valueOf()[4].valueOf()[2].toNumber())
+                $homeBookieList.eq(3).html(result.valueOf()[4].valueOf()[3].toNumber())
+                $homeBookieList.eq(4).html(result.valueOf()[4].valueOf()[4].toNumber())
+                $homeBookieList.eq(5).html(result.valueOf()[4].valueOf()[5].toNumber())
+                $homeBookieList.eq(6).html(result.valueOf()[4].valueOf()[6].toNumber())
             }
         });
         //bookie crowd_status
@@ -135,31 +83,10 @@ async function InitPage() {
                 $bookieJoin.show()
                 $crowdBox.hide()
             }
-            $waitBox.hide()
-        });
+            $waitBox.hide()});
     }
 }
 
-// home bookie
-$('.js-home-bookie').click(function(){
-    $waitBox.show()
-    if(web3.eth.coinbase){
-        window.location.href = '/bookie.html'
-        _Bookie.GetInviter.call(function (error, result) {
-            if(result == "0x0000000000000000000000000000000000000000"){
-                $('.js-invited').hide();
-                 $('.js-bookie-btn').show();
-            }else{
-                $('.js-invited').show();
-                $('.js-bookie-btn').hide();
-            }
-            $waitBox.hide()
-            let href = window.location.href.split('=')[1] || ' ' 
-            $('.js-invited-by').val(href)
-        });
-    }
-    
-})
 // utc time
 $('.js-utc').click(function() {
     if($(this).attr('change') == 'utc') {
@@ -188,7 +115,7 @@ ethereum.on('accountsChanged', function (networkIDstring) {
         $('.js-coinbase').html(getSubStr(web3.eth.coinbase) )
     }
 })
-// 时间戳转时分秒
+// times
 var $timesBox = $('.js-times')
 let time_1 
 function timestampToTime(timestamp) {
@@ -215,16 +142,34 @@ function timestampToTime(timestamp) {
         }
     }, 1000)
 }
-
 // View status
 async function getReceipt(data) {
     return new Promise(function (resolve, reject) {
         web3.eth.getTransactionReceipt(data, function (err, result) {
-            if (err) {
-                reject(err);
-            } else {
-                resolve(result);
-            }
+            if (err) {reject(err)} else {resolve(result)}
         })
     })
 }
+// head top
+$('.js-Home').click(function () {
+    if(web3.eth.coinbase){window.location.href = '/index.html'}
+})
+$('.js-Bookie').click(function () {
+    if(web3.eth.coinbase){window.location.href = '/bookie.html'}
+})
+$('.js-Shortcut').click(function () {
+    if(web3.eth.coinbase){window.location.href = '/shortcut.html'}
+})
+$('.js-Dashboard').click(function () {
+    if(web3.eth.coinbase){window.location.href = '/dashboard.html'}
+})
+$('.js-Game').click(function () {
+    if(web3.eth.coinbase){window.location.href = '/game.html'}
+})
+$crowdFunding.click(function () {
+    if(web3.eth.coinbase){window.location.href = '/crowgFunding.html'}
+})
+// href
+$('.js-jion-game').click(function () {
+    window.location.href = '/game.html'
+})

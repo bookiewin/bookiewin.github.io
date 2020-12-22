@@ -12,17 +12,9 @@ InitPage()
 async function initWeb3() {
     if (window.ethereum) {
         window.web3 = new Web3(ethereum);
-        try {
-            await ethereum.enable();
-            return true
-        } catch (error) {
-            return false
-        }
-    } else if (window.web3) {
-        window.web3 = new Web3(web3.currentProvider);
-        return true
-    } else if (window.web3.eth.coinbase) {
-        await ethereum.enable();
+        try {await ethereum.enable();return true} catch (error) {return false}} 
+        else if (window.web3) {window.web3 = new Web3(web3.currentProvider); return true} 
+        else if (window.web3.eth.coinbase) {await ethereum.enable();
     }
 }
 async function InitPage() {
@@ -33,7 +25,6 @@ async function InitPage() {
     } else {
         _Bookie = web3.eth.contract(_abi).at(contractAddress)
         _account = web3.eth.coinbase;
-
         _USDT = web3.eth.contract(_USDTABI).at(contractAddressUSDT)
         _USDTACCOUNT = web3.eth.coinbase;
         _CROWD = web3.eth.contract(_CROWDABI).at(contractAddressCROWD)
@@ -45,20 +36,19 @@ async function InitPage() {
             NumAutoPlusAnimation("js-bookie-value3", {time: 1000,num: Jackpot,regulator: 30})
             setTimeout(() => {
                 $('.js-bookie-value1').html(numFormat(retain2(pool , 2)))
-                $('.js-bookie-value3').html(numFormat(retain2(Jackpot , 2)))
-            }, 1100);
+                $('.js-bookie-value3').html(numFormat(retain2(Jackpot , 2)))}, 1100);
         });
     }
 }
 // Define the data object to operate on first
-var BLUELIST = []
-var REDLIST = []
-var ACTBLUELIST = []
-var ACTREDLIST = []
-var _REQBLUELIST = []
-var _REQREDLIST = []
-var REQBLUELIST = []
-var REQREDLIST = []
+let BLUELIST = []
+let REDLIST = []
+let ACTBLUELIST = []
+let ACTREDLIST = []
+let _REQBLUELIST = []
+let _REQREDLIST = []
+let REQBLUELIST = []
+let REQREDLIST = []
 for (var i = 1, len = 50; i < len; i++) {
     BLUELIST.push(i < 10 ? '0' + i : i.toString())
     _REQBLUELIST.push('0')
@@ -68,16 +58,14 @@ for (var i = 1, len = 11; i < len; i++) {
     _REQREDLIST.push('0')
 }
 // Click on the blue ball
-var $blueQ = $('.js-bookie-list li') // 蓝色球集合
-var $redQ = $('.js-bookie-red li') // 红色球集合
-var $actList = $('.js-active-list') // 存放选中球的盒子
+let $blueQ = $('.js-bookie-list li') // 蓝色球集合
+let $redQ = $('.js-bookie-red li') // 红色球集合
+let $actList = $('.js-active-list') // 存放选中球的盒子
 $blueQ.on('click', function () {
-    var cIndex = $(this).index()
-    var curNum = BLUELIST[cIndex]
+    let cIndex = $(this).index()
+    let curNum = BLUELIST[cIndex]
     this.style.background = "white";
     this.style.color = "blue";
-    
-    
     if (ACTBLUELIST.indexOf(curNum) > -1) {
         ACTBLUELIST.splice(ACTBLUELIST.indexOf(curNum), 1)
         this.style.background = "rgb(72, 79, 177)";
@@ -91,8 +79,8 @@ $blueQ.on('click', function () {
 })
 
 $redQ.on('click', function () {
-    var cIndex = $(this).index()
-    var curNum = REDLIST[cIndex]
+    let cIndex = $(this).index()
+    let curNum = REDLIST[cIndex]
     this.style.background = "white";
     this.style.color = "red";
 
@@ -141,7 +129,7 @@ function setValue(type) {
     }
 }
 // Conditions for requesting value
-var result
+let result
 function submitFN() {
     let betStr = $('.js-my-bet-box')
     let strHtml = ''
@@ -153,15 +141,7 @@ function submitFN() {
         //my bet
         for(var i=0;i<result.length;i++){
             let arrCur = result[i]
-            strHtml+='<ul class="game-detail-ul">'+
-            '<li>'+arrCur[0]+'</li>'+
-            '<li>'+arrCur[1]+'</li>'+
-            '<li>'+arrCur[2]+'</li>'+
-            '<li>'+arrCur[3]+'</li>'+
-            '<li>'+arrCur[4]+'</li>'+
-            '<li>'+arrCur[5]+'</li>'+
-            '<li>'+arrCur[6]+'</li>'+
-        '</ul>'
+            strHtml+='<ul class="game-detail-ul">'+'<li>'+arrCur[0]+'</li>'+'<li>'+arrCur[1]+'</li>'+'<li>'+arrCur[2]+'</li>'+'<li>'+arrCur[3]+'</li>'+'<li>'+arrCur[4]+'</li>'+'<li>'+arrCur[5]+'</li>'+'<li>'+arrCur[6]+'</li>'+'</ul>'
         }
         betStr.html(strHtml)
     } else {
@@ -170,118 +150,63 @@ function submitFN() {
     }
 }
 // Addition and subtraction of quantity
-var $periods = $('.js-periods-value')
-var $periods = $('.js-periods-value')
+let $periods = $('.js-periods-value')
 $('.js-min').click(function () {
     $periods.val(parseInt($periods.val()) - 1)
     if ($periods.val() <= 1) {$periods.val(1)}
     submitFN()
 })
 $('.js-add').click(function () {
-    if($periods.val() >= 10){
-        $periods.val(10)
-    }else {
-        $periods.val(parseInt($periods.val()) + 1)
-    }
+    if($periods.val() >= 10){$periods.val(10)}else {$periods.val(parseInt($periods.val()) + 1)}
     submitFN()
 })
-var $betFN = $('.js-betFN')
+let $betFN = $('.js-betFN')
 $betFN.click(function () {
     $jsLoadingBox.show()
-    var $periodsValue = $('.js-periods-value').val()
-    var $betHTML = $('.js-betValue').html()
+    let $periodsValue = $('.js-periods-value').val()
+    let $betHTML = $('.js-betValue').html()
     if ($betHTML != '--') {
         data = _Bookie.Bet.getData(REQBLUELIST.map(Number), REQREDLIST.map(Number), Number($periodsValue), Number($betHTML));
-        tx = {
-            to: contractAddress,
-            data: data,
-        }
+        tx = {to: contractAddress,data: data,}
         web3.eth.sendTransaction(tx, async function (err, result) {
             if (err) {
                 alert("Failed to submit transaction：" + err.message)
                 $jsLoadingBox.hide()
-            } else {
-                alert("successfully, hash：" + result)
-                $jsLoadingBox.show()
-                var finished = null
-                var time1
+            } else {let time1
                 time1 = setInterval(async () => {
-                    var receipt = await getReceipt(result);
+                    let receipt = await getReceipt(result);
                     if (null == receipt) {} else {
                         $jsLoadingBox.hide()
-                        finished = 1
                         clearInterval(time1)
                         window.location.reload();
-                    }
-                }, 3000)
+                    }}, 3000)
             }
         })
-    } else {
-        $jsLoadingBox.hide()
-        alert('Please bet')
-    }
+    } else {$jsLoadingBox.hide();alert('Please bet')}
 })
 // head top
 $('.js-Home').click(function () {
-    if(web3.eth.coinbase){
-        window.location.href = '/index.html'
-    }
-    
+    if(web3.eth.coinbase){window.location.href = '/index.html'}
 })
 $('.js-Bookie').click(function () {
-    if(web3.eth.coinbase){
-        window.location.href = '/bookie.html'
-    }
-    
+    if(web3.eth.coinbase){window.location.href = '/bookie.html'}
 })
 $('.js-Shortcut').click(function () {
-    if(web3.eth.coinbase){
-        window.location.href = '/shortcut.html'
-    }
-    
+    if(web3.eth.coinbase){window.location.href = '/shortcut.html'}
 })
 $('.js-Dashboard').click(function () {
-    if(web3.eth.coinbase){
-        window.location.href = '/dashboard.html'
-    }
+    if(web3.eth.coinbase){window.location.href = '/dashboard.html'}
 })
 $('.js-Game').click(function () {
-    if(web3.eth.coinbase){
-        window.location.href = '/game.html'
-    }
+    if(web3.eth.coinbase){window.location.href = '/game.html'}
 })
 // View status
 async function getReceipt(data) {
     return new Promise(function (resolve, reject) {
         web3.eth.getTransactionReceipt(data, function (err, result) {
-            if (err) {
-                reject(err);
-            } else {
-                resolve(result);
-            }
+            if (err) {reject(err)} else {resolve(result)}
         })
     })
-}
-function numFormat(num){
-    num=num.toString().split(".");  // 分隔小数点
-    var arr=num[0].split("").reverse();  // 转换成字符数组并且倒序排列
-    var res=[];
-    for(var i=0,len=arr.length;i<len;i++){
-      if(i%3===0&&i!==0){
-         res.push(",");   // 添加分隔符
-      }
-      res.push(arr[i]);
-    }
-    res.reverse(); // 再次倒序成为正确的顺序
-    if(num[1]){  // 如果有小数的话添加小数部分
-      res=res.join("").concat("."+num[1]);
-    }else{
-      res=res.join("");
-    }
-    return res
-}
-function retain2(num,d){
-    return (parseInt(num*100)/100).toFixed(d)
 }
 // listen
 ethereum.on('networkChanged', function (networkIDstring) {
