@@ -1,11 +1,11 @@
-var _abi = BASEABI.abi
-var _USDTABI = USDTABI.abi
-var _CROWDABI = CROWDFUNDINGABI.abi
-var contractAddress = BASEABI.contract
-var contractAddressUSDT = USDTABI.contract
-var contractAddressCROWD = CROWDFUNDINGABI.contract
-var _Bookie, _account, _USDT, _USDTACCOUNT
-var $jsLoadingBox = $('.js-loading-box')
+let _abi = BASEABI.abi
+let _USDTABI = USDTABI.abi
+let _CROWDABI = CROWDFUNDINGABI.abi
+let contractAddress = BASEABI.contract
+let contractAddressUSDT = USDTABI.contract
+let contractAddressCROWD = CROWDFUNDINGABI.contract
+let _Bookie, _account, _USDT, _USDTACCOUNT,ubalanceOfV
+let $jsLoadingBox = $('.js-loading-box')
 $jsLoadingBox.hide()
 // judge web3
 InitPage()
@@ -38,17 +38,14 @@ async function InitPage() {
                 $('.js-bookie-value1').html(numFormat(retain2(pool , 2)))
                 $('.js-bookie-value3').html(numFormat(retain2(Jackpot , 2)))}, 1100);
         });
+        //_USDT.balanceOf
+        _USDT.balanceOf.call(_USDTACCOUNT, async function (error, result) {
+            ubalanceOfV = web3.fromWei(result.toNumber(), "mwei");
+        })
     }
 }
 // Define the data object to operate on first
-let BLUELIST = []
-let REDLIST = []
-let ACTBLUELIST = []
-let ACTREDLIST = []
-let _REQBLUELIST = []
-let _REQREDLIST = []
-let REQBLUELIST = []
-let REQREDLIST = []
+let BLUELIST = [], REDLIST = [], ACTBLUELIST = [],ACTREDLIST = [],_REQBLUELIST = [],_REQREDLIST = [],REQBLUELIST = [],REQREDLIST = []
 for (var i = 1, len = 50; i < len; i++) {
     BLUELIST.push(i < 10 ? '0' + i : i.toString())
     _REQBLUELIST.push('0')
@@ -64,12 +61,11 @@ let $actList = $('.js-active-list') // 存放选中球的盒子
 $blueQ.on('click', function () {
     let cIndex = $(this).index()
     let curNum = BLUELIST[cIndex]
-    this.style.background = "white";
-    this.style.color = "blue";
-    if (ACTBLUELIST.indexOf(curNum) > -1) {
+    // 如果不存在&长度达到 则不能再添加
+    //if(!ACTBLUELIST.includes(curNum) && ACTBLUELIST.length > 5) return alert('Max length 6')
+    $(this).toggleClass('ac')
+    if (ACTBLUELIST.includes(curNum)) {
         ACTBLUELIST.splice(ACTBLUELIST.indexOf(curNum), 1)
-        this.style.background = "rgb(72, 79, 177)";
-        this.style.color = "white";
     } else {
         ACTBLUELIST.push(curNum)
     }
@@ -81,13 +77,11 @@ $blueQ.on('click', function () {
 $redQ.on('click', function () {
     let cIndex = $(this).index()
     let curNum = REDLIST[cIndex]
-    this.style.background = "white";
-    this.style.color = "red";
-
-    if (ACTREDLIST.indexOf(curNum) > -1) {
+    // 如果不存在&长度达到 则不能再添加
+    //if(!ACTREDLIST.includes(curNum) && ACTREDLIST.length) return alert('Max length 1')
+    $(this).toggleClass('ac')
+    if (ACTREDLIST.includes(curNum)) {
         ACTREDLIST.splice(ACTREDLIST.indexOf(curNum), 1)
-        this.style.background = 'red';
-        this.style.color = "white";
     } else {
         ACTREDLIST.push(curNum)
     }
@@ -101,8 +95,10 @@ function creEle(type) {
     let curList = []
     if (type === 'blue') {
         curList = ACTBLUELIST
+        curList.map(item => $blueQ.eq(item - 1).addClass('ac')) 
     } else if (type === 'red') {
         curList = ACTREDLIST
+        curList.map(item => $redQ.eq(item - 1).addClass('ac')) 
     }
     let ele = ''
     curList.map((item, index) => {
@@ -114,33 +110,40 @@ function creEle(type) {
         $actList.find('.js-active-red-box').html(ele)
     }
 }
-
+let reverseBlue, reverseRed
 function setValue(type) {
     if (type === 'blue') {
         REQBLUELIST = JSON.parse(JSON.stringify(_REQBLUELIST))
         ACTBLUELIST.map(item => {
             REQBLUELIST[parseFloat(item) - 1] = '1'
         })
+        reverseBlue = REQBLUELIST.reverse()
     } else {
         REQREDLIST = JSON.parse(JSON.stringify(_REQREDLIST))
         ACTREDLIST.map(item => {
             REQREDLIST[parseFloat(item) - 1] = '1'
         })
+        reverseRed = REQREDLIST.reverse()
     }
 }
+
 // Conditions for requesting value
-let result
+let result,blue ,red ,stringBR ,getbets 
 function submitFN() {
     let betStr = $('.js-my-bet-box')
     let strHtml = ''
     if (ACTBLUELIST.length > 5 && ACTREDLIST.length > 0) {
-        _Bookie.GetBetValue(REQBLUELIST, REQREDLIST, 1, async function (error, result) {
+         blue = reverseBlue;red = reverseRed;
+         stringBR = red.concat(blue).toString().replace(/,/g,'');
+         getbets ='0x'+ parseInt(stringBR,2).toString(16)
+        //  console.log(getbets,stringBR);
+        _Bookie.GetBetValue(getbets, 1, async function (error, result) {
             $('.js-betValue').html(result.valueOf() * $('.js-periods-value').val())
         })
-        result = GetBets(ACTBLUELIST, ACTREDLIST)
         //my bet
-        for(var i=0;i<result.length;i++){
-            let arrCur = result[i]
+        resultArr = GetBets(ACTBLUELIST, ACTREDLIST)
+        for(var i=0;i<resultArr.length;i++){
+            let arrCur = resultArr[i]
             strHtml+='<ul class="game-detail-ul">'+'<li>'+arrCur[0]+'</li>'+'<li>'+arrCur[1]+'</li>'+'<li>'+arrCur[2]+'</li>'+'<li>'+arrCur[3]+'</li>'+'<li>'+arrCur[4]+'</li>'+'<li>'+arrCur[5]+'</li>'+'<li>'+arrCur[6]+'</li>'+'</ul>'
         }
         betStr.html(strHtml)
@@ -166,24 +169,49 @@ $betFN.click(function () {
     let $periodsValue = $('.js-periods-value').val()
     let $betHTML = $('.js-betValue').html()
     if ($betHTML != '--') {
-        data = _Bookie.Bet.getData(REQBLUELIST.map(Number), REQREDLIST.map(Number), Number($periodsValue), Number($betHTML));
+        data = _USDT.approve.getData(contractAddress, ubalanceOfV);
+            tx = {
+                to: contractAddressUSDT,
+                data: data,
+            }
+            web3.eth.sendTransaction(tx, async function (err, result) {
+                if (err) {
+                    alert("failed: " + err.message)
+                    $jsLoadingBox.hide()
+                    window.location.reload();
+                } else {
+                    $jsLoadingBox.show()
+                    let time1
+                    time1 = setInterval(async () => {
+                        var receipt = await getReceipt(result);
+                        if (null == receipt) {} else {
+                            clearInterval(time1)
+                            gameSubmit(getbets,$periodsValue,$betHTML)
+                        }
+                    }, 3000)
+                }
+            })
+    } 
+})
+function gameSubmit(getbets,$periodsValue,$betHTML) {
+    let betHTMLT = Number($betHTML)
+    data = _Bookie.Bet.getData(getbets, Number($periodsValue), web3.toWei( betHTMLT , 'mwei'));
         tx = {to: contractAddress,data: data,}
         web3.eth.sendTransaction(tx, async function (err, result) {
             if (err) {
                 alert("Failed to submit transaction：" + err.message)
                 $jsLoadingBox.hide()
-            } else {let time1
-                time1 = setInterval(async () => {
-                    let receipt = await getReceipt(result);
-                    if (null == receipt) {} else {
+            } else {let time2
+                time2 = setInterval(async () => {
+                    let receipt2 = await getReceipt(result);
+                    if (receipt2 == null) {} else {
                         $jsLoadingBox.hide()
-                        clearInterval(time1)
+                        clearInterval(time2)
                         window.location.reload();
                     }}, 3000)
             }
         })
-    } else {$jsLoadingBox.hide();alert('Please bet')}
-})
+}
 // head top
 $('.js-Home').click(function () {
     if(web3.eth.coinbase){window.location.href = '/index.html'}
@@ -211,7 +239,7 @@ async function getReceipt(data) {
 // listen
 ethereum.on('networkChanged', function (networkIDstring) {
     if (window.ethereum.networkVersion != 3) {
-        alert("Please link to ropsten test network");
+         alert("Please link to ropsten test network");
     }
 })
 ethereum.on('accountsChanged', function (networkIDstring) {
@@ -223,3 +251,28 @@ ethereum.on('accountsChanged', function (networkIDstring) {
         $('.js-coinbase').html(getSubStr(web3.eth.coinbase) )
     }
 })
+
+function randomFn(){
+    // 随机选数
+    let arrCount = 50
+    let ranArr = new Array
+    for(let i = 1;i<arrCount;i++){
+        ranArr.push(i)
+    }
+    ACTBLUELIST = ranArr.sort(() => Math.random() - 0.5).slice(0,6).map(item => item < 10 ? `0${item}` : item.toString())
+    ACTREDLIST = [1,2,3,4,5,6,7,8,9,10].sort(() => Math.random() - 0.5).slice(0,1).map(item => item < 10 ? `0${item}` : item.toString())
+
+    // ACTBLUELIST = blueResultArr.map(item => item < 10 ? `0${item}` : item.toString())
+    // ACTREDLIST = redResultArr.map(item => item < 10 ? `0${item}` : item.toString())
+    creEle('blue')
+    creEle('red')
+    setValue('blue')
+    setValue('red')
+    submitFN()
+}
+// randomFn()
+$('.js-random-btn').click(function() {
+    // randomFn()
+})
+ 
+ 

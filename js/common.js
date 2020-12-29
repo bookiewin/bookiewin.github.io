@@ -1,4 +1,3 @@
-//数字自增到某一值动画参数（目标元素,自定义配置）
 function NumAutoPlusAnimation(targetEle, options) {
     options = options || {};
     let $this = document.getElementsByClassName(targetEle)[0],

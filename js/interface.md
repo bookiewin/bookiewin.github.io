@@ -1,160 +1,105 @@
-# bookie contract interface
+# Bookie interface
 
-## contract
+## Game
+### User interface
+1. GetLottery
 ```
-Bookie contract address(ropsten network): 0x535865C8A7d996C4EDBF1b625681e002EC7824bC
-
-Usdt-test contract address(ropsten network):0xAb62481FD2031bd25B3489A5db99807815e81B66
+Get current lottery infomation
+function GetLottery() public view returns(uint256 lotteryID, uint256 drawTime, uint256 jackpot, uint256 lastDrawTime, uint8[7] memory lastBalls)
+Params:
+    NONE
+Returns:
+    uint256 lotteryID   // lottery id, such as: 20210001
+    uint256 drawTime    // balls draw time
+    uint256 jackpot     // jackpot for this game
+    uint256 lastDrawTime    // last time of draw
+    uint8[7] memory lastBalls   // last draw result(include 6 blue balls and a red ball)
 ```
-
-## USDT
+2. GetBetValue
 ```
-Usdt.balanceOf(address account) public view returns (uint256) 
-Param
-    address
-Return
-    uint256 (account's usdt balance)
+Calculate bet value
+function GetBetValue(uint64 balls, uint256 betCount) internal pure returns (uint256 betValue)
+Params:
+    uint64 balls        // bet balls (49 blue balls and 10 red balls, set by bit)
+                        /*
+                        Example:
+                            6 blue balls select: 1,2,3,4,5,6 and a red ball select 1
+                            ===========1111=1110=0000=0000=0000=0000
+                            -----------6543-210f-edcb-a098-7654-3210
+                             ...  ...  0000 0000 0000 0000 0011 1111 (49bit for 49 blue balls)
+                            ----------------------------------------
+                             ...   0x0  0x0  0x0  0x0  0x0  0x3  0xf
+                            ==========================6555=5555=5554
+                            --------------------------0987-6543-2109
+                            red ball                  0000 0000 0010 (10bit for 10 red balls)
+                            ----------------------------------------
+                            red ball                   0x0  0x0  0x2
+                            ========================================
 
-Usdt.approve(address spender, uint256 value) public returns (bool)
-Param
-    spender:    default to bookie contract address
-    value:      value of usdt
+                            sum bit: 0x200000000003f for 6 blue balls and a red ball
+                        */
+    uint256 betCount    // bet counts
+Returns:
+    uint256 betValue    // bet value
 ```
-
-## Crowd-funding
+3. BetBalls
 ```
-Bookie.CrowdFunding(uint256 value) public returns (bool)
-Param
-    value
-Return
-    bool:   true for successed, otherwise is false
+function BetBalls(uint64 balls, uint256 betCount, uint256 betValue) public
+Params:
+    uint64 balls        // bet balls (49 blue balls and 10 red balls, set by bit)
+    uint256 betCount    // bet counts
+    uint256 betValue    // bet value
+Returns:
+    NONE
 ```
-
-## Home
+4. GetUserAward
 ```
-Bookie.GetLottery() public view returns(uint256 gameID, uint256 drawTime, uint256 jackpot, uint256 lastDrawTime, uint8[7] memory lastBalls)
-Param
-    None
-Return
-    gameID: the ID of games, such as: 20200001
-    drawTime: the time of drawing ball, timestamp(second)
-    jackpot: jackpot of this game
-    lastDrawTime: last draw time, return 0 if not have
-    lastBalls:  last draw balls, return 0 for all balls if not have
-                lastBalls[0-5]:blue balls, lastBalls[6]:red ball
-    
-
-Bookie.GetDraw(uint256 gameID) returns(uint8[7] balls)
-Param
-    gameID: the ID of games, such as: 20200001
-Return
-    balls: 6 blue balls (balls[0-5]) and a red ball(balls[6])
+Get unclaimed award
+function GetUserAward() public view returns(uint256)
+Params:
+    NONE
+Returns:
+    uint256 award   // user unclaimed award
 ```
-
-## Bookie page
+5. ClaimUserAward
 ```
-Bookie.GetInviter() public view returns (address inviter_address)
-Param
-    None
-Return
-    inviter_address: address of inviter, return 0 if not have inviter
-
-Bookie.MyInviteCode() public view returns (string invite_code)
-Param
-    None
-Return
-    invite_code: a code of inviter, return 0 if there is no more
-Description
-    A user can generate multiple invitation codes. The invitation code will be invalid after being used. After using the invitation code, user cannot continue to invite others
-
-Bookie.SetInviteCode(string inviteCode) public returns (bool)
-Param
-    string inviteCode: code of invite (Test invite codes: 0x6b665085, 0xf5a6d1e4, 0x40b21367, 0x23255477, 0x099c86a0)
-Return
-    bool: true for success, otherwise is false
-Description
-    If return is false, one reason is that the invitation code does not exist, and the other is that the invitation code has been used
-
-Bookie.GetAPY() public view returns (uint8 apy)
-Param
-    None
-Return
-    apy: Annual percentage yields
-
-Bookie.BookieValue(uint256 value) public returns(bool)
-Param
-    value: the value of bookie
-Return
-    bool: true for success, otherwise is false
-
-Bookie.Shortcut(uint256 bookieValue, uint256 betValue, uint8[7] memory balls) public returns (bool)
-Param
-    bookieValue: value of bookie
-    betValue: value of bet to game
-    balls:  random balls
-Return
-    bool: true for success, otherwise is false
+Claim unclaimed award
+    function ClaimUserAward() internal returns(uint256 award)
+Params:
+    NONE
+Returns:
+    uint256 award   // user unclaimed award
 ```
 
-## Award
+### Manager interface
+1. CreateLottery
 ```
-Bookie.GetAwardInfo() returns(uint256 gameAward, uint256 inviteAward, uint256 bookieAward)
-Param
-    None
-Return
-    gameAward:  award for game(USDT)
-    inviteAward: award of invite(USDT)
-    bookieAward: award of bookie(Bookie LP)
+Create a new lottery
+    function CreateLottery(uint256 _lottery_id, uint256 _pool_size, uint256 _duration) public
+Params:
+    uint256 _lottery_id // lottery id, such as: 20210001
+    uint256 _pool_size  // pool size(usdt)
+    uint256 _duration   // duration for period, if _duration is ZERO, setting default: 7 days 604800 seconds
+Returns:
+    NONE
 ```
-
-## Ball49
+2. DrawBalls
 ```
-Bookie.GetBall49Info() returns(uint256 poolFund, uint256 betCount, uint256 jackpot)
-Param
-    None
-Return
-    poolFund: pool fund of ball 49 game (USDT)
-    betCount: bet count of game
-    jackpot: the bigest bonus in game (USDT)
-
-Bookie.GetBetValue(uint8[49] memory blueBalls, uint8[10] memory redBalls, uint256 betCount) returns(uint256 betValue)
-Param
-    blueBalls:   blue balls(49, such as:[1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0])
-    redBalls:    red balls(10, such as:[1,0,0,0,0,0,0,0,0,0])
-    betCount:    count of bet(such as: 2)
-Return
-    betValue: get bet value from betting infomation
-
-Bookie.Bet(uint8[49] memory blueBalls, uint8[10] memory redBalls, uint256 betCount, uint256 betUsdt) return(bool)
-Param
-    blueBalls:   blue balls(49, such as:[1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0])
-    redBalls:    red balls(10, such as:[1,0,0,0,0,0,0,0,0,0])
-    betCount:    count of bet(such as: 2)
-    betUsdt:     usdt value of bet
-Return
-    bool:   true for successed, otherwise is false
-
-Bookie.ClaimGame() public returns(uint256)
-Param
-    None
-Return
-    uint256: Claim game bonus
-
-Bookie.ClaimInvite() public returns(uint256)
-Param
-    None
-Return
-    uint256: Claim invite bonus
-
-Bookie.CliamBlp() public returns(uint256)
-Param
-    None
-Return
-    uint256: Claim value of blp
-
-Bookie.GetBLPSupply() public returns(uint256){
-Param
-    None
-Retrun
-    uint256: Total supply of Bookie LP
+Drawing balls
+    function DrawBalls(uint256 btcBlock, string memory btcHash) public
+Params:
+    uint256 btcBlock        // btc block number
+    string memory btcHash   // btc block hash
+Returns:
+    NONE
+```
+3. SetDrawResult
+```
+Setting award
+    function SetDrawResult(uint256[8] memory _level_winner, uint256[8] memory _winner_award)
+Params:
+    uint256[8] memory _level_winner // winner count in level, such as: [1,2,10,100,1000,10000,20000,30000]
+    uint256[8] memory _winner_award // winner award in levle, such as: [12345678,0,0,0,0,0,0,0]
+Returns:
+    NONE
 ```

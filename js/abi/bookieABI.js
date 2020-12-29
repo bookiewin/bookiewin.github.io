@@ -1,5 +1,5 @@
 var BASEABI = {
-	"contract":"0xAFF7F071561e145C7561668fc796F80F59f56dc5",
+	"contract":"0x2c713fcc102Fc63A0FBa6eE1293397c9a2f7930A",
 	"abi": [
 		{
 			"inputs": [],
@@ -12,17 +12,171 @@ var BASEABI = {
 				{
 					"indexed": false,
 					"internalType": "uint8",
-					"name": "",
+					"name": "index",
 					"type": "uint8"
 				},
 				{
 					"indexed": false,
 					"internalType": "uint8",
-					"name": "",
+					"name": "ball",
 					"type": "uint8"
 				}
 			],
 			"name": "Balls_Gen",
+			"type": "event"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "uint64",
+					"name": "balls",
+					"type": "uint64"
+				},
+				{
+					"internalType": "uint256",
+					"name": "betCount",
+					"type": "uint256"
+				},
+				{
+					"internalType": "uint256",
+					"name": "betValue",
+					"type": "uint256"
+				}
+			],
+			"name": "Bet",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "uint64",
+					"name": "balls",
+					"type": "uint64"
+				},
+				{
+					"internalType": "uint256",
+					"name": "betCount",
+					"type": "uint256"
+				},
+				{
+					"internalType": "uint256",
+					"name": "betValue",
+					"type": "uint256"
+				}
+			],
+			"name": "BetBalls",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"anonymous": false,
+			"inputs": [
+				{
+					"indexed": false,
+					"internalType": "address",
+					"name": "sender",
+					"type": "address"
+				},
+				{
+					"indexed": false,
+					"internalType": "uint256",
+					"name": "ticket_id",
+					"type": "uint256"
+				},
+				{
+					"indexed": false,
+					"internalType": "uint256",
+					"name": "total_bet",
+					"type": "uint256"
+				}
+			],
+			"name": "BetLog",
+			"type": "event"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "uint256",
+					"name": "value",
+					"type": "uint256"
+				}
+			],
+			"name": "BookieValue",
+			"outputs": [
+				{
+					"internalType": "bool",
+					"name": "",
+					"type": "bool"
+				}
+			],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [],
+			"name": "ClaimBlp",
+			"outputs": [
+				{
+					"internalType": "uint256",
+					"name": "",
+					"type": "uint256"
+				}
+			],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [],
+			"name": "ClaimInvite",
+			"outputs": [
+				{
+					"internalType": "uint256",
+					"name": "",
+					"type": "uint256"
+				}
+			],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"anonymous": false,
+			"inputs": [
+				{
+					"indexed": false,
+					"internalType": "uint256",
+					"name": "",
+					"type": "uint256"
+				},
+				{
+					"indexed": false,
+					"internalType": "uint256",
+					"name": "",
+					"type": "uint256"
+				},
+				{
+					"indexed": false,
+					"internalType": "uint256",
+					"name": "",
+					"type": "uint256"
+				}
+			],
+			"name": "CreateLotteryLog",
+			"type": "event"
+		},
+		{
+			"anonymous": false,
+			"inputs": [
+				{
+					"indexed": false,
+					"internalType": "uint256",
+					"name": "ball_number",
+					"type": "uint256"
+				}
+			],
+			"name": "ShowBallNumber",
 			"type": "event"
 		},
 		{
@@ -66,66 +220,13 @@ var BASEABI = {
 		{
 			"inputs": [
 				{
-					"internalType": "uint8[49]",
-					"name": "blueBalls",
-					"type": "uint8[49]"
-				},
-				{
-					"internalType": "uint8[10]",
-					"name": "redBalls",
-					"type": "uint8[10]"
-				},
-				{
-					"internalType": "uint256",
-					"name": "betCount",
-					"type": "uint256"
-				},
-				{
-					"internalType": "uint256",
-					"name": "betValue",
-					"type": "uint256"
+					"internalType": "address payable",
+					"name": "new_owner",
+					"type": "address"
 				}
 			],
-			"name": "Bet",
-			"outputs": [
-				{
-					"internalType": "bool",
-					"name": "",
-					"type": "bool"
-				}
-			],
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
-			"inputs": [
-				{
-					"internalType": "uint256",
-					"name": "value",
-					"type": "uint256"
-				}
-			],
-			"name": "BookieValue",
-			"outputs": [
-				{
-					"internalType": "bool",
-					"name": "",
-					"type": "bool"
-				}
-			],
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
-			"inputs": [],
-			"name": "ClaimBlp",
-			"outputs": [
-				{
-					"internalType": "uint256",
-					"name": "",
-					"type": "uint256"
-				}
-			],
+			"name": "ChangeOwner",
+			"outputs": [],
 			"stateMutability": "nonpayable",
 			"type": "function"
 		},
@@ -143,33 +244,25 @@ var BASEABI = {
 			"type": "function"
 		},
 		{
-			"inputs": [],
-			"name": "ClaimInvite",
-			"outputs": [
-				{
-					"internalType": "uint256",
-					"name": "",
-					"type": "uint256"
-				}
-			],
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
 			"inputs": [
 				{
 					"internalType": "uint256",
-					"name": "lotteryID",
+					"name": "_lottery_id",
 					"type": "uint256"
 				},
 				{
 					"internalType": "uint256",
-					"name": "poolFund",
+					"name": "_pool_size",
 					"type": "uint256"
 				},
 				{
 					"internalType": "uint256",
-					"name": "duration",
+					"name": "_timestamp",
+					"type": "uint256"
+				},
+				{
+					"internalType": "uint256",
+					"name": "_duration",
 					"type": "uint256"
 				}
 			],
@@ -186,7 +279,7 @@ var BASEABI = {
 					"type": "uint256"
 				}
 			],
-			"name": "CrowdFunding",
+			"name": "Crowd_Funding",
 			"outputs": [
 				{
 					"internalType": "bool",
@@ -211,13 +304,7 @@ var BASEABI = {
 				}
 			],
 			"name": "DrawBalls",
-			"outputs": [
-				{
-					"internalType": "bool",
-					"name": "",
-					"type": "bool"
-				}
-			],
+			"outputs": [],
 			"stateMutability": "nonpayable",
 			"type": "function"
 		},
@@ -241,21 +328,27 @@ var BASEABI = {
 			"type": "event"
 		},
 		{
+			"inputs": [],
+			"name": "Kill",
+			"outputs": [],
+			"stateMutability": "payable",
+			"type": "function"
+		},
+		{
 			"inputs": [
 				{
-					"internalType": "uint8[6]",
-					"name": "level_counts",
-					"type": "uint8[6]"
-				}
-			],
-			"name": "SetDrawLevel",
-			"outputs": [
+					"internalType": "uint256[8]",
+					"name": "_level_winner",
+					"type": "uint256[8]"
+				},
 				{
-					"internalType": "bool",
-					"name": "",
-					"type": "bool"
+					"internalType": "uint256[8]",
+					"name": "_winner_award",
+					"type": "uint256[8]"
 				}
 			],
+			"name": "SetDrawResult",
+			"outputs": [],
 			"stateMutability": "nonpayable",
 			"type": "function"
 		},
@@ -306,32 +399,6 @@ var BASEABI = {
 		},
 		{
 			"inputs": [],
-			"name": "current_lottery",
-			"outputs": [
-				{
-					"internalType": "uint256",
-					"name": "",
-					"type": "uint256"
-				}
-			],
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"inputs": [],
-			"name": "default_invite_code",
-			"outputs": [
-				{
-					"internalType": "bytes4",
-					"name": "",
-					"type": "bytes4"
-				}
-			],
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"inputs": [],
 			"name": "developer_address",
 			"outputs": [
 				{
@@ -344,12 +411,18 @@ var BASEABI = {
 			"type": "function"
 		},
 		{
-			"inputs": [],
-			"name": "Duration",
-			"outputs": [
+			"inputs": [
 				{
 					"internalType": "uint256",
 					"name": "",
+					"type": "uint256"
+				}
+			],
+			"name": "draw_results",
+			"outputs": [
+				{
+					"internalType": "uint256",
+					"name": "lottery_id",
 					"type": "uint256"
 				}
 			],
@@ -367,30 +440,6 @@ var BASEABI = {
 				}
 			],
 			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"inputs": [
-				{
-					"internalType": "uint8[]",
-					"name": "currentballs",
-					"type": "uint8[]"
-				},
-				{
-					"internalType": "uint256",
-					"name": "randNumber",
-					"type": "uint256"
-				}
-			],
-			"name": "GenOneBall",
-			"outputs": [
-				{
-					"internalType": "uint8",
-					"name": "",
-					"type": "uint8"
-				}
-			],
-			"stateMutability": "pure",
 			"type": "function"
 		},
 		{
@@ -468,16 +517,24 @@ var BASEABI = {
 			"type": "function"
 		},
 		{
+			"inputs": [],
+			"name": "GetBetNumber",
+			"outputs": [
+				{
+					"internalType": "uint256",
+					"name": "betNumber",
+					"type": "uint256"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
 			"inputs": [
 				{
-					"internalType": "uint8[49]",
-					"name": "blueBalls",
-					"type": "uint8[49]"
-				},
-				{
-					"internalType": "uint8[10]",
-					"name": "redBalls",
-					"type": "uint8[10]"
+					"internalType": "uint64",
+					"name": "balls",
+					"type": "uint64"
 				},
 				{
 					"internalType": "uint256",
@@ -498,59 +555,24 @@ var BASEABI = {
 		},
 		{
 			"inputs": [],
-			"name": "GetBLPSupply",
+			"name": "GetDefaultInviterCode",
 			"outputs": [
 				{
-					"internalType": "uint256",
-					"name": "totalSupply",
-					"type": "uint256"
+					"internalType": "bytes4",
+					"name": "",
+					"type": "bytes4"
 				}
 			],
 			"stateMutability": "view",
 			"type": "function"
 		},
 		{
-			"inputs": [
-				{
-					"internalType": "uint256",
-					"name": "lotteryID",
-					"type": "uint256"
-				}
-			],
-			"name": "GetDrawResult",
-			"outputs": [
-				{
-					"internalType": "uint8[6]",
-					"name": "blue_balls",
-					"type": "uint8[6]"
-				},
-				{
-					"internalType": "uint8",
-					"name": "red_ball",
-					"type": "uint8"
-				},
-				{
-					"internalType": "uint256[6]",
-					"name": "level_counts",
-					"type": "uint256[6]"
-				}
-			],
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"inputs": [
-				{
-					"internalType": "uint256",
-					"name": "lotteryID",
-					"type": "uint256"
-				}
-			],
+			"inputs": [],
 			"name": "GetGameAward",
 			"outputs": [
 				{
 					"internalType": "uint256",
-					"name": "award",
+					"name": "",
 					"type": "uint256"
 				}
 			],
@@ -591,9 +613,14 @@ var BASEABI = {
 					"type": "uint8[7]"
 				},
 				{
-					"internalType": "uint256[6]",
+					"internalType": "uint256[8]",
 					"name": "level_counts",
-					"type": "uint256[6]"
+					"type": "uint256[8]"
+				},
+				{
+					"internalType": "uint256[8]",
+					"name": "winner_award",
+					"type": "uint256[8]"
 				}
 			],
 			"stateMutability": "view",
@@ -605,7 +632,7 @@ var BASEABI = {
 			"outputs": [
 				{
 					"internalType": "uint256",
-					"name": "gameID",
+					"name": "lotteryID",
 					"type": "uint256"
 				},
 				{
@@ -634,6 +661,19 @@ var BASEABI = {
 		},
 		{
 			"inputs": [],
+			"name": "GetLotteryPool",
+			"outputs": [
+				{
+					"internalType": "uint256",
+					"name": "pool_size",
+					"type": "uint256"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [],
 			"name": "GetMyInivited",
 			"outputs": [
 				{
@@ -644,6 +684,19 @@ var BASEABI = {
 				{
 					"internalType": "uint256",
 					"name": "",
+					"type": "uint256"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [],
+			"name": "GetTrackNumber",
+			"outputs": [
+				{
+					"internalType": "uint256",
+					"name": "trackNumber",
 					"type": "uint256"
 				}
 			],
@@ -666,14 +719,9 @@ var BASEABI = {
 					"type": "uint256"
 				},
 				{
-					"internalType": "uint8[49]",
-					"name": "blue_balls",
-					"type": "uint8[49]"
-				},
-				{
-					"internalType": "uint8[10]",
-					"name": "red_balls",
-					"type": "uint8[10]"
+					"internalType": "uint64",
+					"name": "balls",
+					"type": "uint64"
 				},
 				{
 					"internalType": "uint256",
@@ -687,41 +735,47 @@ var BASEABI = {
 		{
 			"inputs": [
 				{
-					"internalType": "address",
+					"internalType": "uint256",
 					"name": "",
-					"type": "address"
+					"type": "uint256"
+				}
+			],
+			"name": "lotteries",
+			"outputs": [
+				{
+					"internalType": "uint256",
+					"name": "lottery_index",
+					"type": "uint256"
 				},
-				{
-					"internalType": "uint256",
-					"name": "",
-					"type": "uint256"
-				}
-			],
-			"name": "invited_address",
-			"outputs": [
-				{
-					"internalType": "address",
-					"name": "",
-					"type": "address"
-				}
-			],
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"inputs": [
-				{
-					"internalType": "uint256",
-					"name": "",
-					"type": "uint256"
-				}
-			],
-			"name": "lottery_prize",
-			"outputs": [
 				{
 					"internalType": "uint256",
 					"name": "lottery_id",
 					"type": "uint256"
+				},
+				{
+					"internalType": "uint256",
+					"name": "pool_size",
+					"type": "uint256"
+				},
+				{
+					"internalType": "uint256",
+					"name": "bonus",
+					"type": "uint256"
+				},
+				{
+					"internalType": "uint256",
+					"name": "draw_time",
+					"type": "uint256"
+				},
+				{
+					"internalType": "uint256",
+					"name": "total_bet",
+					"type": "uint256"
+				},
+				{
+					"internalType": "uint8",
+					"name": "status",
+					"type": "uint8"
 				}
 			],
 			"stateMutability": "view",
@@ -741,13 +795,73 @@ var BASEABI = {
 			"type": "function"
 		},
 		{
-			"inputs": [],
-			"name": "owner_address",
+			"inputs": [
+				{
+					"internalType": "uint256",
+					"name": "_ticket_id",
+					"type": "uint256"
+				}
+			],
+			"name": "Parse_bet",
 			"outputs": [
+				{
+					"internalType": "uint256",
+					"name": "lottery_id",
+					"type": "uint256"
+				},
+				{
+					"internalType": "address",
+					"name": "bet_user",
+					"type": "address"
+				},
+				{
+					"internalType": "uint256[49]",
+					"name": "blue_balls",
+					"type": "uint256[49]"
+				},
+				{
+					"internalType": "uint256[10]",
+					"name": "red_balls",
+					"type": "uint256[10]"
+				},
+				{
+					"internalType": "uint256",
+					"name": "bet_count",
+					"type": "uint256"
+				},
+				{
+					"internalType": "uint256",
+					"name": "bet_value",
+					"type": "uint256"
+				},
+				{
+					"internalType": "uint256",
+					"name": "award",
+					"type": "uint256"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [
 				{
 					"internalType": "address",
 					"name": "",
 					"type": "address"
+				},
+				{
+					"internalType": "uint256",
+					"name": "",
+					"type": "uint256"
+				}
+			],
+			"name": "tickets_map",
+			"outputs": [
+				{
+					"internalType": "uint256",
+					"name": "",
+					"type": "uint256"
 				}
 			],
 			"stateMutability": "view",
@@ -769,74 +883,6 @@ var BASEABI = {
 		{
 			"inputs": [
 				{
-					"internalType": "address",
-					"name": "",
-					"type": "address"
-				},
-				{
-					"internalType": "uint256",
-					"name": "",
-					"type": "uint256"
-				}
-			],
-			"name": "user_bet_tickets",
-			"outputs": [
-				{
-					"internalType": "uint256",
-					"name": "lottery_id",
-					"type": "uint256"
-				},
-				{
-					"internalType": "address",
-					"name": "bet_user",
-					"type": "address"
-				},
-				{
-					"internalType": "uint256",
-					"name": "bet_count",
-					"type": "uint256"
-				},
-				{
-					"internalType": "uint256",
-					"name": "award",
-					"type": "uint256"
-				}
-			],
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"inputs": [
-				{
-					"internalType": "address",
-					"name": "",
-					"type": "address"
-				}
-			],
-			"name": "user_bets",
-			"outputs": [
-				{
-					"internalType": "uint256",
-					"name": "",
-					"type": "uint256"
-				}
-			],
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"inputs": [
-				{
-					"internalType": "address",
-					"name": "",
-					"type": "address"
-				},
-				{
-					"internalType": "uint256",
-					"name": "",
-					"type": "uint256"
-				},
-				{
 					"internalType": "uint256",
 					"name": "",
 					"type": "uint256"
@@ -845,18 +891,33 @@ var BASEABI = {
 			"name": "user_tickets",
 			"outputs": [
 				{
-					"internalType": "uint256",
-					"name": "lottery_id",
-					"type": "uint256"
-				},
-				{
 					"internalType": "address",
 					"name": "bet_user",
 					"type": "address"
 				},
 				{
 					"internalType": "uint256",
+					"name": "lottery_index",
+					"type": "uint256"
+				},
+				{
+					"internalType": "uint256",
+					"name": "lottery_id",
+					"type": "uint256"
+				},
+				{
+					"internalType": "uint64",
+					"name": "balls",
+					"type": "uint64"
+				},
+				{
+					"internalType": "uint256",
 					"name": "bet_count",
+					"type": "uint256"
+				},
+				{
+					"internalType": "uint256",
+					"name": "bet_value",
 					"type": "uint256"
 				},
 				{

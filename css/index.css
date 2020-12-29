@@ -520,6 +520,10 @@ textarea {
         color: #ffffff;
         font-family: 'ProximaNova-Bold';
     }
+    .bookie-list li.ac{
+        background: #fff;
+        color: rgb(72, 79, 177);
+    }
 
     .bookie-red {
         width: 435px;
@@ -536,6 +540,10 @@ textarea {
         border-radius: 50%;
         font-size: 19px;
         color: #ffffff;
+    }
+    .bookie-red li.ac{
+        background: #fff;
+        color: red;
     }
 
     .home-bookie-list li:last-child {
@@ -873,4 +881,17 @@ textarea {
         display: flex;
         flex-wrap:wrap;
         justify-content: normal;
+      }
+      .random-button{
+        height: 56px;
+        line-height: 56px;
+        margin: 30px auto 0;
+        background-color: rgb(240, 233, 231);
+        border-radius: 12px;
+        box-shadow: rgb(226, 214, 207) 6px 6px 12px, rgb(247, 244, 242) -12px -12px 24px -2px;
+        color: rgb(209, 108, 0);
+        cursor: pointer !important;
+        font-size: 26px;
+        font-weight: 700;
+        font-family: 'ProximaNova-Bold', "OpenSans", Arial,sans-serif;
       }
