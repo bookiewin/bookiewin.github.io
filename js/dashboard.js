@@ -69,6 +69,7 @@ async function InitPage() {
         //Get invited friends address list10
         let index = 0
         _Bookie.GetLastPrize.call(index, function (error, result) {
+
             if(result) {GetLastPrizeFn(index) }
         });
        

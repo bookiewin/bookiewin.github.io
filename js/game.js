@@ -173,7 +173,7 @@ $betFN.click(function () {
     let $periodsValue = $('.js-periods-value').val()
     let $betHTML = $('.js-betValue').html()
     if ($betHTML != '--') {
-        if(uAllowanceV < ubalanceOfV){
+        if(uAllowanceV < $betHTML){
             data = _USDT.approve.getData(contractAddress, ubalanceOfV);
             tx = {to: contractAddressUSDT,data: data}
             web3.eth.sendTransaction(tx, async function (err, result) {
@@ -199,6 +199,7 @@ $betFN.click(function () {
     } 
 })
 function gameSubmit(getbets,$periodsValue,$betHTML) {
+    $jsLoadingBox.show()
     let betHTMLT = Number($betHTML)
     data = _Bookie.Bet.getData(getbets, Number($periodsValue), betHTMLT);
         tx = {to: contractAddress,data: data,}
