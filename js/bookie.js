@@ -60,6 +60,7 @@ async function InitPage() {
             $('.js-APY-num').html(result.c[0])
             $('.js-expect').html($('.js-bookie-input').val() * result.toNumber()/100)
         });
+       
     }
 }
 
@@ -155,19 +156,19 @@ document.getElementById('js-bookie-d').addEventListener('keyup', function(e){
 })
 // head top
 $('.js-Home').click(function () {
-    if(web3.eth.coinbase){window.location.href = '/index.html'}
+    if(web3.eth.coinbase){window.location.href = '/ropsten/home.html'}
 })
 $('.js-Bookie').click(function () {
-    if(web3.eth.coinbase){window.location.href = '/bookie.html'}
+    if(web3.eth.coinbase){window.location.href = '/ropsten/bookie.html'}
 })
 $('.js-Shortcut').click(function () {
-    if(web3.eth.coinbase){window.location.href = '/shortcut.html'}
+    if(web3.eth.coinbase){window.location.href = '/ropsten/shortcut.html'}
 })
 $('.js-Dashboard').click(function () {
-    if(web3.eth.coinbase){window.location.href = '/dashboard.html'}
+    if(web3.eth.coinbase){window.location.href = '/ropsten/dashboard.html'}
 })
 $('.js-Game').click(function () {
-    if(web3.eth.coinbase){window.location.href = '/game.html'}
+    if(web3.eth.coinbase){window.location.href = '/ropsten/game.html'}
 })
 // View status
 async function getReceipt(data) {
@@ -185,7 +186,7 @@ ethereum.on('networkChanged', function (networkIDstring) {
 })
 ethereum.on('accountsChanged', function (networkIDstring) {
     if (web3.eth.coinbase == null) {
-        window.location.href = '/unclock.html'
+        window.location.href = '/ropsten/unclock.html'
         $('.connect-btn').show()
     }else {
         $('.connect-con').show()

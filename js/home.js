@@ -42,6 +42,7 @@ async function InitPage() {
         let gameID = ''
         let estimated = ''
         _Bookie.GetLottery.call(function (error, result) {
+            if(result == null)return
             gameID = result.valueOf()[0].toNumber()
             targetTime = result.valueOf()[1].toNumber()
             downTime = result.valueOf()[1].toNumber() * 1000
@@ -108,7 +109,7 @@ ethereum.on('networkChanged', function (networkIDstring) {
 })
 ethereum.on('accountsChanged', function (networkIDstring) {
     if (web3.eth.coinbase == null) {
-        window.location.href = '/unclock.html'
+        window.location.href = '/ropsten/unclock.html'
         $('.connect-btn').show()
     }else {
         $('.connect-con').show()
@@ -152,24 +153,24 @@ async function getReceipt(data) {
 }
 // head top
 $('.js-Home').click(function () {
-    if(web3.eth.coinbase){window.location.href = '/index.html'}
+    if(web3.eth.coinbase){window.location.href = '/ropsten/home.html'}
 })
 $('.js-Bookie').click(function () {
-    if(web3.eth.coinbase){window.location.href = '/bookie.html'}
+    if(web3.eth.coinbase){window.location.href = '/ropsten/bookie.html'}
 })
 $('.js-Shortcut').click(function () {
-    if(web3.eth.coinbase){window.location.href = '/shortcut.html'}
+    if(web3.eth.coinbase){window.location.href = '/ropsten/shortcut.html'}
 })
 $('.js-Dashboard').click(function () {
-    if(web3.eth.coinbase){window.location.href = '/dashboard.html'}
+    if(web3.eth.coinbase){window.location.href = '/ropsten/dashboard.html'}
 })
 $('.js-Game').click(function () {
-    if(web3.eth.coinbase){window.location.href = '/game.html'}
+    if(web3.eth.coinbase){window.location.href = '/ropsten/game.html'}
 })
 $crowdFunding.click(function () {
-    if(web3.eth.coinbase){window.location.href = '/crowgFunding.html'}
+    if(web3.eth.coinbase){window.location.href = '/ropsten/crowgFunding.html'}
 })
 // href
 $('.js-jion-game').click(function () {
-    window.location.href = '/game.html'
+    window.location.href = '/ropsten/game.html'
 })

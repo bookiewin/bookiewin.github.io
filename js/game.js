@@ -4,7 +4,7 @@ let _CROWDABI = CROWDFUNDINGABI.abi
 let contractAddress = BASEABI.contract
 let contractAddressUSDT = USDTABI.contract
 let contractAddressCROWD = CROWDFUNDINGABI.contract
-let _Bookie, _account, _USDT, _USDTACCOUNT,ubalanceOfV
+let _Bookie, _account, _USDT, _USDTACCOUNT,ubalanceOfV,uAllowanceV
 let $jsLoadingBox = $('.js-loading-box')
 $jsLoadingBox.hide()
 // judge web3
@@ -41,6 +41,10 @@ async function InitPage() {
         //_USDT.balanceOf
         _USDT.balanceOf.call(_USDTACCOUNT, async function (error, result) {
             ubalanceOfV = web3.fromWei(result.toNumber(), "mwei");
+        });
+        //_USDT.allowance
+        _USDT.allowance.call(_USDTACCOUNT,contractAddress, async function (error, result) {
+            uAllowanceV = web3.fromWei(result.toNumber(), "mwei");
         })
     }
 }
@@ -128,16 +132,16 @@ function setValue(type) {
 }
 
 // Conditions for requesting value
-let result,blue ,red ,stringBR ,getbets 
+let result,blue ,red ,stringBR ,getbets ,$periodsValue
 function submitFN() {
+    $periodsValue = $('.js-periods-value').val()
     let betStr = $('.js-my-bet-box')
     let strHtml = ''
     if (ACTBLUELIST.length > 5 && ACTREDLIST.length > 0) {
          blue = reverseBlue;red = reverseRed;
          stringBR = red.concat(blue).toString().replace(/,/g,'');
          getbets ='0x'+ parseInt(stringBR,2).toString(16)
-        //  console.log(getbets,stringBR);
-        _Bookie.GetBetValue(getbets, 1, async function (error, result) {
+        _Bookie.GetBetValue(getbets, Number($periodsValue), async function (error, result) {
             $('.js-betValue').html(result.valueOf() * $('.js-periods-value').val())
         })
         //my bet
@@ -163,17 +167,15 @@ $('.js-add').click(function () {
     if($periods.val() >= 10){$periods.val(10)}else {$periods.val(parseInt($periods.val()) + 1)}
     submitFN()
 })
+
 let $betFN = $('.js-betFN')
 $betFN.click(function () {
-    $jsLoadingBox.show()
     let $periodsValue = $('.js-periods-value').val()
     let $betHTML = $('.js-betValue').html()
     if ($betHTML != '--') {
-        data = _USDT.approve.getData(contractAddress, ubalanceOfV);
-            tx = {
-                to: contractAddressUSDT,
-                data: data,
-            }
+        if(uAllowanceV < ubalanceOfV){
+            data = _USDT.approve.getData(contractAddress, ubalanceOfV);
+            tx = {to: contractAddressUSDT,data: data}
             web3.eth.sendTransaction(tx, async function (err, result) {
                 if (err) {
                     alert("failed: " + err.message)
@@ -184,18 +186,21 @@ $betFN.click(function () {
                     let time1
                     time1 = setInterval(async () => {
                         var receipt = await getReceipt(result);
-                        if (null == receipt) {} else {
+                        if (receipt == null) {} else {
                             clearInterval(time1)
                             gameSubmit(getbets,$periodsValue,$betHTML)
                         }
                     }, 3000)
                 }
             })
+        }else{
+            gameSubmit(getbets,$periodsValue,$betHTML)
+        }
     } 
 })
 function gameSubmit(getbets,$periodsValue,$betHTML) {
     let betHTMLT = Number($betHTML)
-    data = _Bookie.Bet.getData(getbets, Number($periodsValue), web3.toWei( betHTMLT , 'mwei'));
+    data = _Bookie.Bet.getData(getbets, Number($periodsValue), betHTMLT);
         tx = {to: contractAddress,data: data,}
         web3.eth.sendTransaction(tx, async function (err, result) {
             if (err) {
@@ -214,19 +219,19 @@ function gameSubmit(getbets,$periodsValue,$betHTML) {
 }
 // head top
 $('.js-Home').click(function () {
-    if(web3.eth.coinbase){window.location.href = '/index.html'}
+    if(web3.eth.coinbase){window.location.href = '/ropsten/home.html'}
 })
 $('.js-Bookie').click(function () {
-    if(web3.eth.coinbase){window.location.href = '/bookie.html'}
+    if(web3.eth.coinbase){window.location.href = '/ropsten/bookie.html'}
 })
 $('.js-Shortcut').click(function () {
-    if(web3.eth.coinbase){window.location.href = '/shortcut.html'}
+    if(web3.eth.coinbase){window.location.href = '/ropsten/shortcut.html'}
 })
 $('.js-Dashboard').click(function () {
-    if(web3.eth.coinbase){window.location.href = '/dashboard.html'}
+    if(web3.eth.coinbase){window.location.href = '/ropsten/dashboard.html'}
 })
 $('.js-Game').click(function () {
-    if(web3.eth.coinbase){window.location.href = '/game.html'}
+    if(web3.eth.coinbase){window.location.href = '/ropsten/game.html'}
 })
 // View status
 async function getReceipt(data) {
@@ -244,7 +249,7 @@ ethereum.on('networkChanged', function (networkIDstring) {
 })
 ethereum.on('accountsChanged', function (networkIDstring) {
     if (web3.eth.coinbase == null) {
-        window.location.href = '/unclock.html'
+        window.location.href = '/ropsten/unclock.html'
         $('.connect-btn').show()
     }else {
         $('.connect-con').show()
@@ -253,26 +258,26 @@ ethereum.on('accountsChanged', function (networkIDstring) {
 })
 
 function randomFn(){
+    $('.js-bookie-list li').removeClass('ac')
+    $('.js-bookie-red li').removeClass('ac')
     // 随机选数
     let arrCount = 50
     let ranArr = new Array
-    for(let i = 1;i<arrCount;i++){
-        ranArr.push(i)
-    }
+    for(let i = 1;i<arrCount;i++){ranArr.push(i)}
     ACTBLUELIST = ranArr.sort(() => Math.random() - 0.5).slice(0,6).map(item => item < 10 ? `0${item}` : item.toString())
     ACTREDLIST = [1,2,3,4,5,6,7,8,9,10].sort(() => Math.random() - 0.5).slice(0,1).map(item => item < 10 ? `0${item}` : item.toString())
-
-    // ACTBLUELIST = blueResultArr.map(item => item < 10 ? `0${item}` : item.toString())
-    // ACTREDLIST = redResultArr.map(item => item < 10 ? `0${item}` : item.toString())
     creEle('blue')
     creEle('red')
     setValue('blue')
     setValue('red')
     submitFN()
 }
-// randomFn()
+  
 $('.js-random-btn').click(function() {
-    // randomFn()
+    randomFn()
 })
+// $(window).load(function(){
+//     　randomFn()
+// })
  
  

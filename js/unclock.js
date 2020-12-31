@@ -40,7 +40,7 @@ ethereum.on('networkChanged', function (networkIDstring) {
 })
 ethereum.on('accountsChanged', function (networkIDstring) {
         if (web3.eth.coinbase) {
-            window.location.href = '/index.html'
+            window.location.href = '/ropsten/home.html'
             $('.js-coinbase').html(getSubStr(web3.eth.coinbase) )
         }
 })

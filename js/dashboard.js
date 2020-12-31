@@ -61,19 +61,23 @@ async function InitPage() {
             if(result[1].toNumber()) {
                 for(var i = 0; i < ivitedNum; i++) {
                     curIndex = result[0][i]
-                    strhtml+='<li>'+getSubStrEight(curIndex)+'</li>'
-                }$('.js-invited-ul').html(strhtml)}
+                    strhtml+='<li>'+'<img class="invite-img" src="/img/invite-head.png" alt="">'+
+                            '<span>'+getSubStrEight(curIndex)+'</span>'+'</li>'
+                }
+                $('.js-invited-ul').html(strhtml)}
         });
         //Get invited friends address list10
         let index = 0
         _Bookie.GetLastPrize.call(index, function (error, result) {
             if(result) {GetLastPrizeFn(index) }
         });
+       
         //30
         let indexHistory = 0
         _Bookie.GetUserLastBet.call(indexHistory, function (error, result) {
-            if(result) {LastBetFn(indexHistory)}
+            if(result.length) {LastBetFn(indexHistory)}
         });
+        
     }
 }
 $('.js-claim-invite').click(function () {
@@ -166,24 +170,26 @@ function LastBetFn(indexHistory) {
     _Bookie.GetUserLastBet.call(indexHistory, function (error, result) {
         if(result) {
             indexHistory +=1
-            let arr = []
-            let hisCurArrB 
-            for(var i = 0 ;i < result[1].length; i++) {
-                hisCurArrB = result[1][i].toNumber()
-                if(hisCurArrB){arr.push(i+1)}
+            let arr = [],arrRed = [],hisCurArrB ,hisCurArrR
+            if(result[0].toNumber() == '0')return
+            for(var i = 0 ;i < result[2].length; i++) {
+                hisCurArrB = result[2][i].toNumber()
+                if(hisCurArrB){arrRed.push(i+1)}
             }
-            let hisCurArrR
-            for(var j = 0 ;j < result[2].length; j++) {
-                hisCurArrR = result[2][j].toNumber()
+            for(var j = 0 ;j < result[1].length; j++) {
+                hisCurArrR = result[1][j].toNumber()
                 if(hisCurArrR){arr.push(j+1)}
             }
-            let historyHtml = '' ,kIndex ,firstHtml = ''
+            let historyHtml = '' ,kIndex ,firstHtml = '',historyHtmlR = '' ,kIndexR
             for(var k = 0 ;k < arr.length; k++) {
-                kIndex = arr[k]
-                historyHtml+='<li>'+kIndex+'</li>'
+                kIndex = arr[k];historyHtml+='<li>'+kIndex+'</li>'
+            }
+            for(var h = 0 ;h < arrRed.length; h++) {
+                kIndexR = arrRed[h]
+                historyHtmlR+='<li class="active-red">'+kIndexR+'</li>'
             }
             for(var i = 0;i < 1; i++) {
-                firstHtml+='<div class="list-detail">'+'<span>'+result[0].toNumber()+'</span>'+'<ul class="game-detail-ul js-betting-ul">'+historyHtml+'</ul>'+'<span> </span>'+'</div>'
+                firstHtml+='<div class="list-detail">'+'<span>'+result[0].toNumber()+'</span>'+'<ul class="game-detail-ul js-betting-ul">'+historyHtml+' '+historyHtmlR+' </ul>'+'<span> </span>'+'</div>'
             }
             $('.js-history-list').after(firstHtml)
             return LastBetFn(indexHistory)
@@ -206,7 +212,7 @@ function GetLastPrizeFn(index) {
                     '<li>'+result[1][4]+'</li>'+
                     '<li>'+result[1][5]+'</li>'+
                     '<li>'+result[1][6]+'</li>'+
-                '</ul>'+'<span>Detail</span>'+'</div>'}
+                '</ul>'+'<span> </span>'+'</div>'}
             $('.js-list-box').after(trackHtml)
             return  GetLastPrizeFn(index)
         }
@@ -214,19 +220,19 @@ function GetLastPrizeFn(index) {
 }
 // head top
 $('.js-Home').click(function () {
-    if(web3.eth.coinbase){window.location.href = '/index.html'}
+    if(web3.eth.coinbase){window.location.href = '/ropsten/home.html'}
 })
 $('.js-Bookie').click(function () {
-    if(web3.eth.coinbase){window.location.href = '/bookie.html'}
+    if(web3.eth.coinbase){window.location.href = '/ropsten/bookie.html'}
 })
 $('.js-Shortcut').click(function () {
-    if(web3.eth.coinbase){window.location.href = '/shortcut.html'}
+    if(web3.eth.coinbase){window.location.href = '/ropsten/shortcut.html'}
 })
 $('.js-Dashboard').click(function () {
-    if(web3.eth.coinbase){window.location.href = '/dashboard.html'}
+    if(web3.eth.coinbase){window.location.href = '/ropsten/dashboard.html'}
 })
 $('.js-Game').click(function () {
-    if(web3.eth.coinbase){window.location.href = '/game.html'}
+    if(web3.eth.coinbase){window.location.href = '/ropsten/game.html'}
 })
 // View status
 async function getReceipt(data) {
@@ -244,7 +250,7 @@ ethereum.on('networkChanged', function (networkIDstring) {
 })
 ethereum.on('accountsChanged', function (networkIDstring) {
     if (web3.eth.coinbase == null) {
-        window.location.href = '/unclock.html'
+        window.location.href = '/ropsten/unclock.html'
         $('.connect-btn').show()
     }else {
         $('.connect-con').show()

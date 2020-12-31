@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="shortcut icon" type="image/x-icon" href="/img/game-nine.png" />
+</head>
+<body>
+    <div class="box js-box">
+        <div class="home-box">
+            <img class="img-wallet" src="/img/game-nine.png" alt="" />
+            <p class="crowd-p" style="font-size: 24px;">Bookie has been successfully deployed in the ropsten test network. Welcome to participate in the test experienc</p>
+            <div class="home-btn">
+                <button class="bWOwlY js-test">Test</button>
+            </div>
+        </div>
+    </div>
+</body>
+<!-- <script src="/js/common.js"></script> -->
+<script src="/js/jquery-2.1.4.min.js"></script>
+<script src="/js/abi/bookieABI.js"></script>
+<script src="/js/abi/usdtABI.js"></script>
+<script src="/js/abi/blpABI.js"></script>
+<script src="/js/abi/crowdfundingABI.js"></script>
+<script src="/js/web3.js"></script>
+<!-- <script src="/js/home.js"></script> -->
+<script>
+$('.js-test').click(function() {
+    if(web3.eth.coinbase){window.location.href = '/ropsten/home.html'}
+    else{ window.location.href = '/ropsten/unclock.html'}
+})
+</script>
+</html>
