@@ -142,7 +142,7 @@ function submitFN() {
          stringBR = red.concat(blue).toString().replace(/,/g,'');
          getbets ='0x'+ parseInt(stringBR,2).toString(16)
         _Bookie.GetBetValue(getbets, Number($periodsValue), async function (error, result) {
-            $('.js-betValue').html(result.valueOf() * $('.js-periods-value').val())
+            $('.js-betValue').html(result.valueOf())
         })
         //my bet
         resultArr = GetBets(ACTBLUELIST, ACTREDLIST)
@@ -164,7 +164,11 @@ $('.js-min').click(function () {
     submitFN()
 })
 $('.js-add').click(function () {
-    if($periods.val() >= 10){$periods.val(10)}else {$periods.val(parseInt($periods.val()) + 1)}
+    if($periods.val() >= 10){
+        $periods.val(10)
+    }else {
+        $periods.val(parseInt($periods.val()) + 1)
+    }
     submitFN()
 })
 
