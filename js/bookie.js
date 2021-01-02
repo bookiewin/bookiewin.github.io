@@ -100,7 +100,7 @@ $('.js-my-bookie-value').click(function(){
     let maxV = $('.js-shortcut-balance').html()
     if(_value < 1 || (_value - maxV > 0)){alert('Please enter a valid value'); return; }
     if(uAllowanceV < _value){
-        data = _USDT.approve.getData(contractAddress, ubalanceOfV);
+        data = _USDT.approve.getData(contractAddress, web3.toWei(ubalanceOfV, "mwei"));
             tx = {
                 to: contractAddressUSDT,
                 data: data,
