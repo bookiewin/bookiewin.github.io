@@ -177,7 +177,7 @@ $betFN.click(function () {
     let $periodsValue = $('.js-periods-value').val()
     let $betHTML = $('.js-betValue').html()
     if ($betHTML != '--') {
-        if(uAllowanceV < $betHTML){
+        if(parseInt(uAllowanceV) < parseInt($betHTML)){
             data = _USDT.approve.getData(contractAddress, ubalanceOfV);
             tx = {to: contractAddressUSDT,data: data}
             web3.eth.sendTransaction(tx, async function (err, result) {
